@@ -1,0 +1,8 @@
+/*
+ * Zira's product theme. A UDS product sets exactly one variable; hover, active,
+ * subtle, border and focus tokens derive from it. Approved value: khaki green
+ * (docs/decisions/0004-accent-colour.md). This is the only colour literal in Zira.
+ */
+[data-uds-theme='zira'] {
+  --uds-primary: #5e6b3b;
+}

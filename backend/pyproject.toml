@@ -6,9 +6,16 @@ requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.115",
     "uvicorn[standard]>=0.32",
-    "pydantic>=2.9",
     "pydantic-settings>=2.6",
     "pyyaml>=6.0",
+    "sqlalchemy>=2.0",
+    "alembic>=1.14",
+    "psycopg[binary]>=3.2",
+    "geoalchemy2>=0.16",
+    "celery[redis]>=5.4",
+    "pyjwt>=2.9",
+    "argon2-cffi>=23.1",
+    "pydantic>=2.9",
 ]
 
 [dependency-groups]
@@ -28,6 +35,10 @@ packages = ["app"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+markers = [
+    "db: needs PostgreSQL with PostGIS (TEST_DATABASE_URL)",
+    "queue: needs Redis (REDIS_URL)",
+]
 
 [tool.ruff]
 line-length = 100

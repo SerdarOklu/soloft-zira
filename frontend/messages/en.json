@@ -1,0 +1,129 @@
+{
+  "app": {
+    "name": "Zira",
+    "tagline": "NASA-powered agricultural decision support",
+    "supportStatement": "Zira does not decide; it supports the decision of the agronomist and the farmer."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "fields": "Fields",
+    "fieldMemory": "Field Memory",
+    "waterVault": "Water Vault",
+    "rotation": "Rotation and Zira Card",
+    "dataCenter": "Data Center",
+    "settings": "Settings"
+  },
+  "dock": {
+    "dashboard": "Home",
+    "fields": "Fields",
+    "waterVault": "Water",
+    "rotation": "Rotation"
+  },
+  "shell": {
+    "home": "Home",
+    "mainNavigation": "Main menu",
+    "toggleSidebar": "Toggle sidebar",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "dockNav": "Quick navigation",
+    "dockActions": "Quick actions",
+    "dockClose": "Close",
+    "skipToContent": "Skip to content",
+    "accountMenu": "Account menu",
+    "signOut": "Sign out",
+    "toDark": "Switch to dark mode",
+    "toLight": "Switch to light mode",
+    "switchLanguage": "Türkçe"
+  },
+  "roles": {
+    "admin": "Admin",
+    "agronomist": "Agronomist",
+    "cooperative_user": "Cooperative user",
+    "farmer": "Farmer"
+  },
+  "placeholder": {
+    "badge": "Phase {phase}",
+    "note": "This screen gets its content in Phase {phase}. Only the frame is ready for now."
+  },
+  "screens": {
+    "dashboard": {
+      "title": "Dashboard",
+      "description": "Shows the state of the system in ten seconds; no analysis happens here.",
+      "items": [
+        "Registered fields and the last NASA data update",
+        "Completed and pending analyses",
+        "Alerts for missing data, sensor faults and risk",
+        "Map of field locations"
+      ]
+    },
+    "fields": {
+      "title": "Fields",
+      "description": "Every field is an independent record with its own profile: location, soil, crop, irrigation.",
+      "items": [
+        "Add a field by drawing its boundary on a map",
+        "Soil type, rainfed or irrigated, crop and variety",
+        "Field detail page and analysis status"
+      ]
+    },
+    "fieldMemory": {
+      "title": "Field Memory",
+      "description": "Works out from satellite imagery whether the field was cropped or fallow in each of the last 10 seasons.",
+      "items": [
+        "10-year NDVI time series",
+        "Cropped and fallow periods, with a confidence level",
+        "Warnings for cloudy or missing imagery",
+        "Confirmation by the user and the agronomist"
+      ]
+    },
+    "waterVault": {
+      "title": "Water Vault",
+      "description": "Shows how many millimetres of usable water the soil holds on the decision day.",
+      "items": [
+        "Precipitation, irrigation input, ET0 and ETc",
+        "Daily water balance and usable water (mm)",
+        "Satellite versus sensor difference and the uncertainty range",
+        "Pick a date to see the past water balance"
+      ]
+    },
+    "rotation": {
+      "title": "Rotation and Zira Card",
+      "description": "Compares three rotation strategies on the same field under the same conditions.",
+      "items": [
+        "A: current rotation, B: water-dependent flexible rotation, C: legume rotation",
+        "In how many of 25 seasons the water was enough, with its uncertainty range",
+        "Rationale, data evidence, benefit, information gap and local review risk for each strategy",
+        "Zira Card preview and agronomist approval"
+      ]
+    },
+    "dataCenter": {
+      "title": "Data Center",
+      "description": "Shows that NASA data really arrives and is processed.",
+      "items": [
+        "Connection status of POWER, Landsat, MODIS, SMAP, GPM and GRACE",
+        "Last successful fetch and the fetch history",
+        "Missing or faulty records and API error logs"
+      ]
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "User management and system configuration.",
+      "items": [
+        "Users and roles",
+        "Cooperative and institution records",
+        "API keys and configuration"
+      ]
+    }
+  },
+  "login": {
+    "description": "Sign in with your Zira account.",
+    "errors": {
+      "invalid_credentials": "Incorrect email or password.",
+      "backend_unreachable": "The server cannot be reached. Try again shortly.",
+      "generic": "Could not sign in. Try again."
+    }
+  },
+  "system": {
+    "backHome": "Back to home",
+    "retry": "Try again"
+  }
+}

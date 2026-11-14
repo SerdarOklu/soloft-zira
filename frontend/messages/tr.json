@@ -1,0 +1,129 @@
+{
+  "app": {
+    "name": "Zira",
+    "tagline": "NASA verisiyle tarımsal karar desteği",
+    "supportStatement": "Zira karar vermez; ziraat mühendisinin ve çiftçinin kararını destekler."
+  },
+  "nav": {
+    "dashboard": "Genel Bakış",
+    "fields": "Tarlalar",
+    "fieldMemory": "Tarla Hafızası",
+    "waterVault": "Su Kasası",
+    "rotation": "Rotasyon ve Zira Kartı",
+    "dataCenter": "Veri Merkezi",
+    "settings": "Ayarlar"
+  },
+  "dock": {
+    "dashboard": "Özet",
+    "fields": "Tarlalar",
+    "waterVault": "Su Kasası",
+    "rotation": "Rotasyon"
+  },
+  "shell": {
+    "home": "Ana sayfa",
+    "mainNavigation": "Ana menü",
+    "toggleSidebar": "Kenar çubuğunu aç ya da kapat",
+    "openMenu": "Menüyü aç",
+    "closeMenu": "Menüyü kapat",
+    "dockNav": "Hızlı gezinme",
+    "dockActions": "Hızlı işlemler",
+    "dockClose": "Kapat",
+    "skipToContent": "İçeriğe geç",
+    "accountMenu": "Hesap menüsü",
+    "signOut": "Çıkış yap",
+    "toDark": "Koyu moda geç",
+    "toLight": "Açık moda geç",
+    "switchLanguage": "English"
+  },
+  "roles": {
+    "admin": "Yönetici",
+    "agronomist": "Ziraat mühendisi",
+    "cooperative_user": "Kooperatif kullanıcısı",
+    "farmer": "Çiftçi"
+  },
+  "placeholder": {
+    "badge": "Faz {phase}",
+    "note": "Bu ekranın içeriği Faz {phase} ile gelecek. Şu an yalnızca çerçeve hazır."
+  },
+  "screens": {
+    "dashboard": {
+      "title": "Genel Bakış",
+      "description": "Sistemin genel durumunu on saniyede gösterir; analiz burada yapılmaz.",
+      "items": [
+        "Kayıtlı tarla sayısı ve son NASA veri güncellemesi",
+        "Tamamlanan ve bekleyen analizler",
+        "Eksik veri, sensör hatası ve risk uyarıları",
+        "Tarla konumları haritası"
+      ]
+    },
+    "fields": {
+      "title": "Tarlalar",
+      "description": "Her tarla kendi profiliyle bağımsız bir kayıttır: konum, toprak, ürün, sulama.",
+      "items": [
+        "Harita üzerinde sınır çizerek yeni tarla ekleme",
+        "Toprak tipi, kuru ya da sulu tarım, ürün ve çeşit",
+        "Tarla detay sayfası ve analiz durumu"
+      ]
+    },
+    "fieldMemory": {
+      "title": "Tarla Hafızası",
+      "description": "Tarlanın son 10 sezonda ekili mi nadas mı olduğunu uydu görüntülerinden çıkarır.",
+      "items": [
+        "10 yıllık NDVI zaman serisi",
+        "Ekili ve nadas dönemleri, güven düzeyiyle",
+        "Bulutlu ya da eksik görüntü uyarıları",
+        "Kullanıcı ve ziraat mühendisi doğrulaması"
+      ]
+    },
+    "waterVault": {
+      "title": "Su Kasası",
+      "description": "Karar gününde toprakta kaç milimetre kullanılabilir su olduğunu gösterir.",
+      "items": [
+        "Yağış, sulama girdisi, ET0 ve ETc",
+        "Günlük su dengesi ve kullanılabilir su (mm)",
+        "Uydu ile sensör arasındaki fark ve belirsizlik aralığı",
+        "Tarih seçerek geçmiş su dengesini görme"
+      ]
+    },
+    "rotation": {
+      "title": "Rotasyon ve Zira Kartı",
+      "description": "Üç rotasyon stratejisini aynı tarla ve aynı koşullarda karşılaştırır.",
+      "items": [
+        "A: mevcut rotasyon, B: suya bağlı esnek rotasyon, C: baklagilli rotasyon",
+        "25 sezonun kaçında su yetti, belirsizlik aralığıyla",
+        "Her strateji için gerekçe, veri kanıtı, fayda, bilgi boşluğu ve yerel inceleme riski",
+        "Zira Kartı önizlemesi ve ziraat mühendisi onayı"
+      ]
+    },
+    "dataCenter": {
+      "title": "Veri Merkezi",
+      "description": "NASA verisinin sisteme gerçekten geldiğini ve işlendiğini gösterir.",
+      "items": [
+        "POWER, Landsat, MODIS, SMAP, GPM ve GRACE bağlantı durumu",
+        "Son başarılı veri çekimi ve çekme geçmişi",
+        "Eksik ya da hatalı kayıtlar ve API hata günlükleri"
+      ]
+    },
+    "settings": {
+      "title": "Ayarlar",
+      "description": "Kullanıcı yönetimi ve sistem yapılandırması.",
+      "items": [
+        "Kullanıcılar ve roller",
+        "Kooperatif ve kurum kayıtları",
+        "API anahtarları ve yapılandırma"
+      ]
+    }
+  },
+  "login": {
+    "description": "Zira hesabınızla giriş yapın.",
+    "errors": {
+      "invalid_credentials": "E-posta ya da parola hatalı.",
+      "backend_unreachable": "Sunucuya ulaşılamıyor. Biraz sonra yeniden deneyin.",
+      "generic": "Giriş yapılamadı. Yeniden deneyin."
+    }
+  },
+  "system": {
+    "backHome": "Ana sayfaya dön",
+    "retry": "Yeniden dene"
+  }
+}

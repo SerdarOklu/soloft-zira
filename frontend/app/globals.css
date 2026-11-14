@@ -1,0 +1,36 @@
+@import '@soloft/uds/fonts.css';
+@import '@soloft/uds/styles.css';
+@import './theme.css';
+
+/* Text wordmark used until Zira has logo artwork. Sits on the dark navigation chrome. */
+.zira-wordmark {
+  display: block;
+  color: var(--uds-nav-foreground-active);
+  font-family: var(--uds-font-sans);
+  font-weight: var(--uds-font-weight-semibold);
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  letter-spacing: 0.01em;
+}
+
+/* Square tile for the collapsed rail and the mobile bar, which floats over the page. */
+.zira-wordmark--icon {
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  text-align: center;
+  background: var(--uds-nav-fill);
+  border-radius: var(--uds-radius-md);
+}
+
+.zira-wordmark--auth {
+  font-size: 2rem;
+  line-height: 4.5rem;
+  text-align: center;
+}
+
+.zira-statement {
+  margin-top: var(--uds-space-6);
+  color: var(--uds-muted-foreground);
+  font-size: 0.8125rem;
+}

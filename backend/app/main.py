@@ -1,16 +1,18 @@
 """Zira API entry point.
 
-Phase 0 exposes only liveness and configuration metadata. Routers for fields,
-weather, the Water Vault and the rest arrive with their phases (docs/phases.md).
+Phase 1 adds sign-in. Routers for fields, weather, the Water Vault and the rest
+arrive with their phases (docs/phases.md).
 """
 
 from fastapi import FastAPI
 
 from app import __version__
+from app.api.router import api_router
 from app.core.config import get_settings
 from app.core.parameters import get_config
 
 app = FastAPI(title="Zira API", version=__version__)
+app.include_router(api_router)
 
 
 @app.get("/health")

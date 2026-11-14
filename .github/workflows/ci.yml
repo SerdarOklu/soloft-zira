@@ -11,22 +11,43 @@ concurrency:
 
 jobs:
   backend:
-    name: Backend and configuration
+    name: Backend, configuration and database
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
+    env:
+      DATABASE_URL: postgresql+psycopg://zira:zira@localhost:5432/zira
+      TEST_DATABASE_URL: postgresql+psycopg://zira:zira@localhost:5432/zira_test
+      REDIS_URL: redis://localhost:6379/0
+      SECRET_KEY: ci-secret-key-that-is-long-enough-for-hs256
+      COMPOSE: docker compose --env-file .env.example -f infra/docker-compose.dev.yml
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
+      - name: Validate and start the development services
+        run: |
+          $COMPOSE config --quiet
+          $COMPOSE up -d --wait
+          $COMPOSE exec -T postgres psql -U zira -d zira -c "SELECT postgis_version();"
+          $COMPOSE exec -T redis redis-cli ping
       - name: Install
+        working-directory: backend
         run: uv sync --locked
       - name: Lint
+        working-directory: backend
         run: uv run ruff check . && uv run ruff format --check .
-      - name: Test (also validates config/)
-        run: uv run pytest
+      - name: Migrate, check for model drift, seed
+        working-directory: backend
+        run: |
+          uv run alembic upgrade head
+          uv run alembic check
+          uv run python -m app.cli seed-reference
+      - name: Test (unit, database and queue)
+        working-directory: backend
+        run: |
+          set -o pipefail
+          uv run pytest -rs | tee pytest.log
+          ! grep -q "SKIPPED" pytest.log || (echo "A test was skipped in CI"; exit 1)
 
   frontend:
     name: Frontend
@@ -36,6 +57,19 @@ jobs:
         working-directory: frontend
     steps:
       - uses: actions/checkout@v4
+      - name: Access to the private design system
+        env:
+          UDS_READ_TOKEN: ${{ secrets.UDS_READ_TOKEN }}
+        run: |
+          if [ -z "$UDS_READ_TOKEN" ]; then
+            echo "::error::The UDS_READ_TOKEN secret is not set. The frontend depends on the private SerdarOklu/soloft-uds repository; see frontend/README.md."
+            exit 1
+          fi
+          # package-lock.json records the dependency as git+ssh; fetch it over HTTPS with the token.
+          AUTH="https://x-access-token:${UDS_READ_TOKEN}@github.com/"
+          git config --global url."$AUTH".insteadOf "ssh://git@github.com/"
+          git config --global --add url."$AUTH".insteadOf "git@github.com:"
+          git config --global --add url."$AUTH".insteadOf "https://github.com/"
       - uses: actions/setup-node@v4
         with:
           node-version-file: frontend/.nvmrc
@@ -43,21 +77,9 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
       - name: Install
         run: npm ci
+      - name: Test
+        run: npm test
       - name: Build
         run: npm run build
       - name: Type check
         run: npm run typecheck
-
-  compose:
-    name: Compose file
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Validate development Compose file
-        run: docker compose --env-file .env.example -f infra/docker-compose.dev.yml config --quiet
-      - name: Start database and queue
-        run: |
-          docker compose --env-file .env.example -f infra/docker-compose.dev.yml up -d --wait
-          docker compose --env-file .env.example -f infra/docker-compose.dev.yml exec -T postgres \
-            psql -U zira -d zira -c "SELECT postgis_version();"
-          docker compose --env-file .env.example -f infra/docker-compose.dev.yml exec -T redis redis-cli ping

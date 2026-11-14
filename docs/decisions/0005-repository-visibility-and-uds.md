@@ -1,6 +1,7 @@
 # 0005: Repository visibility and the private UDS dependency
 
-**Status:** Open. Blocks the Space Apps submission, not development.
+**Status:** Decided for now, 14 November 2026: the repository stays private and will be
+opened later. The choice among the options below is made when it is opened.
 
 ## The conflict
 
@@ -18,11 +19,18 @@
 | C. Submit a separate public repository with the backend and a frontend that does not use UDS | Keeps UDS private and everything buildable, at the cost of maintaining two frontends. |
 | D. Publish UDS under a licence | Cleanest technically; a business decision about the design system. |
 
-## Also needed whatever is chosen
+## Needed now
 
-From Phase 1 on, CI and the production image build need read access to
-`SerdarOklu/soloft-uds`: a read-only deploy key or a fine-grained token stored as a
-repository secret. No secret is committed.
+CI and the production image build need read access to `SerdarOklu/soloft-uds`. CI reads a
+fine-grained token from the repository secret `UDS_READ_TOKEN` (read-only, Contents, that
+one repository). Without it the frontend job fails at its first step with a message that
+says so. No secret is committed. Setup steps are in `frontend/README.md`.
+
+## Before the repository is opened
+
+- Choose one of the options above.
+- Check the git history for anything that should not be public. UDS itself is not in this
+  repository: it is fetched at install time.
 
 ## Licence
 

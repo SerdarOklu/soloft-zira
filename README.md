@@ -8,8 +8,9 @@ and does not replace it.
 Built for the NASA Space Apps 2026 challenge "Field Shift: Adapting Farms with NASA Data"
 and continued as a product by Soloft Industries.
 
-**Status: Phase 0, repository skeleton.** There is no business logic yet. The plan and the
-approval gate for each phase are in [docs/phases.md](docs/phases.md).
+**Status: Phase 1, base infrastructure.** Sign-in with three roles, the database schema
+and the six-menu interface frame are in place; the screens have no content yet. The plan
+and the approval gate for each phase are in [docs/phases.md](docs/phases.md).
 
 ## What is here
 
@@ -29,36 +30,50 @@ approval gate for each phase are in [docs/phases.md](docs/phases.md).
 - Docker with Compose
 - Python 3.12 or newer and [uv](https://docs.astral.sh/uv/)
 - Node.js 22.12 or newer
+- Read access to the private `SerdarOklu/soloft-uds` repository
+  (see [frontend/README.md](frontend/README.md))
 
 ## Quick start
 
 ```bash
 cp .env.example .env
 
-# database and job queue
+# 1. database and job queue
 docker compose --env-file .env -f infra/docker-compose.dev.yml up -d
 
-# backend: http://localhost:8000/health and /api/v1/meta
+# 2. backend
 cd backend
 uv sync
-uv run uvicorn app.main:app --reload
+uv run alembic upgrade head                 # create the tables
+uv run python -m app.cli seed-reference     # crops and data sources from config/
+uv run python -m app.cli create-user --email you@example.com --name "Your Name" --role admin
+uv run uvicorn app.main:app --reload        # http://localhost:8000/docs
 
-# frontend: http://localhost:3000
+# 3. frontend, in a second terminal
 cd frontend
 npm ci
-npm run dev
+npm run dev                                 # http://localhost:3000
+
+# 4. job worker, in a third terminal (not needed until Phase 3)
+cd backend
+uv run celery -A app.tasks.celery_app worker --loglevel INFO
 ```
 
-With `make` installed, `make dev-up`, `make backend-run` and `make frontend-dev` do the same.
+Open http://localhost:3000 and sign in with the account you created.
+
+With `make` installed: `make dev-up`, `make migrate`, `make seed`, `make backend-run`,
+`make frontend-dev`, `make worker`.
 
 ## Checks
 
 ```bash
 cd backend && uv run ruff check . && uv run ruff format --check . && uv run pytest
-cd frontend && npm run build && npm run typecheck
+cd frontend && npm test && npm run build && npm run typecheck
 ```
 
 `make check` runs all of them; CI runs the same commands on every push and pull request.
+Backend tests that need PostgreSQL or Redis are skipped locally when those are not
+running, and are never allowed to skip in CI.
 
 ## Parameters
 

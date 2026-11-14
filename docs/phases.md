@@ -5,8 +5,8 @@ one starts only after the pull request is approved and merged.
 
 | Phase | Branch | Scope | Approval criterion | Status |
 | --- | --- | --- | --- | --- |
-| 0. Repository skeleton | `faz-0/repo-iskeleti` | Monorepo layout, README, PDT copy, configuration files from the parameter sheet, `.env.example`, development Compose, CI | Database and Redis start with one command; CI is green; no business logic | In review |
-| 1. Base infrastructure | `faz-1/temel-altyapi` | FastAPI app structure, first migration for the 16 tables, login and three roles, Celery; Next.js with Soloft UDS: six-menu shell, login screen, system pages, Turkish and English, light and dark | A user signs in and sees the empty menus; migrations run | Not started |
+| 0. Repository skeleton | `faz-0/repo-iskeleti` | Monorepo layout, README, PDT copy, configuration files from the parameter sheet, `.env.example`, development Compose, CI | Database and Redis start with one command; CI is green; no business logic | In review (PR #1) |
+| 1. Base infrastructure | `faz-1/temel-altyapi` | FastAPI app structure, first migration for the 16 tables, login and three roles, Celery; Next.js with Soloft UDS: six-menu shell, login screen, system pages, Turkish and English, light and dark | A user signs in and sees the empty menus; migrations run | In review |
 | 2. First deployment to the VPS | `faz-2/vps-dagitim` | Production Compose, Nginx with HTTPS, memory limits, images built in GitHub Actions, backup script, runbook | The skeleton is reachable over HTTPS on the domain | Not started |
 | 3. Fields, NASA POWER, Data Center | `faz-3/tarlalar-power` | Field records with polygons, POWER client and cache, fetch jobs, Data Center screens | A field is added, 25 years of data is fetched and displayed | Not started |
 | 4. Water Vault | `faz-4/su-kasasi` | ET0, Kc curve, daily water balance, uncertainty; tests against FAO-56 worked examples; screens | Usable water on the decision day is shown in mm | Not started |
@@ -23,11 +23,10 @@ one starts only after the pull request is approved and merged.
 - **Deployment is its own phase.** The PDT folds the VPS into its phase 0. Here it is
   phase 2, so the skeleton and base infrastructure are reviewed before anything is hosted.
 
-## Order still to be decided
+## Order
 
-For the Space Apps submission (deadline 15 November 2026, 23:59 local time) a faster order
-is possible: 0, then 3, 4 and 6 without login or the VPS, then 1, 2, 5 and 7. The order is
-decided when Phase 0 is approved.
+Product order, 0 to 7. A faster order for the Space Apps submission (0, then 3, 4 and 6
+without login or the VPS) was offered and not taken.
 
 ## Server
 
