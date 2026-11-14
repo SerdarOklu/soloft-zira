@@ -1,0 +1,13 @@
+# Frontend image build context is this directory. Keep it lean.
+
+node_modules
+.next
+.git
+.gitignore
+Dockerfile
+.dockerignore
+README.md
+AGENTS.md
+npm-debug.log*
+.DS_Store
+Thumbs.db

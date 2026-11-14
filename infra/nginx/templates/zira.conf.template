@@ -1,0 +1,80 @@
+# Rendered to /etc/nginx/conf.d/zira.conf at container start, with ${ZIRA_DOMAIN}
+# substituted by the official Nginx image's envsubst entrypoint. Nginx's own runtime
+# variables ($host, $uri, $binary_remote_addr, ...) are not environment variables and
+# are left untouched.
+
+upstream zira_backend {
+    server backend:8000;
+}
+upstream zira_frontend {
+    server frontend:3000;
+}
+
+# Port 80: ACME challenge and a health probe over HTTP; everything else goes to HTTPS.
+server {
+    listen 80;
+    listen [::]:80;
+    server_name ${ZIRA_DOMAIN};
+
+    # Container healthcheck (never redirected).
+    location = /healthz {
+        access_log off;
+        add_header Content-Type text/plain;
+        return 200 "ok\n";
+    }
+
+    # Let's Encrypt webroot challenge.
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+        default_type "text/plain";
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+# Port 443: TLS, then /api/v1 to the backend and everything else to the frontend.
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name ${ZIRA_DOMAIN};
+
+    ssl_certificate     /etc/letsencrypt/live/${ZIRA_DOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${ZIRA_DOMAIN}/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers off;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 1d;
+
+    # HSTS once HTTPS is confirmed working.
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "SAMEORIGIN" always;
+
+    client_max_body_size 10m;
+
+    location = /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    # Sign-in is rate limited; the rest of the API is not.
+    location = /api/v1/auth/login {
+        limit_req zone=login burst=5 nodelay;
+        proxy_pass http://zira_backend;
+    }
+
+    location /api/v1/ {
+        proxy_pass http://zira_backend;
+    }
+
+    location = /health {
+        proxy_pass http://zira_backend;
+    }
+
+    # Everything else is the Next.js app.
+    location / {
+        proxy_pass http://zira_frontend;
+    }
+}

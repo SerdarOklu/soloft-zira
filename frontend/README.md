@@ -66,8 +66,11 @@ The browser never talks to the backend directly and never sees the access token.
 
 - **No logo.** `components/brand.tsx` renders a text wordmark in the brand slots until
   Zira has logo artwork.
-- **Fonts load from Google Fonts** through `@soloft/uds/fonts.css`. Self-host them before
-  production (Phase 2).
+- **Fonts load from Google Fonts** through `@soloft/uds/fonts.css`. Self-hosting is agreed
+  but not yet done: it needs to read the font definitions inside the private `@soloft/uds`
+  package, so it is blocked on the same UDS access as the image build
+  (`../docs/decisions/0009-self-hosted-fonts.md`). `public/fonts/` is reserved for the
+  hosted files.
 - **The not-found page renders in the browser, not on the server.** The address returns
   status 404 and the localized page appears once the page script runs.
 

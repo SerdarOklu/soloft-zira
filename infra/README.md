@@ -5,8 +5,8 @@
 | `docker-compose.dev.yml` | PostgreSQL with PostGIS and Redis for local development | 0 |
 | `postgres/init/` | Creates the `zira_test` database on a new data volume | 1 |
 | `docker-compose.prod.yml` | Full stack for the VPS: Nginx, frontend, backend, worker, database, Redis, with memory limits | 2 |
-| `nginx/` | Reverse proxy and HTTPS configuration | 2 |
-| `scripts/` | Backup and deployment scripts | 2 |
+| `nginx/` | Reverse proxy and HTTPS configuration (`nginx.conf`, `templates/zira.conf.template`) | 2 |
+| `scripts/` | `deploy.sh`, `backup.sh`, `restore.sh`, `init-letsencrypt.sh` | 2 |
 
 ## Development services
 
@@ -31,3 +31,17 @@ PostgreSQL listens on `localhost:5432` and Redis on `localhost:6379`; change
 
 The target server and its memory budget are described in
 [../docs/decisions/0006-vps-resource-budget.md](../docs/decisions/0006-vps-resource-budget.md).
+
+## Production
+
+The images are built in GitHub Actions (`.github/workflows/images.yml`, from
+`backend/Dockerfile` and `frontend/Dockerfile`) and pulled on the VPS; nothing is built on
+the server. Deployment, first-time certificate issuance, renewal and backups are in
+[../docs/runbook.md](../docs/runbook.md). Copy `../.env.prod.example` to `.env` on the
+server and fill it in.
+
+```bash
+COMPOSE="docker compose --env-file .env -f infra/docker-compose.prod.yml"
+$COMPOSE config --quiet     # validate
+$COMPOSE pull && $COMPOSE up -d
+```

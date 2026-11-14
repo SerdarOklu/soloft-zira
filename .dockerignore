@@ -1,0 +1,42 @@
+# Build context for the backend image is the repository root. Keep it small and never
+# ship secrets, caches or the frontend's dependencies.
+
+.git
+.github
+.gitignore
+.gitattributes
+.editorconfig
+Makefile
+README.md
+docs
+simulator
+infra
+
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+*.pem
+ee-key*.json
+
+# Python caches and virtual environments
+**/__pycache__
+**/*.py[cod]
+**/.venv
+**/.pytest_cache
+**/.ruff_cache
+**/*.egg-info
+
+# Backend material not needed in the image
+backend/tests
+backend/README.md
+
+# Frontend (its own image uses a separate build context)
+frontend/node_modules
+frontend/.next
+
+# Data and local artefacts
+data
+backups
+**/.DS_Store
+**/Thumbs.db

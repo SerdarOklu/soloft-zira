@@ -1,0 +1,197 @@
+# Production stack for the Hostinger KVM 2 VPS dedicated to Zira.
+#
+# Images are built in GitHub Actions and pulled here (never built on the server); a
+# Next.js build on 2 shared vCPUs would starve the running services. Memory limits come
+# from docs/decisions/0006-vps-resource-budget.md. Only Nginx publishes ports; the
+# database, Redis, backend and frontend are reachable only on the internal network.
+#
+# Run from the repository root:
+#   docker compose --env-file .env -f infra/docker-compose.prod.yml pull
+#   docker compose --env-file .env -f infra/docker-compose.prod.yml up -d
+# See docs/runbook.md.
+
+name: zira
+
+x-logging: &logging
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+# Environment shared by the backend, the worker and the one-off migrate step.
+x-backend-env: &backend-env
+  ENVIRONMENT: production
+  DATABASE_URL: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+  REDIS_URL: redis://redis:6379/0
+  SECRET_KEY: ${SECRET_KEY}
+  ACCESS_TOKEN_TTL_MINUTES: ${ACCESS_TOKEN_TTL_MINUTES:-720}
+  POWER_BASE_URL: ${POWER_BASE_URL:-https://power.larc.nasa.gov/api/temporal/daily/point}
+
+services:
+  postgres:
+    image: postgis/postgis:17-3.5
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    deploy:
+      resources:
+        limits:
+          memory: 1536M
+    <<: *logging
+    networks: [internal]
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    # Cap Redis itself below the container limit so it evicts rather than being killed.
+    command: ["redis-server", "--maxmemory", "200mb", "--maxmemory-policy", "allkeys-lru", "--save", ""]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+    <<: *logging
+    networks: [internal]
+
+  # One-off: apply migrations and load reference data, then exit. The backend and worker
+  # wait for it to finish successfully.
+  migrate:
+    image: ghcr.io/serdaroklu/zira-backend:${IMAGE_TAG:-latest}
+    command: ["sh", "-c", "alembic upgrade head && python -m app.cli seed-reference"]
+    environment: *backend-env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+    <<: *logging
+    networks: [internal]
+
+  backend:
+    image: ghcr.io/serdaroklu/zira-backend:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]
+    environment: *backend-env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health').status==200 else 1)\""]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+    <<: *logging
+    networks: [internal]
+
+  worker:
+    image: ghcr.io/serdaroklu/zira-backend:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    # Concurrency 2 on 2 shared vCPUs; raster work runs in Earth Engine, not here.
+    command: ["celery", "-A", "app.tasks.celery_app", "worker", "--loglevel", "INFO", "--concurrency", "2"]
+    environment: *backend-env
+    depends_on:
+      redis:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    deploy:
+      resources:
+        limits:
+          memory: 1536M
+    <<: *logging
+    networks: [internal]
+
+  frontend:
+    image: ghcr.io/serdaroklu/zira-frontend:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      # Server-side only; the browser never receives this or talks to the backend directly.
+      BACKEND_URL: http://backend:8000
+    depends_on:
+      backend:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"require('http').get('http://localhost:3000/en',r=>process.exit(r.statusCode<500?0:1)).on('error',()=>process.exit(1))\""]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    <<: *logging
+    networks: [internal]
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      ZIRA_DOMAIN: ${ZIRA_DOMAIN}
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/templates:/etc/nginx/templates:ro
+      - certbot-www:/var/www/certbot
+      - letsencrypt:/etc/letsencrypt
+    depends_on:
+      frontend:
+        condition: service_started
+      backend:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://localhost/healthz || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+    <<: *logging
+    networks: [internal]
+
+  # Not started with the stack. Used on demand for issuing and renewing certificates:
+  #   docker compose ... run --rm certbot renew
+  # See infra/scripts/init-letsencrypt.sh and docs/runbook.md.
+  certbot:
+    image: certbot/certbot:latest
+    profiles: ["certbot"]
+    volumes:
+      - certbot-www:/var/www/certbot
+      - letsencrypt:/etc/letsencrypt
+    networks: [internal]
+
+volumes:
+  pgdata:
+  certbot-www:
+  letsencrypt:
+
+networks:
+  internal:
+    driver: bridge

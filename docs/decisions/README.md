@@ -13,6 +13,7 @@ A decision marked **Open** is waiting for an answer and blocks the phase it name
 | [0006](0006-vps-resource-budget.md) | Memory budget on the KVM 2 VPS | Proposed (confirmed in Phase 2) |
 | [0007](0007-precipitation-source.md) | NASA POWER is the primary precipitation source until Earth Engine works | Accepted |
 | [0008](0008-sign-in-and-sessions.md) | Sign-in: backend access tokens, kept by the frontend in an httpOnly cookie | Accepted |
+| [0009](0009-self-hosted-fonts.md) | Serve fonts from our own origin, not Google Fonts | Open (needs UDS access) |
 
 Decisions about the model itself (fallow handling, starting storage, strategy rules,
 uncertainty) are in PDT sections 7 and 15.
