@@ -1,0 +1,5 @@
+# The team develops on Windows and deploys on Linux: keep LF in the repository.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.pdf binary

@@ -1,0 +1,104 @@
+# Crop reference data from FAO-56 Tables 12 (Kc, height) and 22 (root depth, p).
+# Ranges are kept as [low, high]; the engine uses the mid value unless told otherwise.
+#
+# Stage lengths (l_ini, l_dev, l_mid, l_late, in days) are crop and region specific.
+# They are left unset here on purpose: the agronomist sets them for the Konya calendar.
+# FAO-56 Table 11 gives starting values (winter wheat, Mediterranean, November sowing:
+# 30, 140, 40, 30).
+#
+# season_type is null where the crop can be sown in autumn or spring depending on the
+# region; the agronomist sets it.
+#
+# kc_ini marked "group default" is the FAO-56 crop-group value, not a crop-specific one.
+
+crops:
+  winter_wheat:
+    name_tr: Kışlık buğday
+    season_type: winter
+    is_legume: false
+    kc_ini: {frozen_soil: 0.4, non_frozen_soil: 0.7}
+    kc_mid: 1.15
+    kc_end: [0.25, 0.4]
+    height_m: 1.0
+    zr_m: [1.5, 1.8]
+    p: 0.55
+    stage_lengths_days: null
+    note: kc_end depends on grain moisture at harvest.
+  barley:
+    name_tr: Arpa
+    season_type: null        # to be set by the agronomist for the region
+    is_legume: false
+    kc_ini: 0.3          # group default (cereals)
+    kc_mid: 1.15
+    kc_end: 0.25
+    height_m: 1.0
+    zr_m: [1.0, 1.5]
+    p: 0.55
+    stage_lengths_days: null
+  chickpea:
+    name_tr: Nohut
+    season_type: null        # to be set by the agronomist for the region
+    is_legume: true
+    kc_ini: 0.4          # group default (legumes)
+    kc_mid: 1.00
+    kc_end: 0.35
+    height_m: 0.4
+    zr_m: [0.6, 1.0]
+    p: 0.50
+    stage_lengths_days: null
+  lentil:
+    name_tr: Mercimek
+    season_type: null        # to be set by the agronomist for the region
+    is_legume: true
+    kc_ini: 0.4          # group default (legumes)
+    kc_mid: 1.10
+    kc_end: 0.30
+    height_m: 0.5
+    zr_m: [0.6, 0.8]
+    p: 0.50
+    stage_lengths_days: null
+  grain_maize:
+    name_tr: Dane mısır
+    season_type: summer
+    is_legume: false
+    kc_ini: 0.3          # group default (cereals)
+    kc_mid: 1.20
+    kc_end: [0.35, 0.60]
+    height_m: 2.0
+    zr_m: [1.0, 1.7]
+    p: 0.55
+    stage_lengths_days: null
+  sugar_beet:
+    name_tr: Şeker pancarı
+    season_type: summer
+    is_legume: false
+    kc_ini: 0.35
+    kc_mid: 1.20
+    kc_end: 0.70
+    height_m: 0.5
+    zr_m: [0.7, 1.2]
+    p: 0.55
+    stage_lengths_days: null
+  sunflower:
+    name_tr: Ayçiçeği
+    season_type: summer
+    is_legume: false
+    kc_ini: 0.35         # group default (oil crops); not confirmed from the FAO page
+    kc_mid: [1.0, 1.15]
+    kc_end: 0.35
+    height_m: 2.0
+    zr_m: [0.8, 1.5]
+    p: 0.45
+    stage_lengths_days: null
+  alfalfa_hay:
+    name_tr: Yonca (kuru ot)
+    season_type: perennial
+    is_legume: true
+    kc_ini: 0.40
+    kc_mid: 0.95
+    kc_end: 0.90
+    height_m: 0.7
+    zr_m: [1.0, 2.0]
+    p: 0.55
+    stage_lengths_days: null
+    note: Kc values average the effect of cuttings.

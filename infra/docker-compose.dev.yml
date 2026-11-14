@@ -1,0 +1,35 @@
+# Development services only: the database and the job queue.
+# The backend and frontend run on the host during development (see README.md).
+# The production stack for the VPS (Nginx, HTTPS, memory limits) arrives in Phase 2.
+
+name: zira-dev
+
+services:
+  postgres:
+    image: postgis/postgis:17-3.5
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-zira}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-zira}
+      POSTGRES_DB: ${POSTGRES_DB:-zira}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - zira_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-zira} -d ${POSTGRES_DB:-zira}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  zira_pgdata:

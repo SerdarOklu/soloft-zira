@@ -1,0 +1,73 @@
+# Climate profiles: the core parameters stay the same everywhere; the dominant risk
+# changes with climate and switches on extra variables.
+#
+# implemented: only profiles marked true are computed by version 1. The others are
+# defined so the data model and configuration are ready for them.
+#
+# Variables listed under `enables` have no default value here on purpose: they are
+# filled from local data for the region when the profile is implemented.
+
+default_profile: semi_arid_continental
+
+profiles:
+  semi_arid_continental:
+    name_tr: Yarı kurak karasal
+    example: Konya Closed Basin
+    implemented: true
+    dominant_risk: Rain shortage, winter frost
+    enables: [frost_kill_tmin, fallow_efficiency]
+    overrides:
+      winter_wheat_kc_ini: frozen_soil
+  arid:
+    name_tr: Kurak, çöl
+    implemented: false
+    dominant_risk: No sowing without irrigation; salinity
+    enables: [irrigation_quota_mm, ece_threshold, b_slope, leaching_fraction]
+    overrides:
+      note: kc_mid rises, p falls, eff_rain_fraction is lowered
+  mediterranean:
+    name_tr: Akdeniz
+    implemented: false
+    dominant_risk: Dry hot summer, heat stress at flowering
+    enables: [heat_stress_tmax, heat_window_days, irrigation_quota_mm]
+    overrides:
+      winter_wheat_kc_ini: non_frozen_soil
+      note: decision_date is tied to autumn rain
+  humid_temperate:
+    name_tr: Nemli ılıman
+    implemented: false
+    dominant_risk: Excess water, disease pressure
+    enables: [waterlogging_days, runoff_cn, drainage_mm_day]
+    overrides:
+      note: kc_mid falls; the decision criterion shifts to excess water
+  cold_continental:
+    name_tr: Soğuk karasal
+    implemented: false
+    dominant_risk: Snow, frozen soil, short season
+    enables: [snowmelt_factor, frost_free_days, gdd_base, gdd_required]
+    overrides:
+      winter_wheat_kc_ini: frozen_soil
+      note: snowmelt is added to starting storage
+  tropical_monsoon_savanna:
+    name_tr: Tropikal muson ve savan
+    implemented: false
+    dominant_risk: Rain onset date, false starts, downpours
+    enables: [onset_rain_mm, onset_window_days, dry_spell_days, runoff_cn, seasons_per_year]
+    overrides:
+      note: decision_date is set by the onset rule, not a fixed date
+
+# Conditions independent of climate that switch on extra variables.
+site_conditions:
+  sloping_field:
+    enables: [slope_pct, runoff_cn]
+    data_source: SRTM
+    note: eff_rain_fraction falls
+  shallow_water_table:
+    enables: [capillary_rise_mm_day]
+    data_source: Local well measurement
+  saline_soil_or_water:
+    enables: [ece_ds_m, ece_threshold, b_slope]
+    data_source: Soil analysis; thresholds in FAO-56 Table 23
+  irrigation_present:
+    enables: [irrigation_quota_mm, irrigation_efficiency]
+    data_source: Farmer input

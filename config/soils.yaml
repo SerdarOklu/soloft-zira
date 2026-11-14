@@ -1,0 +1,45 @@
+# Soil water characteristics by texture, from FAO-56 Table 19.
+#
+# taw_mm_per_m: total available water per metre of soil, 1000 * (theta_fc - theta_wp).
+#   The mid value is the default; low and high drive the uncertainty runs.
+# rew_mm: readily evaporable water from the soil surface layer.
+#
+# A field with sensor calibration replaces taw_mm_per_m with its measured value.
+
+soils:
+  sand:
+    name_tr: Kum
+    taw_mm_per_m: [50, 110]
+    rew_mm: [2, 7]
+  loamy_sand:
+    name_tr: Tınlı kum
+    taw_mm_per_m: [60, 120]
+    rew_mm: [4, 8]
+  sandy_loam:
+    name_tr: Kumlu tın
+    taw_mm_per_m: [110, 150]
+    rew_mm: [6, 10]
+  loam:
+    name_tr: Tın
+    taw_mm_per_m: [130, 180]
+    rew_mm: [8, 10]
+  silt_loam:
+    name_tr: Siltli tın
+    taw_mm_per_m: [130, 190]
+    rew_mm: [8, 11]
+  silt:
+    name_tr: Silt
+    taw_mm_per_m: [160, 200]
+    rew_mm: [8, 11]
+  silty_clay_loam:
+    name_tr: Siltli killi tın
+    taw_mm_per_m: [130, 180]
+    rew_mm: [8, 11]
+  silty_clay:
+    name_tr: Siltli kil
+    taw_mm_per_m: [130, 190]
+    rew_mm: [8, 12]
+  clay:
+    name_tr: Kil
+    taw_mm_per_m: [120, 200]
+    rew_mm: [8, 12]

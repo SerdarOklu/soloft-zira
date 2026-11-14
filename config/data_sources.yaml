@@ -1,0 +1,85 @@
+# NASA data sources. Resolutions are approximate and must be confirmed per product
+# version; regional data is never presented as a direct measurement of one field.
+#
+# priority: first | high | medium | optional  (order in which sources are connected)
+
+sources:
+  power:
+    name: NASA POWER
+    role: Daily climate inputs and long-term meteorology and radiation history
+    access: power_daily_api
+    resolution: varies by parameter; roughly 50 km
+    priority: first
+    scale_warning: >-
+      Each parameter keeps its source product's native resolution. Store the API
+      metadata instead of assuming one value.
+  landsat8:
+    name: Landsat 8
+    role: 10-year vegetation pattern inside the field polygon
+    access: earth_engine
+    collection_id: LANDSAT/LC08/C02/T1_L2
+    resolution: 30 m
+    priority: first
+    scale_warning: >-
+      Few pixels and mixed edges on small parcels. Cloud mask and polygon-interior
+      statistics are mandatory.
+  landsat9:
+    name: Landsat 9
+    role: 10-year vegetation pattern inside the field polygon
+    access: earth_engine
+    collection_id: LANDSAT/LC09/C02/T1_L2
+    resolution: 30 m
+    priority: first
+    scale_warning: Same as Landsat 8.
+  gpm:
+    name: GPM IMERG
+    role: Precipitation series; cross-check for POWER precipitation
+    access: earth_engine
+    collection_id: NASA/GPM_L3/IMERG_V07
+    resolution: 0.1 degree, about 10 km; half-hourly
+    priority: high
+    scale_warning: Fields in the same pixel are not separate rain observations.
+  smap:
+    name: SMAP
+    role: Recent regional surface soil moisture; check for model and sensor
+    access: earth_engine
+    collection_id: NASA/SMAP/SPL3SMP_E/006
+    collection_id_before_2023_12_04: NASA/SMAP/SPL3SMP_E/005
+    resolution: about 9 km
+    priority: high
+    scale_warning: >-
+      Not field scale and surface only. The mission began in 2015, so it cannot
+      cover 25 seasons.
+  modis:
+    name: MODIS
+    role: Regional phenology; support for cloudy Landsat periods
+    access: earth_engine
+    collection_id: MODIS/061/MOD13Q1
+    resolution: 250 m, 16-day composite
+    priority: medium
+    scale_warning: Does not replace Landsat on small fields.
+  grace:
+    name: GRACE / GRACE-FO
+    role: Basin-scale total water storage trend
+    access: earth_engine
+    collection_id: null   # to be selected
+    resolution: about 300 km, monthly
+    priority: medium
+    scale_warning: >-
+      Total terrestrial water storage, not the parcel's groundwater or soil moisture.
+  ecostress:
+    name: ECOSTRESS
+    role: Evapotranspiration support
+    access: earth_engine
+    collection_id: null   # to be selected
+    resolution: 70 m
+    priority: optional
+    scale_warning: Not needed for the first working demo.
+  srtm:
+    name: SRTM
+    role: Elevation and slope
+    access: earth_engine
+    collection_id: null   # to be selected
+    resolution: 30 m
+    priority: optional
+    scale_warning: Not needed for the first working demo.

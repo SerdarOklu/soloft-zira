@@ -1,0 +1,246 @@
+# Zira model parameters: defaults for the Konya Closed Basin (semi-arid continental).
+#
+# Source of truth: the "Zira Parametre Tablosu" sheet (see config/README.md).
+# This file mirrors revision 6 of that sheet, 14 November 2026.
+#
+# basis:
+#   fao56            taken from FAO Irrigation and Drainage Paper 56
+#   zira_definition  part of the product definition
+#   team_assumption  starting value chosen by the team; needs agronomist sign-off
+#   design_decision  engineering choice; needs agronomist sign-off where it affects results
+# status:
+#   set              has a usable value
+#   needs_signoff    usable for demos only until an agronomist confirms it
+#   to_be_set        no value yet; the code must refuse to run an analysis without it
+#   optional         may stay unset
+
+model_version: "0.1.0"
+
+core:
+  et0_method:
+    value: fao56_penman_monteith
+    basis: fao56
+    status: set
+    note: Computed from NASA POWER daily data.
+  n_seasons:
+    value: 25
+    unit: season
+    basis: zira_definition
+    status: set
+  history_years:
+    value: 10
+    unit: year
+    basis: zira_definition
+    status: set
+  decision_date:
+    value:
+      winter: "10-01"   # MM-DD
+      summer: "04-01"
+    basis: team_assumption
+    status: needs_signoff
+    note: Day the Water Vault is read. Check against the local sowing calendar.
+  precip_source:
+    value: power        # power | gpm
+    basis: design_decision
+    status: set
+    note: >-
+      Primary precipitation input. POWER until the Earth Engine connection works,
+      then GPM with POWER as cross-check. The two are never added together.
+  eff_rain_fraction:
+    value: 0.80
+    unit: fraction
+    basis: team_assumption
+    status: needs_signoff
+    note: Share of rain entering the soil. Falls on sloping fields.
+  fallow_efficiency:
+    value: 0.25
+    unit: fraction
+    basis: team_assumption
+    status: needs_signoff
+    note: Share of fallow-period rain kept in the soil. Calibrate with local trials.
+  sufficiency_ratio:
+    value: 0.70
+    unit: fraction
+    basis: design_decision
+    status: needs_signoff
+    note: Seasonal actual ET over crop ET that counts as "water was enough".
+  critical_stress_days_max:
+    value: null
+    unit: day
+    basis: design_decision
+    status: optional
+    note: If set, also caps the stress days in the mid-season stage.
+  initial_storage_frac:
+    value: 0.50
+    unit: fraction_of_taw
+    basis: team_assumption
+    status: needs_signoff
+    note: All three strategies start from this storage.
+  spinup_seasons:
+    value: 1
+    unit: season
+    basis: team_assumption
+    status: needs_signoff
+  min_valid_day_share:
+    value: 0.95
+    unit: fraction
+    basis: team_assumption
+    status: needs_signoff
+    note: A season below this share of complete days is excluded and reported.
+  flex_sow_threshold_frac:
+    value: 0.50
+    unit: fraction_of_taw
+    basis: team_assumption
+    status: needs_signoff
+    note: Strategy B sows when storage on the decision day is at or above this share.
+  legume_every_n_fallow:
+    value: 2
+    unit: season
+    basis: team_assumption
+    status: needs_signoff
+    note: Strategy C sows a legume in every n-th fallow season.
+  legume_crop:
+    value: chickpea
+    basis: design_decision
+    status: needs_signoff
+  uncertainty_rain_delta:
+    value: 0.10
+    unit: fraction
+    basis: team_assumption
+    status: needs_signoff
+    note: Shift of eff_rain_fraction in the low and high uncertainty runs.
+  init_storage_source:
+    value: sensor_else_model
+    basis: zira_definition
+    status: set
+    note: >-
+      SMAP L3 is surface moisture on a pixel of about 9 km and is a cross-check only;
+      it is never used as root-zone moisture.
+
+corrections:
+  kc_ref_rh_min:
+    value: 45
+    unit: percent
+    basis: fao56
+    status: set
+    note: FAO-56 Kc tables hold for this minimum relative humidity.
+  kc_ref_u2:
+    value: 2.0
+    unit: m/s
+    basis: fao56
+    status: set
+  p_ref_etc:
+    value: 5.0
+    unit: mm/day
+    basis: fao56
+    status: set
+    note: "p = p_table + 0.04 * (5 - ETc)"
+  p_min:
+    value: 0.1
+    unit: fraction
+    basis: fao56
+    status: set
+  p_max:
+    value: 0.8
+    unit: fraction
+    basis: fao56
+    status: set
+  wind_measurement_height_m:
+    value: 10
+    unit: m
+    basis: design_decision
+    status: set
+    note: POWER WS10M is converted to 2 m for ET0. Set to 2 if WS2M is requested instead.
+
+field_memory:
+  ndvi_cropped_threshold:
+    value: null
+    unit: ndvi
+    basis: design_decision
+    status: to_be_set
+    note: No source document gives a value. Calibrate against fields with known history.
+  landsat_nir_band:
+    value: SR_B5
+    basis: zira_definition
+    status: set
+  landsat_red_band:
+    value: SR_B4
+    basis: zira_definition
+    status: set
+  landsat_sr_scale:
+    value: 0.0000275
+    basis: zira_definition
+    status: set
+    note: "SR = DN * 0.0000275 - 0.2 (Collection 2)"
+  landsat_sr_offset:
+    value: -0.2
+    basis: zira_definition
+    status: set
+  landsat_cloud_mask_band:
+    value: QA_PIXEL
+    basis: zira_definition
+    status: set
+
+sensors:
+  sensor_depths_cm:
+    value: [10, 30, 60, 100]
+    unit: cm
+    basis: zira_definition
+    status: set
+  nodes_per_field:
+    value: [3, 4]
+    unit: count_range
+    basis: zira_definition
+    status: set
+  calibration_method:
+    value: gravimetric_per_soil_type
+    basis: zira_definition
+    status: set
+    note: Uncalibrated sensor data is not treated as reliable.
+  sensor_silence_h:
+    value: 48
+    unit: hour
+    basis: design_decision
+    status: needs_signoff
+    note: After this long without data the field falls back to satellite mode.
+
+power_request:
+  api_url:
+    value: https://power.larc.nasa.gov/api/temporal/daily/point
+    basis: zira_definition
+    status: set
+  community:
+    value: AG
+    basis: zira_definition
+    status: set
+  parameters:
+    value: [PRECTOTCORR, T2M, T2M_MAX, T2M_MIN, RH2M, WS10M, PS, ALLSKY_SFC_SW_DWN]
+    basis: zira_definition
+    status: set
+    note: Verify availability, unit and resolution in the POWER parameter catalogue.
+  start:
+    value: "20010101"
+    basis: zira_definition
+    status: set
+  end:
+    value: "20251231"
+    basis: zira_definition
+    status: set
+  format:
+    value: JSON
+    basis: zira_definition
+    status: set
+  time_standard:
+    value: UTC
+    basis: zira_definition
+    status: set
+  timeout_s:
+    value: 60
+    unit: second
+    basis: zira_definition
+    status: set
+  missing_value:
+    value: -999
+    basis: zira_definition
+    status: set
+    note: Converted to missing when read.
