@@ -20,9 +20,13 @@ if config.config_file_name is not None:
 
 target_metadata = Base.metadata
 
-# PostGIS ships its own tables (spatial_ref_sys and, with some packages, tiger and
-# topology schemas). They are not ours to migrate.
+# PostGIS ships its own tables. They are not ours to migrate.
 _POSTGIS_TABLES = {"spatial_ref_sys"}
+
+# The postgis Docker image also installs the tiger geocoder and topology extensions and
+# puts their schemas on the database's search_path. Without this, Alembic sees their
+# tables as if they were ours and reports every one as "removed".
+_CONNECT_ARGS = {"options": "-csearch_path=public"}
 
 
 def include_object(obj, name, type_, reflected, compare_to):
@@ -49,7 +53,9 @@ def run_migrations_offline() -> None:
 
 
 def run_migrations_online() -> None:
-    engine = create_engine(get_settings().database_url, poolclass=pool.NullPool)
+    engine = create_engine(
+        get_settings().database_url, poolclass=pool.NullPool, connect_args=_CONNECT_ARGS
+    )
     with engine.connect() as connection:
         _configure(connection=connection)
         with context.begin_transaction():

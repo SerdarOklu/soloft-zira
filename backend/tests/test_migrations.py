@@ -76,3 +76,24 @@ def test_upgrade_check_downgrade(alembic_config: Config, postgres_url: str):
 
     command.downgrade(alembic_config, "base")
     assert _tables(postgres_url) == set()
+
+
+def test_check_ignores_other_schemas_on_the_search_path(alembic_config: Config, postgres_url: str):
+    """The postgis Docker image puts the tiger and topology schemas on the search path."""
+    engine = create_engine(postgres_url, isolation_level="AUTOCOMMIT")
+    with engine.connect() as connection:
+        database = connection.execute(text("SELECT current_database()")).scalar_one()
+        connection.execute(text("DROP SCHEMA IF EXISTS tiger CASCADE"))
+        connection.execute(text("CREATE SCHEMA tiger"))
+        connection.execute(text("CREATE TABLE tiger.tabblock (gid serial PRIMARY KEY)"))
+        connection.execute(text(f'ALTER DATABASE "{database}" SET search_path = public, tiger'))
+    engine.dispose()
+    try:
+        command.upgrade(alembic_config, "head")
+        command.check(alembic_config)
+    finally:
+        engine = create_engine(postgres_url, isolation_level="AUTOCOMMIT")
+        with engine.connect() as connection:
+            connection.execute(text(f'ALTER DATABASE "{database}" RESET search_path'))
+            connection.execute(text("DROP SCHEMA IF EXISTS tiger CASCADE"))
+        engine.dispose()
