@@ -70,6 +70,8 @@ class FieldOut(BaseModel):
     centroid: Point | None
     geometry: dict[str, Any] | None
     weather_days: int
+    # The farmer this field is linked to (phase 7), if any.
+    farmer_user_id: uuid.UUID | None = None
     created_at: datetime
 
 

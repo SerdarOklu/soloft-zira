@@ -19,6 +19,7 @@ export interface FieldOut {
   centroid: { lat: number; lon: number } | null;
   geometry: GeoJsonPolygon | null;
   weather_days: number;
+  farmer_user_id: string | null;
   created_at: string;
 }
 
@@ -162,6 +163,8 @@ export interface WaterVault {
   };
   needs_signoff: string[];
   assumptions: string[];
+  mode: 'sensor' | 'satellite';
+  sensor: SensorInfo | null;
   soil_calibrated: boolean;
   et0_days: number;
   et0_blocker: string | null;
@@ -287,4 +290,76 @@ export interface FieldMemory {
   series: { date: string; ndvi: number | null; valid_pixels: number; flag: string | null }[];
   latest_job: JobOut | null;
   confirmed_count: number;
+}
+
+export interface SensorInfo {
+  model_mm: number;
+  sensor_mm: number;
+  difference_mm: number;
+  measured_at: string;
+  nodes: number;
+  depths_cm: number[];
+  available_fraction: number;
+  band_mm: number;
+}
+
+export interface SensorNode {
+  node_id: string;
+  last_seen: string;
+  status: 'active' | 'silent';
+  battery_v: number | null;
+  is_simulated: boolean;
+  readings: { depth_cm: number; vwc_raw: number; vwc_calibrated: number | null }[];
+}
+
+export interface SensorCalibration {
+  slope: number;
+  intercept: number;
+  theta_wp: number;
+  theta_fc: number;
+  note: string | null;
+  calibrated_at: string;
+}
+
+export interface SensorStatus {
+  field_id: string;
+  mode: 'sensor' | 'satellite';
+  silence_h: number;
+  calibration: SensorCalibration | null;
+  nodes: SensorNode[];
+}
+
+export interface UserOut {
+  id: string;
+  email: string;
+  name: string;
+  role: 'admin' | 'agronomist' | 'cooperative_user' | 'farmer';
+  organization_id: string | null;
+  is_active: boolean;
+  field_count: number;
+  created_at: string;
+}
+
+export interface FarmerField {
+  id: string;
+  name: string;
+  region: string | null;
+  area_ha: number | null;
+  mode: 'sensor' | 'satellite';
+  water: {
+    date: string;
+    storage_mm: number;
+    low_mm: number;
+    high_mm: number;
+    taw_mm: number;
+    fill_fraction: number;
+  } | null;
+  water_problem: string | null;
+  last_weather_date: string | null;
+}
+
+export interface FarmerSummary {
+  name: string;
+  fields: FarmerField[];
+  messages: { id: string; field_name: string; event_type: string; event_date: string; body: string; sent_at: string | null }[];
 }

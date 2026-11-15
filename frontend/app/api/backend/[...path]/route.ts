@@ -16,7 +16,7 @@ async function forward(request: Request, context: { params: Promise<{ path: stri
   const token = (await cookies()).get(SESSION_COOKIE)?.value;
   if (!token) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
 
-  const hasBody = request.method === 'POST' || request.method === 'PATCH';
+  const hasBody = ['POST', 'PATCH', 'PUT'].includes(request.method);
   // A cross-site form cannot send JSON, so this closes the last gap beside SameSite=Lax.
   if (hasBody && !request.headers.get('content-type')?.includes('application/json')) {
     return NextResponse.json({ error: 'invalid_request' }, { status: 415 });
@@ -46,4 +46,5 @@ async function forward(request: Request, context: { params: Promise<{ path: stri
 export const GET = forward;
 export const POST = forward;
 export const PATCH = forward;
+export const PUT = forward;
 export const DELETE = forward;

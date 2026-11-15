@@ -1,5 +1,6 @@
 import {
   Alert,
+  Badge,
   Button,
   EmptyState,
   KpiCard,
@@ -18,10 +19,12 @@ import { Droplets, Gauge, Layers, TriangleAlert } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 
 import { LineChart } from '@/components/line-chart';
+import { SensorPanel } from '@/components/sensor-panel';
 import { WaterVaultForm } from '@/components/water-vault-form';
 import { ApiError, api } from '@/lib/api';
-import { formatDate, formatNumber } from '@/lib/format';
-import type { CropOption, FieldOut, WaterVault } from '@/lib/types';
+import { formatDate, formatDateTime, formatNumber } from '@/lib/format';
+import { getSessionUser } from '@/lib/session';
+import type { CropOption, FieldOut, SensorStatus, WaterVault } from '@/lib/types';
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const RECENT_DAYS = 14;
@@ -124,6 +127,12 @@ export async function WaterVaultContent({ params }: { params: WaterVaultParams }
 
   const number = (value: number | null, digits = 0) => formatNumber(value, locale, digits);
   const { decision, window: span } = vault;
+  const [sensorStatus, user] = await Promise.all([
+    api<SensorStatus>(`/fields/${encodeURIComponent(field.id)}/sensors`),
+    getSessionUser(),
+  ]);
+  const canCalibrate = user?.role === 'admin' || user?.role === 'agronomist';
+
   const dates = vault.daily.map((day) => day.date);
   const monthYear = (iso: string) =>
     new Intl.DateTimeFormat(locale, { month: 'short', year: '2-digit', timeZone: 'UTC' }).format(
@@ -142,7 +151,10 @@ export async function WaterVaultContent({ params }: { params: WaterVaultParams }
         {t(vault.date_is_default ? 'waterVault.decisionDay' : 'waterVault.chosenDay', {
           date: formatDate(vault.date, locale),
         })}{' '}
-        · {cropName} · {field.name}
+        · {cropName} · {field.name}{' '}
+        <Badge tone={vault.mode === 'sensor' ? 'success' : 'neutral'}>
+          {t(`waterVault.mode.${vault.mode}`)}
+        </Badge>
       </p>
 
       <KpiGrid overlapHero={false}>
@@ -177,6 +189,32 @@ export async function WaterVaultContent({ params }: { params: WaterVaultParams }
         />
       </KpiGrid>
 
+      {vault.sensor ? (
+        <Section title={t('waterVault.sensorTitle')}>
+          <div className="zira-stack">
+            <p>
+              {t('waterVault.sensorCompare', {
+                model: number(vault.sensor.model_mm),
+                sensor: number(vault.sensor.sensor_mm),
+                difference: number(vault.sensor.difference_mm),
+              })}
+            </p>
+            <p className="zira-muted">
+              {t('waterVault.sensorWhere', {
+                date: formatDateTime(vault.sensor.measured_at, locale),
+                nodes: vault.sensor.nodes,
+                depths: vault.sensor.depths_cm.join(', '),
+              })}
+            </p>
+            {sensorStatus.nodes.some((node) => node.is_simulated) && (
+              <Alert tone="info">{t('waterVault.simulated')}</Alert>
+            )}
+          </div>
+        </Section>
+      ) : (
+        <Alert tone="info">{t('waterVault.satelliteHint', { hours: sensorStatus.silence_h })}</Alert>
+      )}
+
       {vault.needs_signoff.length > 0 && (
         <Alert tone="warning" title={t('waterVault.draft.title')}>
           {t('waterVault.draft.body')}{' '}
@@ -194,6 +232,7 @@ export async function WaterVaultContent({ params }: { params: WaterVaultParams }
               {t(`waterVault.assumptions.${code}`, {
                 days: vault.parameters.spinup_days,
                 delta: number(vault.parameters.uncertainty_delta, 1),
+                bandMm: number(vault.sensor?.band_mm ?? 0),
               })}
             </li>
           ))}
@@ -291,6 +330,8 @@ export async function WaterVaultContent({ params }: { params: WaterVaultParams }
           <Alert tone="info">{t('waterVault.season.blocked', { crop: cropName })}</Alert>
         </Section>
       )}
+
+      <SensorPanel fieldId={field.id} status={sensorStatus} canCalibrate={canCalibrate} />
 
       <p className="zira-statement">{t('app.supportStatement')}</p>
     </div>

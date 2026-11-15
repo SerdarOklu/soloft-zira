@@ -361,3 +361,20 @@
     display: none;
   }
 }
+
+/* Farmer view: one phone-width column, large figures. */
+.zira-farmer {
+  max-width: 34rem;
+}
+
+.zira-farmer-figure {
+  color: var(--uds-foreground);
+  font-size: 2.5rem;
+  font-weight: var(--uds-font-weight-semibold);
+  line-height: 1.1;
+}
+
+.zira-farmer-message {
+  display: grid;
+  gap: var(--uds-space-2);
+}

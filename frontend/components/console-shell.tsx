@@ -12,6 +12,7 @@ import {
   MessageCircle,
   Repeat,
   Settings,
+  Sprout,
 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
@@ -31,6 +32,7 @@ const ICONS: Record<ScreenKey, ReactNode> = {
   waterVault: <Droplets />,
   rotation: <Repeat />,
   messages: <MessageCircle />,
+  farmer: <Sprout />,
   dataCenter: <Database />,
   settings: <Settings />,
 };

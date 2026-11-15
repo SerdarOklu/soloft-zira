@@ -42,6 +42,10 @@ Roles: `admin`, `agronomist`, `cooperative_user`. The command asks for the passw
 | `GET /api/v1/dashboard/summary` | Field and job counts, fields without data, map markers |
 | `GET /api/v1/reference/crops` | Crops of `config/crops.yaml` and whether their season can run yet |
 | `GET /api/v1/fields/{id}/water-vault?crop=...&date=...` | Usable water in the root zone on a day, in mm, with a low to high range, the daily series and what it rests on |
+| `POST /api/v1/sensors/{node_id}/readings` | A node or the simulator posts readings (`X-Sensor-Key`); stored raw and calibrated |
+| `GET /api/v1/fields/{id}/sensors`, `GET/PUT .../sensor-calibration` | Node status and sensor or satellite mode; the gravimetric calibration (agronomist, admin) |
+| `GET/POST /api/v1/users`, `PATCH /api/v1/users/{id}`, `PATCH /api/v1/fields/{id}/farmer` | Cooperative panel: farmer accounts and the field-to-farmer link (cooperative user, admin) |
+| `GET /api/v1/farmer/summary` | The farmer view: own fields with water and the messages that were sent to them |
 | `GET /api/v1/fields/{id}/field-memory` | MODIS NDVI series, the cropped or fallow call per season with confidence, and what a person confirmed |
 | `POST /api/v1/fields/{id}/field-memory/fetch`, `.../confirm` | Queue a MODIS NDVI fetch (202 with the job); confirm the history season by season |
 | `GET /api/v1/fields/{id}/rotation?rotation=winter_wheat,fallow` (or `history`) | Strategies A, B and C over the stored record: sufficient seasons with a range, stress days, deficit, irrigation need, per-season results (provisional values, see decision 0012) |

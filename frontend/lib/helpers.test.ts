@@ -16,6 +16,8 @@ describe('proxy path (the browser may only reach the fields API)', () => {
     expect(backendPath(['auth', 'login'])).toBeNull();
     expect(backendPath(['data-center', 'jobs'])).toBeNull();
     expect(backendPath(['messages', 'abc', 'approve'])).toBe('/api/v1/messages/abc/approve');
+    expect(backendPath(['users', 'abc'])).toBe('/api/v1/users/abc');
+    expect(backendPath(['sensors', 'NODE_1', 'readings'])).toBeNull(); // devices post to the API, not the browser
     expect(backendPath([])).toBeNull();
   });
 

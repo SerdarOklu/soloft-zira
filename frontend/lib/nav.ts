@@ -11,6 +11,7 @@ export type ScreenKey =
   | 'waterVault'
   | 'rotation'
   | 'messages'
+  | 'farmer'
   | 'dataCenter'
   | 'settings';
 
@@ -33,6 +34,7 @@ export const SCREENS: readonly Screen[] = [
   { key: 'waterVault', href: '/water-vault', roles: STAFF, phase: 4 },
   { key: 'rotation', href: '/rotation', roles: STAFF, phase: 6 },
   { key: 'messages', href: '/messages', roles: ['admin', 'agronomist'], phase: 6 },
+  { key: 'farmer', href: '/farmer', roles: ['farmer'], phase: 7 },
   { key: 'dataCenter', href: '/data-center', roles: ['admin', 'agronomist'], phase: 3 },
   { key: 'settings', href: '/settings', roles: ['admin', 'cooperative_user'], phase: 7, bottom: true },
 ];
@@ -47,6 +49,6 @@ export function canOpen(role: Role, key: ScreenKey): boolean {
 
 /** Up to four destinations for the mobile dock, in menu order. */
 export function dockScreensFor(role: Role): Screen[] {
-  const preferred: ScreenKey[] = ['dashboard', 'fields', 'waterVault', 'rotation'];
+  const preferred: ScreenKey[] = ['dashboard', 'fields', 'waterVault', 'rotation', 'farmer'];
   return screensFor(role).filter((screen) => preferred.includes(screen.key));
 }

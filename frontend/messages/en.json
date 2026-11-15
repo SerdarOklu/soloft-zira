@@ -11,14 +11,16 @@
     "waterVault": "Water Vault",
     "rotation": "Rotation and Zira Card",
     "dataCenter": "Data Center",
-    "settings": "Settings",
-    "messages": "WhatsApp messages"
+    "settings": "Users and cooperative",
+    "messages": "WhatsApp messages",
+    "farmer": "My field"
   },
   "dock": {
     "dashboard": "Home",
     "fields": "Fields",
     "waterVault": "Water",
-    "rotation": "Rotation"
+    "rotation": "Rotation",
+    "farmer": "My field"
   },
   "shell": {
     "home": "Home",
@@ -106,12 +108,12 @@
       ]
     },
     "settings": {
-      "title": "Settings",
-      "description": "User management and system configuration.",
+      "title": "Users and cooperative",
+      "description": "The cooperative's farmer accounts and the link between fields and farmers.",
       "items": [
-        "Users and roles",
-        "Cooperative and institution records",
-        "API keys and configuration"
+        "Creating farmer accounts",
+        "Linking a field to a farmer",
+        "Sensor and data status"
       ]
     },
     "messages": {
@@ -121,6 +123,14 @@
         "Drafts written from model events",
         "Nothing is sent without agronomist approval",
         "Delivery status"
+      ]
+    },
+    "farmer": {
+      "title": "My field",
+      "description": "The usable water in your field and the messages sent to you.",
+      "items": [
+        "The water in your field",
+        "Messages sent to you"
       ]
     }
   },
@@ -353,14 +363,17 @@
       "sufficiency_ratio": "sufficiency ratio",
       "flex_sow_threshold_frac": "flexible sowing threshold",
       "legume_every_n_fallow": "legume frequency",
-      "legume_crop": "legume crop"
+      "legume_crop": "legume crop",
+      "sensor_silence_h": "sensor silence limit"
     },
     "assumptionsTitle": "What this number rests on",
     "assumptions": {
       "fallow_before_the_day": "The field is assumed to have been fallow for the {days} days before the day. The crop history arrives with Field Memory (phase 5).",
       "regional_weather": "Rain comes from NASA POWER. It is a regional product of roughly 50 km resolution, not a measurement taken on the field.",
       "no_sensor": "There is no sensor data, so the range is shown wide. A sensor (phase 7) corrects the model state.",
-      "range_from_soil_and_fallow_efficiency": "The low and high values come from the water range of the soil texture and from the fallow efficiency shifted by ±{delta}."
+      "range_from_soil_and_fallow_efficiency": "The low and high values come from the water range of the soil texture and from the fallow efficiency shifted by ±{delta}.",
+      "sensor_corrects_decision_day": "The water on the decision day is read from calibrated field sensors and replaces the model state.",
+      "range_from_sensor_band": "The range is a narrow band of ±{bandMm} mm around the sensor reading (provisional value)."
     },
     "charts": {
       "storageTitle": "Water in the root zone (mm)",
@@ -395,7 +408,16 @@
       "not_enough_history": "There is not enough data before the chosen date. The data starts on {first_date}; the earliest date you can choose is {earliest_date}.",
       "too_many_gaps": "There are too many missing days in the period of the calculation ({missing_days} of {days}); the result would not be reliable.",
       "generic": "The Water Vault could not be calculated. Try again."
-    }
+    },
+    "mode": {
+      "sensor": "Sensor mode",
+      "satellite": "Satellite mode"
+    },
+    "sensorTitle": "Sensor and model",
+    "sensorCompare": "Model (satellite data) {model} mm, sensor {sensor} mm. Difference (sensor − model): {difference} mm.",
+    "sensorWhere": "Last reading {date}; {nodes} nodes at {depths} cm.",
+    "satelliteHint": "This field has no calibrated sensor that reported in the last {hours} hours. The model state stands and the range is shown wide.",
+    "simulated": "The readings come from the simulator; they are not a real measurement."
   },
   "login": {
     "description": "Sign in with your Zira account.",
@@ -648,5 +670,114 @@
     "unknownWarning": "{count} seasons have too few clear images (cloud, snow or missing data) and were left \"unknown\". Confirm them by hand.",
     "limits": "This method separates cropped from fallow; it does not know the crop species or winter from summer crops. A MODIS pixel is about 6 hectares, so small parcels give a mixed signal. Landsat (30 m) needs Earth Engine and is not connected.",
     "needsLogin": "You need to be signed in to confirm."
+  },
+  "sensors": {
+    "title": "Sensors",
+    "description": "Field sensors send soil moisture at 10, 30, 60 and 100 cm. A sensor is not trusted until it is calibrated.",
+    "noNodes": "This field has no sensor data yet.",
+    "columns": {
+      "node": "Node",
+      "lastSeen": "Last reading",
+      "status": "Status",
+      "battery": "Battery (V)",
+      "readings": "Moisture (m³/m³), by depth"
+    },
+    "status": {
+      "active": "Active",
+      "silent": "Silent"
+    },
+    "simulated": "simulated",
+    "silentNote": "A field falls back to satellite mode after {hours} hours without data.",
+    "calibration": {
+      "title": "Calibration (gravimetric)",
+      "none": "No calibration: sensor data is stored but does not correct the Water Vault.",
+      "current": "Calibrated {date}: true = {slope} × raw + {intercept}; θWP {wp}, θFC {fc}.",
+      "hint": "The linear correction found by weighing soil samples, and the volumetric water content at the wilting point and at field capacity.",
+      "slope": "Slope",
+      "intercept": "Intercept",
+      "thetaWp": "Wilting point (θWP)",
+      "thetaFc": "Field capacity (θFC)",
+      "note": "Note (method, number of samples)",
+      "save": "Save calibration",
+      "saved": "Calibration saved.",
+      "readOnly": "An agronomist or an admin enters the calibration.",
+      "errors": {
+        "generic": "The calibration could not be saved.",
+        "invalid": "Check the values: the wilting point must be below field capacity."
+      }
+    },
+    "simulator": "Without hardware, the simulator can stand in for a sensor: simulator/zira_sensor_sim.py (field id: {id})."
+  },
+  "cooperative": {
+    "farmersTitle": "Farmer accounts",
+    "noFarmers": "There are no farmer accounts yet.",
+    "create": {
+      "title": "Create a farmer account",
+      "name": "Full name",
+      "email": "Email",
+      "password": "Temporary password",
+      "passwordHint": "At least 10 characters. You pass it to the farmer.",
+      "submit": "Create account",
+      "done": "Farmer account created."
+    },
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "fields": "Fields",
+      "status": "Status",
+      "actions": ""
+    },
+    "active": "Active",
+    "inactive": "Closed",
+    "deactivate": "Close",
+    "activate": "Open",
+    "linkTitle": "Link fields to farmers",
+    "noFields": "There is no field to link.",
+    "fieldColumns": {
+      "field": "Field",
+      "farmer": "Farmer"
+    },
+    "unlinked": "Not linked",
+    "linkHint": "A farmer sees only the field linked to them and the messages sent to them.",
+    "errors": {
+      "generic": "The action could not be done.",
+      "email_taken": "An account with this email already exists.",
+      "invalid_user": "Check the details (the password needs at least 10 characters).",
+      "only_farmers": "A cooperative can create farmer accounts only.",
+      "no_organization": "Your account is not linked to a cooperative.",
+      "not_a_farmer": "A field can be linked to a farmer account only.",
+      "cannot_deactivate_yourself": "You cannot close your own account.",
+      "unknown_organization": "Unknown organization."
+    }
+  },
+  "farmerView": {
+    "hello": "Hello {name}",
+    "noFields": "No field is linked to you. Talk to your cooperative.",
+    "waterTitle": "Usable water",
+    "mm": "{value} mm",
+    "ofCapacity": "{percent}% of the {capacity} mm capacity",
+    "range": "Likely range {low}–{high} mm",
+    "asOf": "As of {date}",
+    "lastData": "Last day of NASA data: {date}",
+    "mode": {
+      "sensor": "Read from the sensor",
+      "satellite": "Computed from satellite data"
+    },
+    "problems": {
+      "generic": "The water for this field cannot be shown yet.",
+      "no_weather_data": "This field's weather data has not been loaded yet."
+    },
+    "messagesTitle": "Messages sent to you",
+    "noMessages": "No message has been sent to you yet.",
+    "sentAt": "Sent {date}",
+    "events": {
+      "decision": "Autumn decision",
+      "heavy_rain": "Heavy rain",
+      "leaching": "Leaching warning",
+      "stress": "Water stress",
+      "harvest": "Season summary",
+      "card": "Field card"
+    },
+    "support": "This information supports your decision; the decision is yours and your agronomist's."
   }
 }

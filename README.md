@@ -76,7 +76,7 @@ Zira has three modules, each depending on the one before it:
 | **Zira Card** (Zira Kartı) | For each rotation, in how many of 25 seasons was the water enough? | Built, with provisional crop values |
 
 Around them: field management with map polygons, a Data Center that shows what NASA data has
-actually arrived, three roles (admin, agronomist, cooperative user), Turkish and English,
+actually arrived, four roles (admin, agronomist, cooperative user, farmer), Turkish and English,
 light and dark mode, and WhatsApp drafts that wait for an agronomist before reaching a farmer.
 
 Zira **supports** a decision; it never makes one. Every card and message says so, and no
@@ -201,7 +201,7 @@ Work proceeds in phases, each one branch and one pull request
 | 4. Water Vault | ET0, Kc, daily balance, uncertainty, screens | Done, live (decision-day water) |
 | 5. Field Memory | MODIS NDVI, cropped or fallow history, confirmation | Done with a **provisional threshold**; Landsat not connected ([decision 0013](docs/decisions/0013-field-memory-from-modis.md)) |
 | 6. Rotation and Zira Card | Strategies A, B, C, six metrics, card, WhatsApp drafts | Done with **provisional crop values**, live |
-| 7. Sensors and cooperative | Sensor ingest, simulator, cooperative panel, farmer view | **Not started** |
+| 7. Sensors and cooperative | Sensor ingest, simulator, cooperative panel, farmer view | Done with a **simulator** (no hardware yet); a calibrated sensor corrects the Water Vault ([decision 0014](docs/decisions/0014-sensors-and-cooperative.md)) |
 
 Water Vault was built before Field Memory because it needs only NASA POWER
 ([decision 0003](docs/decisions/0003-phase-order.md)).
@@ -261,7 +261,7 @@ Design choices worth knowing:
 | [`config/`](config/) | Parameters, crops, soils, climate profiles, data sources, provisional rotation values, message templates |
 | [`docs/`](docs/) | PDT, phase plan, decisions 0001–0013, runbook |
 | [`infra/`](infra/) | Development and production Compose files, Nginx, backup and deploy scripts |
-| [`simulator/`](simulator/) | Sensor simulator (phase 7) |
+| [`simulator/`](simulator/) | Sensor simulator: posts simulated four-depth soil moisture to the ingest endpoint |
 | [`.github/workflows/`](.github/workflows/) | CI and image build |
 
 ## Running it locally
@@ -313,6 +313,7 @@ Environment variables are documented in [`.env.example`](.env.example) (developm
 | `SECRET_KEY` | Signs access tokens; production refuses a short or placeholder value |
 | `POWER_BASE_URL` | NASA POWER endpoint |
 | `GREEN_API_INSTANCE_ID`, `GREEN_API_TOKEN` | WhatsApp gateway; leave empty to keep sending off |
+| `SENSOR_INGEST_KEY` | Shared key a sensor node or the simulator sends in `X-Sensor-Key`; empty turns ingest off |
 
 Model values live in [`config/`](config/) and mirror the project's parameter sheet, the source of
 truth. Each parameter has a status:
@@ -337,6 +338,8 @@ Interactive documentation is served at `/docs` by the backend. The main endpoint
 | `GET /api/v1/fields/{id}/weather/summary` | Coverage, yearly totals, latest days, latest job |
 | `GET /api/v1/data-center/sources`, `/jobs` | What NASA data arrived and how (admin, agronomist) |
 | `GET /api/v1/fields/{id}/water-vault?crop=&date=` | Usable water in mm with a range, the daily series and assumptions |
+| `POST /api/v1/sensors/{node_id}/readings`, `GET /api/v1/fields/{id}/sensors`, `PUT .../sensor-calibration` | Sensor ingest (device key), node status, gravimetric calibration |
+| `GET/POST /api/v1/users`, `PATCH .../fields/{id}/farmer`, `GET /api/v1/farmer/summary` | Cooperative panel (farmer accounts, field links) and the farmer view |
 | `GET /api/v1/fields/{id}/field-memory`, `POST .../fetch`, `POST .../confirm` | MODIS NDVI history, its cropped or fallow call, and the confirmation |
 | `GET /api/v1/fields/{id}/rotation?rotation=` | Strategies A, B and C over the stored record (`rotation=history` uses the confirmed history) |
 | `POST /api/v1/fields/{id}/messages/generate` | Write WhatsApp drafts for a season |
@@ -394,8 +397,9 @@ Read these before relying on any number:
   history. MODIS pixels are about 6 ha, so small parcels give a mixed signal; Landsat (30 m) needs
   Earth Engine and is not connected.
 - **24 seasons, not 25.** The 2001–2025 record holds 24 complete winter seasons.
-- **The weather is regional.** POWER is a gridded value, not a measurement on the field, and
-  there is no sensor correction yet, so the uncertainty range is shown wide.
+- **The weather is regional.** POWER is a gridded value, not a measurement on the field. A
+  calibrated sensor corrects the Water Vault, but the only sensor data so far is **simulated**:
+  no hardware or real calibration exists, so without one the uncertainty range is shown wide.
 - **Several parameters await sign-off** (rain share, fallow efficiency, sufficiency ratio, the
   strategy B threshold and others). The screens list the ones a result depends on.
 - **Crop recommendations are not final.** No rotation or crop is a firm recommendation until an

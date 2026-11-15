@@ -11,14 +11,16 @@
     "waterVault": "Su Kasası",
     "rotation": "Rotasyon ve Zira Kartı",
     "dataCenter": "Veri Merkezi",
-    "settings": "Ayarlar",
-    "messages": "WhatsApp mesajları"
+    "settings": "Kullanıcılar ve kooperatif",
+    "messages": "WhatsApp mesajları",
+    "farmer": "Tarlam"
   },
   "dock": {
     "dashboard": "Özet",
     "fields": "Tarlalar",
     "waterVault": "Su Kasası",
-    "rotation": "Rotasyon"
+    "rotation": "Rotasyon",
+    "farmer": "Tarlam"
   },
   "shell": {
     "home": "Ana sayfa",
@@ -106,12 +108,12 @@
       ]
     },
     "settings": {
-      "title": "Ayarlar",
-      "description": "Kullanıcı yönetimi ve sistem yapılandırması.",
+      "title": "Kullanıcılar ve kooperatif",
+      "description": "Kooperatifin çiftçi hesapları ve tarlaların çiftçilere bağlanması.",
       "items": [
-        "Kullanıcılar ve roller",
-        "Kooperatif ve kurum kayıtları",
-        "API anahtarları ve yapılandırma"
+        "Çiftçi hesabı oluşturma",
+        "Tarlayı çiftçiye bağlama",
+        "Sensör ve veri durumu"
       ]
     },
     "messages": {
@@ -121,6 +123,14 @@
         "Model olaylarından yazılmış taslaklar",
         "Mühendis onayı olmadan hiçbir şey gitmez",
         "Gönderim durumu"
+      ]
+    },
+    "farmer": {
+      "title": "Tarlam",
+      "description": "Tarlanızdaki kullanılabilir su ve size gönderilen mesajlar.",
+      "items": [
+        "Tarlanızdaki su",
+        "Size gönderilen mesajlar"
       ]
     }
   },
@@ -353,14 +363,17 @@
       "sufficiency_ratio": "yeterlilik oranı",
       "flex_sow_threshold_frac": "esnek ekim eşiği",
       "legume_every_n_fallow": "baklagil sıklığı",
-      "legume_crop": "baklagil ürünü"
+      "legume_crop": "baklagil ürünü",
+      "sensor_silence_h": "sensör sessizlik süresi"
     },
     "assumptionsTitle": "Bu sayı neye dayanıyor",
     "assumptions": {
       "fallow_before_the_day": "Tarlanın karar gününden önceki {days} gün boyunca nadasta olduğu varsayılır. Ürün geçmişi Tarla Hafızası (Faz 5) ile gelecek.",
       "regional_weather": "Yağış NASA POWER'dan gelir. Yaklaşık 50 km çözünürlüklü bölgesel veridir; tarlanın kendi ölçümü değildir.",
       "no_sensor": "Sensör verisi yok, bu yüzden aralık geniş gösterilir. Sensör geldiğinde (Faz 7) model durumu düzeltilir.",
-      "range_from_soil_and_fallow_efficiency": "Alt ve üst değer, toprak türünün su tutma aralığından ve nadas veriminin ±{delta} sapmasından hesaplanır."
+      "range_from_soil_and_fallow_efficiency": "Alt ve üst değer, toprak türünün su tutma aralığından ve nadas veriminin ±{delta} sapmasından hesaplanır.",
+      "sensor_corrects_decision_day": "Karar günündeki su, kalibre edilmiş tarla sensörlerinden okunur ve model durumunun yerine geçer.",
+      "range_from_sensor_band": "Aralık, sensör okumasının her iki yanında ±{bandMm} mm'lik dar bir banttır (geçici değer)."
     },
     "charts": {
       "storageTitle": "Kök bölgesindeki su (mm)",
@@ -395,7 +408,16 @@
       "not_enough_history": "Seçilen tarihten önce yeterli veri yok. Veri {first_date} tarihinde başlıyor; en erken {earliest_date} seçilebilir.",
       "too_many_gaps": "Hesap döneminde çok fazla eksik gün var ({missing_days} / {days}); sonuç güvenilir olmaz.",
       "generic": "Su Kasası hesaplanamadı. Yeniden deneyin."
-    }
+    },
+    "mode": {
+      "sensor": "Sensör modu",
+      "satellite": "Uydu modu"
+    },
+    "sensorTitle": "Sensör ve model",
+    "sensorCompare": "Model (uydu verisi) {model} mm, sensör {sensor} mm. Fark (sensör − model): {difference} mm.",
+    "sensorWhere": "Son okuma {date}; {nodes} düğüm, {depths} cm derinliklerde.",
+    "satelliteHint": "Bu tarlada kalibre edilmiş ve son {hours} saatte veri göndermiş bir sensör yok. Model durumu geçerli ve aralık geniş gösterilir.",
+    "simulated": "Okumalar simülatörden geliyor; gerçek bir ölçüm değil."
   },
   "login": {
     "description": "Zira hesabınızla giriş yapın.",
@@ -648,5 +670,114 @@
     "unknownWarning": "{count} sezonda yeterli temiz görüntü yok (bulut, kar ya da eksik veri); bu sezonlar \"bilinmiyor\" bırakıldı. Elle doğrulayın.",
     "limits": "Bu yöntem ekili ile nadası ayırır; ürün türünü ve kışlık ile yazlık ayrımını bilmez. Bir MODIS pikseli yaklaşık 6 hektardır, küçük parsellerde sinyal karışır. Landsat (30 m) Earth Engine gerektirir ve bağlı değil.",
     "needsLogin": "Doğrulama için giriş yapılmış olmalı."
+  },
+  "sensors": {
+    "title": "Sensörler",
+    "description": "Tarla sensörleri 10, 30, 60 ve 100 cm derinlikte toprak nemini gönderir. Sensör, kalibre edilene kadar güvenilir sayılmaz.",
+    "noNodes": "Bu tarlada henüz sensör verisi yok.",
+    "columns": {
+      "node": "Düğüm",
+      "lastSeen": "Son okuma",
+      "status": "Durum",
+      "battery": "Pil (V)",
+      "readings": "Nem (m³/m³), derinliğe göre"
+    },
+    "status": {
+      "active": "Aktif",
+      "silent": "Sessiz"
+    },
+    "simulated": "simüle",
+    "silentNote": "Sessiz düğümler {hours} saat sonra uydu moduna dönüşe yol açar.",
+    "calibration": {
+      "title": "Kalibrasyon (gravimetrik)",
+      "none": "Kalibrasyon yok: sensör verisi saklanır ama Su Kasası'nı düzeltmez.",
+      "current": "Kalibre edildi {date}: doğru = {slope} × ham + {intercept}; θWP {wp}, θFC {fc}.",
+      "hint": "Toprak örneklerini tartarak bulunan doğrusal düzeltme ve solma noktası ile tarla kapasitesindeki hacimsel su içeriği.",
+      "slope": "Eğim",
+      "intercept": "Kesişim",
+      "thetaWp": "Solma noktası (θWP)",
+      "thetaFc": "Tarla kapasitesi (θFC)",
+      "note": "Not (yöntem, örnek sayısı)",
+      "save": "Kalibrasyonu kaydet",
+      "saved": "Kalibrasyon kaydedildi.",
+      "readOnly": "Kalibrasyonu ziraat mühendisi ya da yönetici girer.",
+      "errors": {
+        "generic": "Kalibrasyon kaydedilemedi.",
+        "invalid": "Değerleri kontrol edin: solma noktası tarla kapasitesinden küçük olmalı."
+      }
+    },
+    "simulator": "Donanım yokken sensör yerine simülatör kullanılabilir: simulator/zira_sensor_sim.py (alan kimliği: {id})."
+  },
+  "cooperative": {
+    "farmersTitle": "Çiftçi hesapları",
+    "noFarmers": "Henüz çiftçi hesabı yok.",
+    "create": {
+      "title": "Çiftçi hesabı oluştur",
+      "name": "Ad soyad",
+      "email": "E-posta",
+      "password": "Geçici şifre",
+      "passwordHint": "En az 10 karakter. Çiftçiye siz iletirsiniz.",
+      "submit": "Hesabı oluştur",
+      "done": "Çiftçi hesabı oluşturuldu."
+    },
+    "columns": {
+      "name": "Ad",
+      "email": "E-posta",
+      "fields": "Tarla",
+      "status": "Durum",
+      "actions": ""
+    },
+    "active": "Aktif",
+    "inactive": "Kapalı",
+    "deactivate": "Kapat",
+    "activate": "Aç",
+    "linkTitle": "Tarlaları çiftçilere bağla",
+    "noFields": "Bağlanacak tarla yok.",
+    "fieldColumns": {
+      "field": "Tarla",
+      "farmer": "Çiftçi"
+    },
+    "unlinked": "Bağlı değil",
+    "linkHint": "Çiftçi yalnızca kendisine bağlı tarlayı ve kendisine gönderilen mesajları görür.",
+    "errors": {
+      "generic": "İşlem yapılamadı.",
+      "email_taken": "Bu e-posta ile bir hesap zaten var.",
+      "invalid_user": "Bilgileri kontrol edin (şifre en az 10 karakter).",
+      "only_farmers": "Kooperatif yalnızca çiftçi hesabı oluşturabilir.",
+      "no_organization": "Hesabınız bir kooperatife bağlı değil.",
+      "not_a_farmer": "Yalnızca çiftçi hesabına tarla bağlanır.",
+      "cannot_deactivate_yourself": "Kendi hesabınızı kapatamazsınız.",
+      "unknown_organization": "Bilinmeyen kurum."
+    }
+  },
+  "farmerView": {
+    "hello": "Merhaba {name}",
+    "noFields": "Size bağlı bir tarla yok. Kooperatifinizle konuşun.",
+    "waterTitle": "Kullanılabilir su",
+    "mm": "{value} mm",
+    "ofCapacity": "{capacity} mm kapasitenin %{percent}'i",
+    "range": "Olası aralık {low}–{high} mm",
+    "asOf": "{date} itibarıyla",
+    "lastData": "NASA verisinin son günü: {date}",
+    "mode": {
+      "sensor": "Sensörden okundu",
+      "satellite": "Uydu verisinden hesaplandı"
+    },
+    "problems": {
+      "generic": "Bu tarla için su henüz hesaplanamadı.",
+      "no_weather_data": "Bu tarlanın hava verisi henüz yüklenmedi."
+    },
+    "messagesTitle": "Size gönderilen mesajlar",
+    "noMessages": "Henüz size gönderilmiş bir mesaj yok.",
+    "sentAt": "{date} gönderildi",
+    "events": {
+      "decision": "Ekim kararı",
+      "heavy_rain": "Şiddetli yağış",
+      "leaching": "Yıkanma uyarısı",
+      "stress": "Su stresi",
+      "harvest": "Sezon özeti",
+      "card": "Tarla kartı"
+    },
+    "support": "Bu bilgiler kararınıza yardımcıdır; karar sizin ve ziraat mühendisinizindir."
   }
 }

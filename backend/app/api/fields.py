@@ -84,6 +84,7 @@ def _to_out(row: Row) -> FieldOut:
         centroid=Point(lat=row.lat, lon=row.lon) if row.lat is not None else None,
         geometry=json.loads(row.geojson) if row.geojson else None,
         weather_days=row.weather_days,
+        farmer_user_id=field.farmer_user_id,
         created_at=field.created_at,
     )
 

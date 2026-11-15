@@ -9,7 +9,7 @@ Model values live here, not in code. The backend loads these files at start-up t
 | `crops.yaml` | Crop coefficients, height, root depth, depletion fraction | Parameter sheet, "Ürünler"; FAO-56 Tables 12 and 22 |
 | `soils.yaml` | Available water and readily evaporable water by soil texture | Parameter sheet, "Topraklar"; FAO-56 Table 19 |
 | `climate_profiles.yaml` | Which extra variables each climate and site condition switches on | PDT sections 8.2 and 8.3 |
-| `rotation_demo.yaml` | PROVISIONAL stage lengths, sowing dates, irrigation efficiency and NDVI cropped threshold | FAO-56 Table 11; not signed off (decision 0012) |
+| `rotation_demo.yaml` | PROVISIONAL stage lengths, sowing dates, irrigation efficiency and NDVI cropped threshold and sensor band | FAO-56 Table 11; not signed off (decision 0012) |
 | `message_templates.yaml` | WhatsApp draft wording (Turkish, English) and event thresholds | Draft texts for agronomist review |
 | `data_sources.yaml` | NASA sources: role, collection, resolution, scale warning | PDT section 6 |
 
