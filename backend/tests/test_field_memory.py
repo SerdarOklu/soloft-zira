@@ -439,3 +439,15 @@ def test_the_data_center_shows_modis_as_connected(pg, pg_client, admin):
         s["key"]: s for s in pg_client.get("/api/v1/data-center/sources", headers=admin).json()
     }
     assert sources["modis"]["observations"] > 100
+
+
+def test_a_raster_without_georeferencing_is_refused(tmp_path):
+    import rasterio
+
+    path = str(tmp_path / "bare.tif")
+    with rasterio.open(
+        path, "w", driver="GTiff", height=4, width=4, count=1, dtype="int16"
+    ) as dataset:
+        dataset.write(np.full((4, 4), 5000, dtype="int16"), 1)
+    with pytest.raises(modis.ModisError, match="georeferencing"):
+        modis.read_rasters(path, path, square(LON), scene_id="bare", image_date=date(2025, 5, 1))

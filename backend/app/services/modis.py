@@ -125,6 +125,10 @@ def read_rasters(
 
     with rasterio.Env(GDAL_DISABLE_READDIR_ON_OPEN="EMPTY_DIR", GDAL_HTTP_MAX_RETRY="3"):
         with rasterio.open(ndvi_path) as ndvi_ds:
+            # A raster that came back without its georeferencing would put the polygon in the
+            # wrong place; refuse it so the caller reads the scene again.
+            if ndvi_ds.crs is None or ndvi_ds.transform.is_identity:
+                raise ModisError("The raster came back without georeferencing")
             projected = transform_geom("EPSG:4326", ndvi_ds.crs, geometry)
             xs = [point[0] for point in projected["coordinates"][0]]
             ys = [point[1] for point in projected["coordinates"][0]]
@@ -138,6 +142,8 @@ def read_rasters(
             nodata = ndvi_ds.nodata
         with rasterio.open(reliability_path) as reliability_ds:
             reliability = reliability_ds.read(1, window=window)
+    if reliability.shape != ndvi.shape:
+        raise ModisError("The NDVI and reliability rasters do not line up")
     # all_touched keeps a field smaller than one pixel from vanishing.
     inside = features.geometry_mask(
         [projected], out_shape=ndvi.shape, transform=transform, invert=True, all_touched=True
