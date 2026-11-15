@@ -98,6 +98,8 @@ def list_drafts(
         .order_by(MessageDraft.event_date.desc(), MessageDraft.created_at.desc())
         .limit(limit)
     )
+    if user.role == Role.FARMER:
+        draft_status = "sent"  # a farmer never sees a draft
     if draft_status:
         query = query.where(MessageDraft.status == draft_status)
     if field_id:

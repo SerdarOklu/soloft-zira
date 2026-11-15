@@ -19,6 +19,7 @@ from app.models.data import (
     DataSource,
     JobStatus,
     SatelliteObservation,
+    SensorCalibration,
     SensorObservation,
     WeatherObservation,
 )
@@ -54,6 +55,7 @@ __all__ = [
     "RotationScenario",
     "SatelliteObservation",
     "SeasonType",
+    "SensorCalibration",
     "SensorObservation",
     "SoilProfile",
     "SoilWaterBalance",

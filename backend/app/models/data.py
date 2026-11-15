@@ -136,3 +136,30 @@ class SensorObservation(Base):
     vwc_calibrated: Mapped[float | None] = mapped_column(Float)
     battery: Mapped[float | None] = mapped_column(Float)
     is_simulated: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+
+
+class SensorCalibration(UuidPk, Base):
+    """The calibration of a field's soil moisture sensors (PDT 12.3, step 2).
+
+    ``vwc_calibrated = slope * vwc_raw + intercept``, found by weighing soil samples for the
+    soil type (gravimetric). ``theta_wp`` and ``theta_fc`` are the volumetric water content at
+    the wilting point and at field capacity, which turn a reading into usable water. A sensor
+    is not trusted until this record exists.
+    """
+
+    __tablename__ = "sensor_calibrations"
+
+    field_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("fields.id", ondelete="CASCADE"), nullable=False, unique=True
+    )
+    slope: Mapped[float] = mapped_column(Float, nullable=False, default=1.0)
+    intercept: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+    theta_wp: Mapped[float] = mapped_column(Float, nullable=False)
+    theta_fc: Mapped[float] = mapped_column(Float, nullable=False)
+    note: Mapped[str | None] = mapped_column(String(500))
+    calibrated_by: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL")
+    )
+    calibrated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )

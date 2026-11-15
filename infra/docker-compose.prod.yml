@@ -27,6 +27,7 @@ x-backend-env: &backend-env
   SECRET_KEY: ${SECRET_KEY}
   ACCESS_TOKEN_TTL_MINUTES: ${ACCESS_TOKEN_TTL_MINUTES:-720}
   POWER_BASE_URL: ${POWER_BASE_URL:-https://power.larc.nasa.gov/api/temporal/daily/point}
+  SENSOR_INGEST_KEY: ${SENSOR_INGEST_KEY:-}
   GREEN_API_URL: ${GREEN_API_URL:-https://api.green-api.com}
   GREEN_API_INSTANCE_ID: ${GREEN_API_INSTANCE_ID:-}
   GREEN_API_TOKEN: ${GREEN_API_TOKEN:-}

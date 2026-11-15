@@ -35,6 +35,13 @@ ndvi_cropped_threshold:
   basis: team_assumption
   note: Provisional. Calibrate against fields whose history is known.
 
+# Sensors (phase 7): the half-width of the range around a calibrated sensor's reading, as a share
+# of TAW. PDT 7.10 asks for a narrower band with a sensor and gives no value.
+sensor_uncertainty_frac:
+  value: 0.10
+  basis: team_assumption
+  note: Provisional. Set from the calibration error once sensors are calibrated on a real soil.
+
 crops:
   winter_wheat:
     sowing_date: "11-01"       # month-day; the season runs into the next year

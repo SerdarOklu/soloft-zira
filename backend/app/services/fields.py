@@ -13,6 +13,8 @@ def visible_to(user: User) -> ColumnElement[bool]:
     own organization, or only the ones they created when they belong to none."""
     if user.role in (Role.ADMIN, Role.AGRONOMIST):
         return true()
+    if user.role == Role.FARMER:
+        return Field.farmer_user_id == user.id
     if user.organization_id is not None:
         return Field.organization_id == user.organization_id
     return Field.created_by == user.id

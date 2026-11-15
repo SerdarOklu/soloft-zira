@@ -22,9 +22,11 @@ from app.schemas.water import (
     DayRow,
     Decision,
     Parameters,
+    SensorInfo,
     WaterVaultOut,
     Window,
 )
+from app.services import sensors
 from app.services.power import SOURCE as POWER_SOURCE
 from app.services.water import et0
 from app.services.water.balance import simulate_fallow
@@ -224,19 +226,58 @@ def water_vault(
         used.append("decision_date")
     needs_signoff = [name for name in used if parameters.core[name].status == "needs_signoff"]
 
+    # A calibrated sensor that has reported recently replaces the model state on the day
+    # (PDT 7.9) and narrows the range (7.10); otherwise the field stays in satellite mode.
+    silence_h = float(parameters.get("sensors", "sensor_silence_h"))
+    state = sensors.sensor_state(session, field.id, sensors.end_of_day(day), silence_h=silence_h)
+    storage, low_mm, high_mm = middle[-1], low[-1], high[-1]
+    taw_low_mm, taw_high_mm = low_taw, high_taw
+    sensor_info = None
+    assumptions = [
+        "fallow_before_the_day",
+        "regional_weather",
+        "no_sensor",
+        "range_from_soil_and_fallow_efficiency",
+    ]
+    if state is not None:
+        band = float(config.rotation_demo.sensor_uncertainty_frac.value)
+        sensor_mm = state.available_fraction * mid_taw
+        sensor_info = SensorInfo(
+            model_mm=middle[-1],
+            sensor_mm=sensor_mm,
+            difference_mm=sensor_mm - middle[-1],
+            measured_at=state.measured_at,
+            nodes=state.nodes,
+            depths_cm=list(state.depths_cm),
+            available_fraction=state.available_fraction,
+            band_mm=band * mid_taw,
+        )
+        storage = sensor_mm
+        low_mm = max(0.0, sensor_mm - band * mid_taw)
+        high_mm = min(mid_taw, sensor_mm + band * mid_taw)
+        taw_low_mm = taw_high_mm = mid_taw
+        assumptions = [
+            "fallow_before_the_day",
+            "regional_weather",
+            "sensor_corrects_decision_day",
+            "range_from_sensor_band",
+        ]
+        if parameters.sensors["sensor_silence_h"].status == "needs_signoff":
+            needs_signoff = [*needs_signoff, "sensor_silence_h"]
+
     return WaterVaultOut(
         field_id=field.id,
         crop=crop_info(crop_key, crop),
         date=day,
         date_is_default=date_is_default,
         decision=Decision(
-            storage_mm=middle[-1],
-            low_mm=low[-1],
-            high_mm=high[-1],
+            storage_mm=storage,
+            low_mm=low_mm,
+            high_mm=high_mm,
             taw_mm=mid_taw,
-            taw_low_mm=low_taw,
-            taw_high_mm=high_taw,
-            fill_fraction=middle[-1] / mid_taw if mid_taw else 0.0,
+            taw_low_mm=taw_low_mm,
+            taw_high_mm=taw_high_mm,
+            fill_fraction=storage / mid_taw if mid_taw else 0.0,
         ),
         window=Window(start=start, end=day, days=spinup_days, missing_days=missing),
         parameters=Parameters(
@@ -246,12 +287,9 @@ def water_vault(
             uncertainty_delta=delta,
         ),
         needs_signoff=needs_signoff,
-        assumptions=[
-            "fallow_before_the_day",
-            "regional_weather",
-            "no_sensor",
-            "range_from_soil_and_fallow_efficiency",
-        ],
+        assumptions=assumptions,
+        mode="sensor" if sensor_info else "satellite",
+        sensor=sensor_info,
         soil_calibrated=bool(profile.is_calibrated),
         et0_days=et0_days,
         et0_blocker=et0_blocker,

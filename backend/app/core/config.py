@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     secret_key: str = INSECURE_SECRET
     access_token_ttl_minutes: int = 720
     power_base_url: str = "https://power.larc.nasa.gov/api/temporal/daily/point"
+    # The shared key a sensor node or the simulator sends in X-Sensor-Key. Empty turns ingest off.
+    sensor_ingest_key: str = ""
     # Green API (WhatsApp gateway). Leave empty and approved messages wait instead of sending.
     green_api_url: str = "https://api.green-api.com"
     green_api_instance_id: str = ""

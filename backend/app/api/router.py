@@ -11,6 +11,8 @@ from app.api import (
     messages,
     reference,
     rotation,
+    sensors,
+    users,
     water_vault,
 )
 
@@ -21,6 +23,9 @@ api_router.include_router(fields.router)
 api_router.include_router(field_memory.router)
 api_router.include_router(water_vault.router)
 api_router.include_router(rotation.router)
+api_router.include_router(sensors.ingest_router)
+api_router.include_router(sensors.router)
+api_router.include_router(users.router)
 api_router.include_router(messages.router)
 api_router.include_router(data_center.router)
 api_router.include_router(dashboard.router)

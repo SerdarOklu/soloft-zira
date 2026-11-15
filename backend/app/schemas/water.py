@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 import uuid
-from datetime import date
+from datetime import date, datetime
+from typing import Literal
 
 from pydantic import BaseModel
 
@@ -50,6 +51,19 @@ class DayRow(BaseModel):
     storage_mm: float
 
 
+class SensorInfo(BaseModel):
+    """What a calibrated field sensor says, next to what the model says (PDT 4.3)."""
+
+    model_mm: float
+    sensor_mm: float
+    difference_mm: float  # sensor minus model
+    measured_at: datetime
+    nodes: int
+    depths_cm: list[int]
+    available_fraction: float
+    band_mm: float
+
+
 class WaterVaultOut(BaseModel):
     field_id: uuid.UUID
     crop: CropInfo
@@ -62,6 +76,9 @@ class WaterVaultOut(BaseModel):
     needs_signoff: list[str]
     # Codes the screen turns into sentences: what this number rests on.
     assumptions: list[str]
+    # sensor: a calibrated sensor corrected the day; satellite: the model state stands.
+    mode: Literal["sensor", "satellite"] = "satellite"
+    sensor: SensorInfo | None = None
     soil_calibrated: bool
     et0_days: int
     et0_blocker: str | None

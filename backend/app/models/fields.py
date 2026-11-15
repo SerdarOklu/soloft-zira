@@ -73,6 +73,10 @@ class Field(UuidPk, CreatedAt, Base):
     created_by: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("users.id", ondelete="SET NULL")
     )
+    # The farmer this field is linked to (phase 7); a farmer sees only their own fields.
+    farmer_user_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL"), index=True
+    )
 
 
 class SoilProfile(UuidPk, CreatedAt, Base):

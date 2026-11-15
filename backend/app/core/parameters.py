@@ -214,6 +214,7 @@ class RotationDemo(BaseModel):
     strategy_c_legume: str
     irrigation_efficiency: DemoIrrigation
     ndvi_cropped_threshold: DemoThreshold
+    sensor_uncertainty_frac: DemoThreshold
     crops: dict[str, DemoCrop]
 
 
