@@ -12,7 +12,7 @@ from fastapi import APIRouter, Depends, Header, HTTPException, Path, status
 from sqlalchemy import func, select
 from sqlalchemy.dialects.postgresql import insert
 
-from app.api.deps import SessionDep, require_roles
+from app.api.deps import ReaderUser, SessionDep, require_roles
 from app.core.config import get_settings
 from app.core.parameters import get_config
 from app.models import Field, Role, SensorCalibration, SensorObservation, User
@@ -158,7 +158,7 @@ def write_calibration(
 
 
 @router.get("/sensors", response_model=SensorStatusOut)
-def sensor_status(field_id: uuid.UUID, session: SessionDep, user: StaffUser) -> SensorStatusOut:
+def sensor_status(field_id: uuid.UUID, session: SessionDep, user: ReaderUser) -> SensorStatusOut:
     """The nodes of a field, their newest reading per depth, and whether the field is in sensor
     mode or has fallen back to satellite mode."""
     field = _field(session, user, field_id)

@@ -33,6 +33,11 @@ const ICONS: Record<ScreenKey, ReactNode> = {
   rotation: <Repeat />,
   messages: <MessageCircle />,
   farmer: <Sprout />,
+  myFields: <MapPinned />,
+  myHistory: <History />,
+  myWater: <Droplets />,
+  myRotation: <Repeat />,
+  myMessages: <MessageCircle />,
   dataCenter: <Database />,
   settings: <Settings />,
 };

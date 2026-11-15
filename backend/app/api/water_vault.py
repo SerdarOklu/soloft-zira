@@ -9,7 +9,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 
-from app.api.deps import SessionDep, require_roles
+from app.api.deps import ReaderUser, SessionDep, require_roles
 from app.core.parameters import get_config
 from app.models import Field, Role, User
 from app.schemas.water import WaterVaultOut
@@ -27,7 +27,7 @@ StaffUser = Annotated[
 def read_water_vault(
     field_id: uuid.UUID,
     session: SessionDep,
-    user: StaffUser,
+    user: ReaderUser,
     crop: Annotated[str, Query(min_length=1, max_length=64)],
     on: Annotated[date | None, Query(alias="date")] = None,
 ) -> WaterVaultOut:

@@ -40,6 +40,10 @@ def get_current_user(
 
 CurrentUser = Annotated[User, Depends(get_current_user)]
 
+# Read-only screens a farmer may open for the fields linked to them. The field filter
+# (``visible_to``) does the scoping; writes keep their staff-only dependencies.
+READER_ROLES = (Role.ADMIN, Role.AGRONOMIST, Role.COOPERATIVE_USER, Role.FARMER)
+
 
 def require_roles(*roles: Role) -> Callable[[User], User]:
     """Dependency factory. Permissions are enforced here, not only in the interface."""
@@ -50,3 +54,6 @@ def require_roles(*roles: Role) -> Callable[[User], User]:
         return user
 
     return checker
+
+
+ReaderUser = Annotated[User, Depends(require_roles(*READER_ROLES))]

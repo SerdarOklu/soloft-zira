@@ -346,9 +346,44 @@ def test_a_farmer_sees_only_their_own_field_and_sent_messages(
     )
     assert [m["body"] for m in summary["messages"]] == ["sent text"]
 
-    # Everything else is closed to a farmer.
-    assert pg_client.get("/api/v1/fields", headers=headers).status_code == 403
-    assert pg_client.get(f"/api/v1/fields/{theirs}", headers=headers).status_code == 403
+    # A farmer reads only the fields linked to them; another field does not exist for them.
+    own = pg_client.get("/api/v1/fields", headers=headers)
+    assert own.status_code == 200 and [f["name"] for f in own.json()] == ["Benim tarlam"]
+    assert pg_client.get(f"/api/v1/fields/{mine}", headers=headers).status_code == 200
+    for path in (
+        f"/api/v1/fields/{theirs}",
+        f"/api/v1/fields/{theirs}/field-memory",
+        f"/api/v1/fields/{theirs}/rotation",
+        f"/api/v1/fields/{theirs}/sensors",
+        f"/api/v1/fields/{theirs}/water-vault?crop=winter_wheat",
+    ):
+        assert pg_client.get(path, headers=headers).status_code == 404, path
+    for path in (
+        f"/api/v1/fields/{mine}/field-memory",
+        f"/api/v1/fields/{mine}/sensors",
+        "/api/v1/reference/crops",
+    ):
+        assert pg_client.get(path, headers=headers).status_code == 200, path
+    # The rotation is allowed; this test field has too little weather to compare (422, not 403/404).
+    rotation = pg_client.get(
+        f"/api/v1/fields/{mine}/rotation?rotation=winter_wheat,fallow", headers=headers
+    )
+    assert rotation.status_code not in (401, 403, 404)
+
+    # Writes and staff-only data stay closed to a farmer.
+    assert pg_client.post("/api/v1/fields", json={}, headers=headers).status_code == 403
+    assert (
+        pg_client.post(f"/api/v1/fields/{mine}/field-memory/fetch", headers=headers).status_code
+        == 403
+    )
+    assert (
+        pg_client.post(
+            f"/api/v1/fields/{mine}/field-memory/confirm", json={}, headers=headers
+        ).status_code
+        == 403
+    )
+    assert pg_client.get(f"/api/v1/fields/{mine}/regional", headers=headers).status_code == 403
+    assert pg_client.get("/api/v1/data-center/sources", headers=headers).status_code == 403
     assert pg_client.get("/api/v1/users", headers=headers).status_code == 403
     assert (
         pg_client.post(

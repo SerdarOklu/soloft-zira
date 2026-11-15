@@ -13,14 +13,24 @@
     "dataCenter": "Data Center",
     "settings": "Users and cooperative",
     "messages": "WhatsApp messages",
-    "farmer": "My field"
+    "farmer": "My home",
+    "myFields": "My fields",
+    "myHistory": "My field history",
+    "myWater": "My soil water",
+    "myRotation": "My planting options",
+    "myMessages": "My messages"
   },
   "dock": {
     "dashboard": "Home",
     "fields": "Fields",
     "waterVault": "Water",
     "rotation": "Rotation",
-    "farmer": "My field"
+    "farmer": "My home",
+    "myFields": "My fields",
+    "myHistory": "My field history",
+    "myWater": "My soil water",
+    "myRotation": "My planting options",
+    "myMessages": "My messages"
   },
   "shell": {
     "home": "Home",
@@ -66,6 +76,50 @@
         "Add a field by drawing its boundary on a map",
         "Soil type, rainfed or irrigated, crop and variety",
         "Field detail page and analysis status"
+      ]
+    },
+    "myFields": {
+      "title": "My fields",
+      "description": "See the fields registered to you.",
+      "items": [
+        "The fields linked to you",
+        "Region, area, soil and farming type",
+        "Status of the NASA data"
+      ]
+    },
+    "myHistory": {
+      "title": "My field history",
+      "description": "See whether your field was cropped or fallow in recent seasons.",
+      "items": [
+        "Cropped or fallow in the latest seasons",
+        "Confidence level and clear image count",
+        "NDVI time series"
+      ]
+    },
+    "myWater": {
+      "title": "My soil water",
+      "description": "Shows how much usable water your soil holds on the decision day.",
+      "items": [
+        "Usable water and the estimated range",
+        "Soil capacity and days of missing data",
+        "Sensor and model comparison"
+      ]
+    },
+    "myRotation": {
+      "title": "My planting options",
+      "description": "Compare how different rotation plans perform on water under the same conditions.",
+      "items": [
+        "Water sufficiency of rotations A, B and C",
+        "Sown and fallow counts, water stress, water deficit",
+        "Rationale, evidence, information gap and local review risk"
+      ]
+    },
+    "myMessages": {
+      "title": "My messages",
+      "description": "The updates Zira has sent you.",
+      "items": [
+        "Messages approved by an agronomist",
+        "Type, field and time of each message"
       ]
     },
     "fieldMemory": {
@@ -325,6 +379,7 @@
     "alfalfa_hay": "Alfalfa (hay)"
   },
   "waterVault": {
+    "technical": "Technical details (FAO-56)",
     "form": {
       "field": "Field",
       "crop": "Crop",
@@ -430,6 +485,10 @@
   "system": {
     "backHome": "Back to home",
     "retry": "Try again"
+  },
+  "myRotation": {
+    "denominator": "The figures are computed over different numbers of sowings (one plan may sow rarely, another often). Do not choose by the ratios alone; these results are not a firm planting recommendation.",
+    "detail": "See details"
   },
   "rotation": {
     "form": {
@@ -759,11 +818,13 @@
   },
   "farmerView": {
     "hello": "Hello {name}",
+    "areaHa": "{value} ha",
+    "fillAria": "How full the soil capacity is",
     "noFields": "No field is linked to you. Talk to your cooperative.",
-    "waterTitle": "Usable water",
+    "waterTitle": "Usable water in my soil",
     "mm": "{value} mm",
     "ofCapacity": "{percent}% of the {capacity} mm capacity",
-    "range": "Likely range {low}–{high} mm",
+    "range": "Estimated range {low}–{high} mm",
     "asOf": "As of {date}",
     "lastData": "Last day of NASA data: {date}",
     "mode": {

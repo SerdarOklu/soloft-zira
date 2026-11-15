@@ -7,7 +7,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 
-from app.api.deps import require_roles
+from app.api.deps import ReaderUser, require_roles
 from app.core.parameters import get_config
 from app.models import Role, User
 from app.schemas.water import CropOption
@@ -27,7 +27,7 @@ class SoilOut(BaseModel):
 
 
 @router.get("/crops", response_model=list[CropOption])
-def crops(_user: StaffUser) -> list[CropOption]:
+def crops(_user: ReaderUser) -> list[CropOption]:
     """The crops of config/crops.yaml, and whether their season can be run yet."""
     return crop_options(get_config())
 

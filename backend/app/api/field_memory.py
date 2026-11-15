@@ -14,7 +14,7 @@ from typing import Annotated, Literal
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import func, select
 
-from app.api.deps import SessionDep, require_roles
+from app.api.deps import ReaderUser, SessionDep, require_roles
 from app.api.fields import job_out
 from app.core.parameters import get_config
 from app.models import (
@@ -198,7 +198,7 @@ def build(session: SessionDep, field: Field, choice: SourceChoice = "auto") -> F
 def read_field_memory(
     field_id: uuid.UUID,
     session: SessionDep,
-    user: StaffUser,
+    user: ReaderUser,
     source: Annotated[SourceChoice, Query()] = "auto",
 ) -> FieldMemoryOut:
     return build(session, _field(session, user, field_id), source)

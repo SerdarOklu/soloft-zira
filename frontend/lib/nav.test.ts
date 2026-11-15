@@ -10,7 +10,9 @@ const keys = (role: Parameters<typeof screensFor>[0]) => screensFor(role).map((s
 describe('menu per role (PDT section 10.3)', () => {
   it('shows an admin every screen', () => {
     // The farmer screen is the farmer's own; everything else is the admin's.
-    expect(keys('admin')).toEqual(SCREENS.filter((s) => s.key !== 'farmer').map((s) => s.key));
+    expect(keys('admin')).toEqual(
+      SCREENS.filter((s) => !['farmer', 'myFields', 'myHistory', 'myWater', 'myRotation', 'myMessages'].includes(s.key)).map((s) => s.key),
+    );
   });
 
   it('hides user management from an agronomist', () => {
@@ -24,11 +26,12 @@ describe('menu per role (PDT section 10.3)', () => {
     expect(canOpen('cooperative_user', 'dataCenter')).toBe(false);
   });
 
-  it('gives a farmer only their own screen', () => {
-    expect(keys('farmer')).toEqual(['farmer']);
+  it('gives a farmer only their own screens', () => {
+    expect(keys('farmer')).toEqual(['farmer', 'myFields', 'myHistory', 'myWater', 'myRotation', 'myMessages']);
     expect(canOpen('farmer', 'dashboard')).toBe(false);
     expect(canOpen('farmer', 'fields')).toBe(false);
     expect(canOpen('agronomist', 'farmer')).toBe(false);
+    expect(canOpen('agronomist', 'myFields')).toBe(false);
   });
 
   it('keeps the dock to at most four destinations', () => {

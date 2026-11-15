@@ -378,3 +378,339 @@
   display: grid;
   gap: var(--uds-space-2);
 }
+
+/*
+ * Farmer screens: a warm, flat look. These tokens are scoped to .zira-farm, so the staff
+ * screens and the approved accent (docs/decisions/0004) are untouched. Colour never carries
+ * a meaning on its own: every state also has words.
+ */
+.zira-farm {
+  --zf-green-deep: #244b27;
+  --zf-leaf-dark: #4d6a2d;
+  --zf-leaf: #8aae4a;
+  --zf-leaf-light: #c6dc9a;
+  --zf-leaf-faint: #dcecc0;
+  --zf-cream: #faf7ee;
+  --zf-soil: #8b6543;
+  --zf-soil-light: #b58a5c;
+  --zf-water: #249ed0;
+  --zf-water-faint: #dff1fa;
+  --zf-sun: #f2c14e;
+  --zf-sky: #e9f4f7;
+  --zf-warning: #d78a29;
+  --zf-ink: #1f2a1c;
+  --zf-ink-soft: #55604f;
+  --zf-line: #e4dcc4;
+  --zf-radius: 1.25rem;
+  color: var(--zf-ink);
+}
+
+[data-uds-mode='dark'] .zira-farm {
+  --zf-cream: #1d241b;
+  --zf-leaf-faint: #2b3a25;
+  --zf-water-faint: #17323f;
+  --zf-sky: #1b2f36;
+  --zf-line: #3a4535;
+  --zf-ink: #eef3e6;
+  --zf-ink-soft: #b3bfa8;
+  --zf-green-deep: #cfe6a4;
+}
+
+.zira-farm .zira-farm-banner {
+  position: relative;
+  overflow: hidden;
+  min-height: 12rem;
+  padding: var(--uds-space-6) var(--uds-space-6) 5.5rem;
+  border-radius: var(--zf-radius);
+  background: var(--zf-sky);
+}
+
+.zira-farm .zira-farm-banner > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.zira-farm .zira-farm-banner > div {
+  position: relative;
+  z-index: 1;
+  max-width: 28rem;
+}
+
+.zira-farm .zira-farm-title {
+  margin: 0;
+  color: var(--zf-green-deep);
+  font-size: clamp(1.75rem, 4vw, 2rem);
+  font-weight: var(--uds-font-weight-semibold);
+  line-height: 1.15;
+}
+
+.zira-farm .zira-farm-lede {
+  margin: var(--uds-space-2) 0 0;
+  color: var(--zf-ink);
+  font-size: 1rem;
+}
+
+.zira-farm .zira-farm-card {
+  display: grid;
+  gap: var(--uds-space-4);
+  padding: var(--uds-space-6);
+  border: 1px solid var(--zf-line);
+  border-radius: var(--zf-radius);
+  background: var(--zf-cream);
+}
+
+.zira-farm .zira-farm-card h2,
+.zira-farm .zira-farm-card h3 {
+  margin: 0;
+  color: var(--zf-green-deep);
+  font-size: 1.125rem;
+  font-weight: var(--uds-font-weight-semibold);
+}
+
+.zira-farm .zira-farm-fieldhead {
+  display: flex;
+  gap: var(--uds-space-4);
+  align-items: center;
+}
+
+.zira-farm .zira-farm-fieldhead svg {
+  flex: none;
+  width: 5rem;
+  height: auto;
+}
+
+.zira-farm .zira-farm-meta {
+  margin: 0;
+  color: var(--zf-ink-soft);
+  font-size: 0.875rem;
+}
+
+.zira-farm .zira-farm-water {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--uds-space-4);
+  align-items: center;
+}
+
+.zira-farm .zira-farm-water > svg {
+  width: 3.5rem;
+  height: auto;
+}
+
+.zira-farm .zira-farm-figure {
+  margin: 0;
+  color: var(--zf-ink);
+  font-size: clamp(2.25rem, 8vw, 2.75rem);
+  font-weight: var(--uds-font-weight-semibold);
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+
+.zira-farm .zira-farm-bar {
+  height: 0.75rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--zf-water-faint);
+}
+
+.zira-farm .zira-farm-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--zf-water);
+}
+
+.zira-farm .zira-farm-range {
+  display: inline-block;
+  padding: var(--uds-space-1) var(--uds-space-3);
+  border-radius: 999px;
+  background: var(--zf-leaf-faint);
+  color: var(--zf-green-deep);
+  font-size: 0.875rem;
+}
+
+.zira-farm .zira-farm-note {
+  display: flex;
+  gap: var(--uds-space-3);
+  align-items: flex-start;
+  padding: var(--uds-space-3) var(--uds-space-4);
+  border-radius: var(--uds-radius-md);
+  background: var(--zf-water-faint);
+  color: var(--zf-ink);
+  font-size: 0.9375rem;
+}
+
+.zira-farm .zira-farm-note--warn {
+  border-left: 4px solid var(--zf-warning);
+  background: var(--zf-leaf-faint);
+}
+
+@media (max-width: 40rem) {
+  .zira-farm .zira-farm-card {
+    padding: var(--uds-space-4);
+  }
+}
+
+/* Facts of a field card: label above value, two columns on a phone, four on a wide screen. */
+.zira-farm .zira-farm-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--uds-space-4);
+  margin: 0;
+}
+
+.zira-farm .zira-farm-facts dt {
+  color: var(--zf-ink-soft);
+  font-size: 0.8125rem;
+}
+
+.zira-farm .zira-farm-facts dd {
+  margin: var(--uds-space-1) 0 0;
+  color: var(--zf-ink);
+  font-size: 1rem;
+  font-weight: var(--uds-font-weight-medium);
+}
+
+@media (min-width: 48rem) {
+  .zira-farm .zira-farm-facts {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Field history: one row per season, state shown in words and a left edge colour. */
+.zira-farm .zira-farm-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--uds-space-2);
+}
+
+.zira-farm .zira-farm-tabs a {
+  padding: var(--uds-space-2) var(--uds-space-4);
+  border: 1px solid var(--zf-line);
+  border-radius: 999px;
+  background: var(--zf-cream);
+  color: var(--zf-ink);
+  text-decoration: none;
+}
+
+.zira-farm .zira-farm-tabs a[aria-current='page'] {
+  background: var(--zf-leaf-faint);
+  border-color: var(--zf-leaf-dark);
+  font-weight: var(--uds-font-weight-semibold);
+}
+
+.zira-farm .zira-farm-seasons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: var(--uds-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.zira-farm .zira-farm-season {
+  display: grid;
+  gap: var(--uds-space-2);
+  align-content: start;
+  justify-items: start;
+  padding: var(--uds-space-3) var(--uds-space-4);
+  border: 1px solid var(--zf-line);
+  border-left: 6px solid var(--zf-line);
+  border-radius: var(--uds-radius-md);
+  background: var(--zf-cream);
+}
+
+.zira-farm .zira-farm-season--cropped {
+  border-left-color: var(--zf-leaf);
+  background: var(--zf-leaf-faint);
+}
+
+.zira-farm .zira-farm-season--fallow {
+  border-left-color: var(--zf-soil-light);
+}
+
+.zira-farm .zira-farm-season--unknown {
+  border-left-color: var(--zf-warning);
+}
+
+/* Water screen: two small cards side by side, details folded away. */
+.zira-farm .zira-farm-facts-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--uds-space-4);
+}
+
+.zira-farm .zira-farm-figure--small {
+  font-size: 1.75rem;
+}
+
+.zira-farm .zira-farm-details > summary {
+  cursor: pointer;
+  color: var(--zf-green-deep);
+  font-size: 1.125rem;
+  font-weight: var(--uds-font-weight-semibold);
+}
+
+.zira-farm .zira-farm-details[open] > summary {
+  margin-bottom: var(--uds-space-4);
+}
+
+/* Rotation cards: one column on a phone, three on a wide screen. */
+.zira-farm.zira-farm--wide {
+  max-width: 72rem;
+}
+
+.zira-farm .zira-farm-strategies {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--uds-space-4);
+}
+
+@media (min-width: 64rem) {
+  .zira-farm .zira-farm-strategies {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.zira-farm .zira-farm-strategy {
+  align-content: start;
+}
+
+.zira-farm .zira-farm-strategy .zira-farm-figure {
+  font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+  line-height: 1.2;
+}
+
+/* Messages: one card per message, with an icon tile; the text is shown as sent. */
+.zira-farm .zira-farm-messages {
+  display: grid;
+  gap: var(--uds-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.zira-farm .zira-farm-message-head {
+  display: flex;
+  gap: var(--uds-space-3);
+  align-items: center;
+}
+
+.zira-farm .zira-farm-message-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--zf-leaf-faint);
+  color: var(--zf-green-deep);
+}
+
+.zira-farm .zira-farm-message-icon svg {
+  width: 1.375rem;
+  height: 1.375rem;
+}

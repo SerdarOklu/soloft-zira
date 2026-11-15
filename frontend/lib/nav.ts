@@ -12,6 +12,11 @@ export type ScreenKey =
   | 'rotation'
   | 'messages'
   | 'farmer'
+  | 'myFields'
+  | 'myHistory'
+  | 'myWater'
+  | 'myRotation'
+  | 'myMessages'
   | 'dataCenter'
   | 'settings';
 
@@ -35,6 +40,12 @@ export const SCREENS: readonly Screen[] = [
   { key: 'rotation', href: '/rotation', roles: STAFF, phase: 6 },
   { key: 'messages', href: '/messages', roles: ['admin', 'agronomist'], phase: 6 },
   { key: 'farmer', href: '/farmer', roles: ['farmer'], phase: 7 },
+  // The farmer's own list of cards; staff open the same address as 'fields'.
+  { key: 'myFields', href: '/fields', roles: ['farmer'], phase: 7 },
+  { key: 'myHistory', href: '/field-memory', roles: ['farmer'], phase: 7 },
+  { key: 'myWater', href: '/water-vault', roles: ['farmer'], phase: 7 },
+  { key: 'myRotation', href: '/rotation', roles: ['farmer'], phase: 7 },
+  { key: 'myMessages', href: '/messages', roles: ['farmer'], phase: 7 },
   { key: 'dataCenter', href: '/data-center', roles: ['admin', 'agronomist'], phase: 3 },
   { key: 'settings', href: '/settings', roles: ['admin', 'cooperative_user'], phase: 7, bottom: true },
 ];
@@ -49,6 +60,6 @@ export function canOpen(role: Role, key: ScreenKey): boolean {
 
 /** Up to four destinations for the mobile dock, in menu order. */
 export function dockScreensFor(role: Role): Screen[] {
-  const preferred: ScreenKey[] = ['dashboard', 'fields', 'waterVault', 'rotation', 'farmer'];
+  const preferred: ScreenKey[] = ['dashboard', 'fields', 'waterVault', 'rotation', 'farmer', 'myFields'];
   return screensFor(role).filter((screen) => preferred.includes(screen.key));
 }

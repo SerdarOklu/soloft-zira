@@ -8,7 +8,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 
-from app.api.deps import SessionDep, require_roles
+from app.api.deps import ReaderUser, SessionDep, require_roles
 from app.core.parameters import get_config
 from app.models import CropCycle, CycleSource, Field, Role, User
 from app.schemas.rotation import RotationOut
@@ -49,7 +49,7 @@ StaffUser = Annotated[
 def read_rotation(
     field_id: uuid.UUID,
     session: SessionDep,
-    user: StaffUser,
+    user: ReaderUser,
     rotation: Annotated[str | None, Query(max_length=200)] = None,
 ) -> RotationOut:
     """Strategies A, B and C over the stored weather record.

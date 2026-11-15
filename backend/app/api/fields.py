@@ -12,7 +12,7 @@ from geoalchemy2 import Geography
 from sqlalchemy import Row, cast, extract, func, select, update
 from sqlalchemy.exc import IntegrityError
 
-from app.api.deps import SessionDep, require_roles
+from app.api.deps import ReaderUser, SessionDep, require_roles
 from app.core.parameters import get_config
 from app.models import (
     DataFetchJob,
@@ -115,7 +115,7 @@ def job_out(job: DataFetchJob, source: str, field: Field | None = None) -> JobOu
 
 
 @router.get("", response_model=list[FieldOut])
-def list_fields(session: SessionDep, user: StaffUser) -> list[FieldOut]:
+def list_fields(session: SessionDep, user: ReaderUser) -> list[FieldOut]:
     rows = session.execute(
         _select_fields().where(visible_to(user)).order_by(Field.created_at.desc())
     ).all()
@@ -184,7 +184,7 @@ def create_field(body: FieldCreate, session: SessionDep, user: StaffUser) -> Fie
 
 
 @router.get("/{field_id}", response_model=FieldOut)
-def get_field(field_id: uuid.UUID, session: SessionDep, user: StaffUser) -> FieldOut:
+def get_field(field_id: uuid.UUID, session: SessionDep, user: ReaderUser) -> FieldOut:
     return _load(session, user, field_id)
 
 

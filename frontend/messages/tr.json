@@ -13,14 +13,24 @@
     "dataCenter": "Veri Merkezi",
     "settings": "Kullanıcılar ve kooperatif",
     "messages": "WhatsApp mesajları",
-    "farmer": "Tarlam"
+    "farmer": "Ana Sayfam",
+    "myFields": "Tarlalarım",
+    "myHistory": "Tarla Geçmişim",
+    "myWater": "Toprağımın Suyu",
+    "myRotation": "Ekim Seçeneklerim",
+    "myMessages": "Mesajlarım"
   },
   "dock": {
     "dashboard": "Özet",
     "fields": "Tarlalar",
     "waterVault": "Su Kasası",
     "rotation": "Rotasyon",
-    "farmer": "Tarlam"
+    "farmer": "Ana Sayfam",
+    "myFields": "Tarlalarım",
+    "myHistory": "Tarla Geçmişim",
+    "myWater": "Toprağımın Suyu",
+    "myRotation": "Ekim Seçeneklerim",
+    "myMessages": "Mesajlarım"
   },
   "shell": {
     "home": "Ana sayfa",
@@ -66,6 +76,50 @@
         "Harita üzerinde sınır çizerek yeni tarla ekleme",
         "Toprak tipi, kuru ya da sulu tarım, ürün ve çeşit",
         "Tarla detay sayfası ve analiz durumu"
+      ]
+    },
+    "myFields": {
+      "title": "Tarlalarım",
+      "description": "Kayıtlı tarlalarınızı buradan görüntüleyin.",
+      "items": [
+        "Size bağlı tarlalar",
+        "Bölge, alan, toprak ve tarım şekli",
+        "NASA verisinin durumu"
+      ]
+    },
+    "myHistory": {
+      "title": "Tarla Geçmişim",
+      "description": "Tarlanızın son sezonlarda ekili mi nadas mı olduğunu görün.",
+      "items": [
+        "Son sezonların ekili ve nadas durumu",
+        "Güven düzeyi ve temiz görüntü sayısı",
+        "NDVI zaman serisi"
+      ]
+    },
+    "myWater": {
+      "title": "Toprağımın Suyu",
+      "description": "Karar gününde toprağınızda ne kadar kullanılabilir su olduğunu gösterir.",
+      "items": [
+        "Kullanılabilir su ve tahmini aralık",
+        "Toprak kapasitesi ve eksik veri günleri",
+        "Sensör ve model karşılaştırması"
+      ]
+    },
+    "myRotation": {
+      "title": "Ekim Seçeneklerim",
+      "description": "Aynı koşullarda farklı rotasyon düzenlerinin su performansını karşılaştırın.",
+      "items": [
+        "A, B ve C rotasyonlarının su yeterliliği",
+        "Ekim ve nadas sayıları, su stresi, su açığı",
+        "Gerekçe, kanıt, bilgi boşluğu ve yerel inceleme riski"
+      ]
+    },
+    "myMessages": {
+      "title": "Mesajlarım",
+      "description": "Zira'dan size gönderilen bilgilendirmeler.",
+      "items": [
+        "Ziraat mühendisinin onayladığı mesajlar",
+        "Mesajın türü, tarlası ve gönderim zamanı"
       ]
     },
     "fieldMemory": {
@@ -325,6 +379,7 @@
     "alfalfa_hay": "Yonca (kuru ot)"
   },
   "waterVault": {
+    "technical": "Teknik ayrıntılar (FAO-56)",
     "form": {
       "field": "Tarla",
       "crop": "Ürün",
@@ -430,6 +485,10 @@
   "system": {
     "backHome": "Ana sayfaya dön",
     "retry": "Yeniden dene"
+  },
+  "myRotation": {
+    "denominator": "Rakamlar farklı sayıda ekim üzerinden hesaplanır (örneğin bir düzende az ama her seferinde ekim yapılır, diğerinde çok ekim vardır). Yalnızca oranlara bakıp seçim yapmayın; bu sonuçlar kesin bir ekim tavsiyesi değildir.",
+    "detail": "Detayı gör"
   },
   "rotation": {
     "form": {
@@ -759,11 +818,13 @@
   },
   "farmerView": {
     "hello": "Merhaba {name}",
+    "areaHa": "{value} ha",
+    "fillAria": "Toprak kapasitesinin dolu kısmı",
     "noFields": "Size bağlı bir tarla yok. Kooperatifinizle konuşun.",
-    "waterTitle": "Kullanılabilir su",
+    "waterTitle": "Toprağımda kullanılabilir su",
     "mm": "{value} mm",
     "ofCapacity": "{capacity} mm kapasitenin %{percent}'i",
-    "range": "Olası aralık {low}–{high} mm",
+    "range": "Tahmini aralık {low}–{high} mm",
     "asOf": "{date} itibarıyla",
     "lastData": "NASA verisinin son günü: {date}",
     "mode": {
