@@ -19,6 +19,10 @@ class Settings(BaseSettings):
     redis_url: str = "redis://localhost:6379/0"
     secret_key: str = INSECURE_SECRET
     access_token_ttl_minutes: int = 720
+    # A farmer who signed in with a link or a WhatsApp code stays signed in on that phone.
+    farmer_session_days: int = 30
+    login_link_ttl_hours: int = 24
+    login_code_ttl_minutes: int = 10
     power_base_url: str = "https://power.larc.nasa.gov/api/temporal/daily/point"
     # The shared key a sensor node or the simulator sends in X-Sensor-Key. Empty turns ingest off.
     sensor_ingest_key: str = ""

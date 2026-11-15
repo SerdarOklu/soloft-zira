@@ -4,7 +4,7 @@ Importing this package registers every table on ``Base.metadata``; Alembic and t
 tests rely on that.
 """
 
-from app.models.accounts import Organization, OrganizationType, Role, User
+from app.models.accounts import LoginToken, Organization, OrganizationType, Role, User
 from app.models.analysis import (
     AnalysisRun,
     RotationScenario,
@@ -49,6 +49,7 @@ __all__ = [
     "FarmerConstraint",
     "Field",
     "JobStatus",
+    "LoginToken",
     "MessageDraft",
     "Organization",
     "OrganizationType",

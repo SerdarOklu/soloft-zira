@@ -479,8 +479,38 @@
     "errors": {
       "invalid_credentials": "E-posta ya da parola hatalı.",
       "backend_unreachable": "Sunucuya ulaşılamıyor. Biraz sonra yeniden deneyin.",
-      "generic": "Giriş yapılamadı. Yeniden deneyin."
-    }
+      "generic": "Giriş yapılamadı. Yeniden deneyin.",
+      "invalid_phone": "Telefon numarasını kontrol edin (alan kodu ile birlikte).",
+      "invalid_code": "Kod hatalı ya da süresi dolmuş. Yeni kod isteyebilirsiniz.",
+      "code_unavailable": "WhatsApp kodu şu an gönderilemiyor. Kooperatifinizden giriş linki isteyin.",
+      "invalid_link": "Bu giriş linki geçersiz, kullanılmış ya da süresi dolmuş. Kooperatifinizden yeni link isteyin."
+    },
+    "welcome": "Zira'ya Hoş Geldiniz",
+    "welcomeLead": "Tarlanızla ilgili bilgilere kolayca ulaşın.",
+    "wayLabel": "Giriş türü",
+    "ways": {
+      "farmer": "Çiftçi girişi",
+      "staff": "Mühendis ve yönetici girişi"
+    },
+    "staffTitle": "Hesabınızla giriş",
+    "phoneTitle": "Telefon numaranız",
+    "phoneDescription": "Numaranızı yazın, WhatsApp'tan size 6 haneli bir kod gönderelim. Şifre gerekmez.",
+    "phoneLabel": "Telefon numarası",
+    "phonePlaceholder": "05xx xxx xx xx",
+    "sendCode": "Kodu gönder",
+    "linkHint": "Numaranız kayıtlı değilse ya da kod gelmiyorsa kooperatifinizden giriş linki isteyin.",
+    "codeTitle": "Kodu girin",
+    "codeDescription": "{phone} numarasına WhatsApp ile gönderdiğimiz 6 haneli kodu girin.",
+    "codeLabel": "WhatsApp kodu",
+    "codeSubmit": "Giriş yap",
+    "resend": "Yeni kod gönder",
+    "noCode": "Kod gelmediyse yeni kod isteyin ya da kooperatifinizden giriş linki isteyin.",
+    "changeNumber": "Numarayı değiştir",
+    "linkTitle": "Zira'ya giriş",
+    "linkDescription": "Giriş linkiniz hazır. Devam etmek için aşağıdaki düğmeye dokunun.",
+    "linkSubmit": "Giriş yap",
+    "linkProblem": "Giriş linki kullanılamıyor",
+    "backToLogin": "Giriş ekranına dön"
   },
   "system": {
     "backHome": "Ana sayfaya dön",
@@ -782,16 +812,19 @@
       "name": "Ad soyad",
       "email": "E-posta",
       "password": "Geçici şifre",
-      "passwordHint": "En az 10 karakter. Çiftçiye siz iletirsiniz.",
+      "passwordHint": "Boş bırakırsanız çiftçi şifresiz girer: WhatsApp kodu ya da giriş linki ile. Yazarsanız en az 10 karakter.",
       "submit": "Hesabı oluştur",
-      "done": "Çiftçi hesabı oluşturuldu."
+      "done": "Çiftçi hesabı oluşturuldu.",
+      "phone": "Telefon (WhatsApp)",
+      "phoneHint": "Çiftçi bu numaraya gelen kodla girer."
     },
     "columns": {
       "name": "Ad",
       "email": "E-posta",
       "fields": "Tarla",
       "status": "Durum",
-      "actions": ""
+      "actions": "",
+      "phone": "Telefon"
     },
     "active": "Aktif",
     "inactive": "Kapalı",
@@ -813,8 +846,16 @@
       "no_organization": "Hesabınız bir kooperatife bağlı değil.",
       "not_a_farmer": "Yalnızca çiftçi hesabına tarla bağlanır.",
       "cannot_deactivate_yourself": "Kendi hesabınızı kapatamazsınız.",
-      "unknown_organization": "Bilinmeyen kurum."
-    }
+      "unknown_organization": "Bilinmeyen kurum.",
+      "phone_taken": "Bu telefon numarası başka bir hesapta kayıtlı.",
+      "invalid_phone": "Telefon numarasını kontrol edin (alan kodu ile birlikte).",
+      "password_required": "Bu rol için şifre gerekir."
+    },
+    "loginLink": "Giriş linki",
+    "loginLinkReady": "Giriş linki hazır. Bir kez gösterilir; çiftçiye kendiniz iletin.",
+    "loginLinkExpires": "{date} tarihine kadar geçerli, tek kullanımlık.",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı"
   },
   "farmerView": {
     "hello": "Merhaba {name}",

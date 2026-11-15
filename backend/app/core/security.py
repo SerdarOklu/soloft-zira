@@ -27,14 +27,16 @@ def verify_password(password: str, password_hash: str) -> bool:
         return False
 
 
-def create_access_token(user_id: uuid.UUID, role: str, now: datetime | None = None) -> str:
+def create_access_token(
+    user_id: uuid.UUID, role: str, now: datetime | None = None, ttl: timedelta | None = None
+) -> str:
     settings = get_settings()
     issued = now or datetime.now(UTC)
     payload = {
         "sub": str(user_id),
         "role": role,
         "iat": issued,
-        "exp": issued + timedelta(minutes=settings.access_token_ttl_minutes),
+        "exp": issued + (ttl or timedelta(minutes=settings.access_token_ttl_minutes)),
     }
     return jwt.encode(payload, settings.secret_key, algorithm=ALGORITHM)
 

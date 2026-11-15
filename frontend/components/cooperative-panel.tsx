@@ -16,13 +16,15 @@ import {
   TableHeaderCell,
   TableRow,
 } from '@soloft/uds';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useState, type FormEvent } from 'react';
 
 import { useRouter } from '@/i18n/navigation';
+import { formatDateTime } from '@/lib/format';
 import type { UserOut } from '@/lib/types';
 
 type Notice = { tone: 'danger' | 'success'; text: string };
+type IssuedLink = { name: string; url: string; expires: string };
 
 interface FieldRow {
   id: string;
@@ -33,7 +35,11 @@ interface FieldRow {
 /** The cooperative's farmers: create an account, close or open it, and link fields to farmers. */
 export function CooperativePanel({ farmers, fields }: { farmers: UserOut[]; fields: FieldRow[] }) {
   const t = useTranslations('cooperative');
+  const locale = useLocale();
   const router = useRouter();
+  const [phone, setPhone] = useState('');
+  const [issued, setIssued] = useState<IssuedLink | null>(null);
+  const [copied, setCopied] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -68,12 +74,54 @@ export function CooperativePanel({ farmers, fields }: { farmers: UserOut[]; fiel
     }
   }
 
+  async function makeLink(farmer: UserOut) {
+    setBusy(true);
+    setNotice(null);
+    setCopied(false);
+    try {
+      const response = await fetch(`/api/backend/users/${farmer.id}/login-link`, { method: 'POST' });
+      if (!response.ok) {
+        const json = (await response.json().catch(() => null)) as { detail?: { code?: string } } | null;
+        const code = json?.detail?.code;
+        setNotice({
+          tone: 'danger',
+          text: t(code && t.has(`errors.${code}`) ? `errors.${code}` : 'errors.generic'),
+        });
+        return;
+      }
+      const link = (await response.json()) as { token: string; expires_at: string };
+      setIssued({
+        name: farmer.name,
+        url: `${window.location.origin}/${locale}/login/link?token=${encodeURIComponent(link.token)}`,
+        expires: link.expires_at,
+      });
+    } catch {
+      setNotice({ tone: 'danger', text: t('errors.generic') });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function copyLink() {
+    if (!issued) return;
+    try {
+      await navigator.clipboard.writeText(issued.url);
+      setCopied(true);
+    } catch {
+      setCopied(false);
+    }
+  }
+
   async function create(event: FormEvent) {
     event.preventDefault();
-    if (await call('/users', 'POST', { name, email, password, role: 'farmer' })) {
+    const body: Record<string, unknown> = { name, email, role: 'farmer' };
+    if (password) body.password = password;
+    if (phone.trim()) body.phone = phone;
+    if (await call('/users', 'POST', body)) {
       setName('');
       setEmail('');
       setPassword('');
+      setPhone('');
       setNotice({ tone: 'success', text: t('create.done') });
     }
   }
@@ -90,6 +138,16 @@ export function CooperativePanel({ farmers, fields }: { farmers: UserOut[]; fiel
           <Field label={t('create.email')}>
             <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </Field>
+          <Field label={t('create.phone')} hint={t('create.phoneHint')}>
+            <Input
+              type="tel"
+              inputMode="tel"
+              autoComplete="off"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              maxLength={32}
+            />
+          </Field>
           <Field label={t('create.password')} hint={t('create.passwordHint')}>
             <Input
               type="password"
@@ -97,7 +155,6 @@ export function CooperativePanel({ farmers, fields }: { farmers: UserOut[]; fiel
               value={password}
               minLength={10}
               onChange={(e) => setPassword(e.target.value)}
-              required
             />
           </Field>
           <Button type="submit" loading={busy}>
@@ -105,6 +162,28 @@ export function CooperativePanel({ farmers, fields }: { farmers: UserOut[]; fiel
           </Button>
         </form>
       </Section>
+
+      {issued && (
+        <Alert tone="info" title={`${t('loginLink')}: ${issued.name}`}>
+          <div className="zira-stack">
+            <p>{t('loginLinkReady')}</p>
+            <p>
+              <code style={{ overflowWrap: 'anywhere' }}>{issued.url}</code>
+            </p>
+            <p className="zira-muted">
+              {t('loginLinkExpires', { date: formatDateTime(issued.expires, locale) })}
+            </p>
+            <div className="zira-actions">
+              <Button size="sm" onClick={() => void copyLink()}>
+                {copied ? t('copied') : t('copy')}
+              </Button>
+              <Button size="sm" variant="secondary" onClick={() => setIssued(null)}>
+                OK
+              </Button>
+            </div>
+          </div>
+        </Alert>
+      )}
 
       <Section title={t('farmersTitle')}>
         {farmers.length === 0 ? (
@@ -116,6 +195,7 @@ export function CooperativePanel({ farmers, fields }: { farmers: UserOut[]; fiel
                 <TableRow>
                   <TableHeaderCell>{t('columns.name')}</TableHeaderCell>
                   <TableHeaderCell>{t('columns.email')}</TableHeaderCell>
+                  <TableHeaderCell>{t('columns.phone')}</TableHeaderCell>
                   <TableHeaderCell align="end">{t('columns.fields')}</TableHeaderCell>
                   <TableHeaderCell>{t('columns.status')}</TableHeaderCell>
                   <TableHeaderCell>{t('columns.actions')}</TableHeaderCell>
@@ -126,6 +206,7 @@ export function CooperativePanel({ farmers, fields }: { farmers: UserOut[]; fiel
                   <TableRow key={farmer.id}>
                     <TableCell>{farmer.name}</TableCell>
                     <TableCell>{farmer.email}</TableCell>
+                    <TableCell>{farmer.phone ?? '—'}</TableCell>
                     <TableCell numeric>{farmer.field_count}</TableCell>
                     <TableCell>
                       <Badge tone={farmer.is_active ? 'success' : 'neutral'}>
@@ -133,6 +214,16 @@ export function CooperativePanel({ farmers, fields }: { farmers: UserOut[]; fiel
                       </Badge>
                     </TableCell>
                     <TableCell>
+                      <div className="zira-actions">
+                      {farmer.is_active && (
+                        <Button
+                          size="sm"
+                          disabled={busy}
+                          onClick={() => void makeLink(farmer)}
+                        >
+                          {t('loginLink')}
+                        </Button>
+                      )}
                       <Button
                         size="sm"
                         variant="secondary"
@@ -143,6 +234,7 @@ export function CooperativePanel({ farmers, fields }: { farmers: UserOut[]; fiel
                       >
                         {t(farmer.is_active ? 'deactivate' : 'activate')}
                       </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}

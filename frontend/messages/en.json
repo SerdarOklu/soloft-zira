@@ -479,8 +479,38 @@
     "errors": {
       "invalid_credentials": "Incorrect email or password.",
       "backend_unreachable": "The server cannot be reached. Try again shortly.",
-      "generic": "Could not sign in. Try again."
-    }
+      "generic": "Could not sign in. Try again.",
+      "invalid_phone": "Check the phone number (with the area code).",
+      "invalid_code": "The code is wrong or has expired. You can ask for a new one.",
+      "code_unavailable": "The WhatsApp code cannot be sent right now. Ask your cooperative for a sign-in link.",
+      "invalid_link": "This sign-in link is invalid, already used or expired. Ask your cooperative for a new one."
+    },
+    "welcome": "Welcome to Zira",
+    "welcomeLead": "Reach the information about your field with ease.",
+    "wayLabel": "Sign-in type",
+    "ways": {
+      "farmer": "Farmer sign-in",
+      "staff": "Agronomist and admin sign-in"
+    },
+    "staffTitle": "Sign in with your account",
+    "phoneTitle": "Your phone number",
+    "phoneDescription": "Enter your number and we will send a 6-digit code on WhatsApp. No password needed.",
+    "phoneLabel": "Phone number",
+    "phonePlaceholder": "05xx xxx xx xx",
+    "sendCode": "Send code",
+    "linkHint": "If your number is not registered or no code arrives, ask your cooperative for a sign-in link.",
+    "codeTitle": "Enter the code",
+    "codeDescription": "Enter the 6-digit code we sent to {phone} on WhatsApp.",
+    "codeLabel": "WhatsApp code",
+    "codeSubmit": "Sign in",
+    "resend": "Send a new code",
+    "noCode": "If no code arrives, ask for a new one or ask your cooperative for a sign-in link.",
+    "changeNumber": "Change number",
+    "linkTitle": "Sign in to Zira",
+    "linkDescription": "Your sign-in link is ready. Tap the button below to continue.",
+    "linkSubmit": "Sign in",
+    "linkProblem": "The sign-in link cannot be used",
+    "backToLogin": "Back to sign-in"
   },
   "system": {
     "backHome": "Back to home",
@@ -782,16 +812,19 @@
       "name": "Full name",
       "email": "Email",
       "password": "Temporary password",
-      "passwordHint": "At least 10 characters. You pass it to the farmer.",
+      "passwordHint": "Leave empty and the farmer signs in without a password: a WhatsApp code or a sign-in link. If you set one, at least 10 characters.",
       "submit": "Create account",
-      "done": "Farmer account created."
+      "done": "Farmer account created.",
+      "phone": "Phone (WhatsApp)",
+      "phoneHint": "The farmer signs in with the code sent to this number."
     },
     "columns": {
       "name": "Name",
       "email": "Email",
       "fields": "Fields",
       "status": "Status",
-      "actions": ""
+      "actions": "",
+      "phone": "Phone"
     },
     "active": "Active",
     "inactive": "Closed",
@@ -813,8 +846,16 @@
       "no_organization": "Your account is not linked to a cooperative.",
       "not_a_farmer": "A field can be linked to a farmer account only.",
       "cannot_deactivate_yourself": "You cannot close your own account.",
-      "unknown_organization": "Unknown organization."
-    }
+      "unknown_organization": "Unknown organization.",
+      "phone_taken": "This phone number belongs to another account.",
+      "invalid_phone": "Check the phone number (with the area code).",
+      "password_required": "This role needs a password."
+    },
+    "loginLink": "Sign-in link",
+    "loginLinkReady": "The sign-in link is ready. It is shown once; hand it to the farmer yourself.",
+    "loginLinkExpires": "Valid until {date}, single use.",
+    "copy": "Copy",
+    "copied": "Copied"
   },
   "farmerView": {
     "hello": "Hello {name}",

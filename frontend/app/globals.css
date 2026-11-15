@@ -714,3 +714,10 @@
   width: 1.375rem;
   height: 1.375rem;
 }
+
+/* Sign-in: the two ways of signing in sit side by side, each a large touch target. */
+.zira-way {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: var(--uds-space-4);
+}

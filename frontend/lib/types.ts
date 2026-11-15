@@ -339,6 +339,7 @@ export interface UserOut {
   role: 'admin' | 'agronomist' | 'cooperative_user' | 'farmer';
   organization_id: string | null;
   is_active: boolean;
+  phone: string | null;
   field_count: number;
   created_at: string;
 }

@@ -18,6 +18,7 @@ class UserOut(BaseModel):
     role: RoleName
     organization_id: uuid.UUID | None
     is_active: bool
+    phone: str | None = None
     field_count: int
     created_at: datetime
 
@@ -25,7 +26,9 @@ class UserOut(BaseModel):
 class UserCreate(BaseModel):
     email: str = Field(min_length=3, max_length=320)
     name: str = Field(min_length=1, max_length=200)
-    password: str = Field(min_length=10, max_length=200)
+    # Optional for a farmer, who then signs in with a link or a WhatsApp code only.
+    password: str | None = Field(default=None, min_length=10, max_length=200)
+    phone: str | None = Field(default=None, max_length=32)
     role: RoleName = "farmer"
     # Admin only; a cooperative user always creates farmers in their own organization.
     organization_id: uuid.UUID | None = None
@@ -34,6 +37,13 @@ class UserCreate(BaseModel):
 class UserPatch(BaseModel):
     name: str | None = Field(default=None, min_length=1, max_length=200)
     is_active: bool | None = None
+    # An empty string removes the number.
+    phone: str | None = Field(default=None, max_length=32)
+
+
+class LoginLink(BaseModel):
+    token: str
+    expires_at: datetime
 
 
 class LinkFarmer(BaseModel):

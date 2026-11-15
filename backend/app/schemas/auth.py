@@ -1,6 +1,7 @@
 import uuid
+from typing import Annotated
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, StringConstraints
 
 from app.models import Role
 
@@ -27,3 +28,20 @@ class LoginResponse(BaseModel):
     token_type: str = "bearer"
     expires_in: int
     user: UserOut
+
+
+class LinkRedeem(BaseModel):
+    token: str = Field(min_length=16, max_length=200)
+
+
+class CodeRequest(BaseModel):
+    phone: str = Field(min_length=3, max_length=32)
+
+
+class CodeVerify(BaseModel):
+    phone: str = Field(min_length=3, max_length=32)
+    code: Annotated[str, StringConstraints(pattern=r"^\d{6}$")]
+
+
+class CodeSent(BaseModel):
+    sent: bool = True

@@ -7,6 +7,7 @@ that were sent to them, never a draft.
 
 from __future__ import annotations
 
+import secrets
 import uuid
 from typing import Annotated
 
@@ -30,10 +31,12 @@ from app.schemas.users import (
     FarmerSummary,
     FarmerWater,
     LinkFarmer,
+    LoginLink,
     UserCreate,
     UserOut,
     UserPatch,
 )
+from app.services import login as passwordless
 from app.services.fields import visible_to
 from app.services.messaging.drafts import SENT
 from app.services.power import SOURCE as POWER_SOURCE
@@ -63,9 +66,25 @@ def _out(session: SessionDep, user: User) -> UserOut:
         role=user.role.value,
         organization_id=user.organization_id,
         is_active=user.is_active,
+        phone=user.phone,
         field_count=count or 0,
         created_at=user.created_at,
     )
+
+
+def _phone(session: SessionDep, raw: str | None, exclude: uuid.UUID | None = None) -> str | None:
+    """The number as stored, None for none. A number belongs to one account."""
+    if raw is None or not raw.strip():
+        return None
+    phone = passwordless.clean_phone(raw)
+    if phone is None:
+        raise _refuse("invalid_phone")
+    other = session.scalar(
+        select(User.id).where(User.phone == phone, User.id != (exclude or uuid.uuid4()))
+    )
+    if other is not None:
+        raise _refuse("phone_taken")
+    return phone
 
 
 def _manageable(session: SessionDep, manager: User, user_id: uuid.UUID) -> User:
@@ -108,15 +127,24 @@ def add_user(body: UserCreate, session: SessionDep, manager: Manager) -> UserOut
         if manager.organization_id is None:
             raise _refuse("no_organization")
         role, organization_id = Role.FARMER, manager.organization_id
+    phone = _phone(session, body.phone)
+    if body.password is None and role != Role.FARMER:
+        raise _refuse("password_required")
     try:
+        # A farmer without a password gets one nobody knows: they sign in by link or code.
         user = create_user(
-            session, email=body.email, name=body.name, role=role, password=body.password
+            session,
+            email=body.email,
+            name=body.name,
+            role=role,
+            password=body.password or secrets.token_urlsafe(32),
         )
     except ValueError as error:
         raise _refuse(
             "email_taken" if "already exists" in str(error) else "invalid_user"
         ) from error
     user.organization_id = organization_id
+    user.phone = phone
     session.commit()
     return _out(session, user)
 
@@ -132,8 +160,21 @@ def change_user(
         user.name = body.name.strip()
     if body.is_active is not None:
         user.is_active = body.is_active
+    if body.phone is not None:
+        user.phone = _phone(session, body.phone, exclude=user.id)
     session.commit()
     return _out(session, user)
+
+
+@router.post("/users/{user_id}/login-link", response_model=LoginLink)
+def make_login_link(user_id: uuid.UUID, session: SessionDep, manager: Manager) -> LoginLink:
+    """A single-use sign-in link for a farmer, valid for a day. It is shown once, to the person
+    who hands it to the farmer; only a hash is kept."""
+    user = _manageable(session, manager, user_id)
+    if user.role != Role.FARMER or not user.is_active:
+        raise _refuse("not_a_farmer")
+    token, expires = passwordless.issue_link(session, user, manager)
+    return LoginLink(token=token, expires_at=expires)
 
 
 @router.patch("/fields/{field_id}/farmer", response_model=LinkFarmer)
