@@ -40,6 +40,18 @@ Roles: `admin`, `agronomist`, `cooperative_user`. The command asks for the passw
 | `GET /api/v1/data-center/sources` | Every NASA source: connected or not, last success, rows, jobs (admin, agronomist) |
 | `GET /api/v1/data-center/jobs` | The latest fetch jobs with their outcome (admin, agronomist) |
 | `GET /api/v1/dashboard/summary` | Field and job counts, fields without data, map markers |
+| `GET /api/v1/reference/crops` | Crops of `config/crops.yaml` and whether their season can run yet |
+| `GET /api/v1/fields/{id}/water-vault?crop=...&date=...` | Usable water in the root zone on a day, in mm, with a low to high range, the daily series and what it rests on |
+
+## Water Vault
+
+`app/services/water/` holds the FAO-56 engine as pure functions: `et0.py` (Penman-Monteith),
+`crop.py` (Kc curve, Kc mid correction, TAW, RAW, p, Ks) and `balance.py` (the daily balance).
+`vault.py` joins them to a field. The tests (`tests/test_water_et0.py`, `test_water_balance.py`)
+reproduce the worked examples printed in FAO Irrigation and Drainage Paper 56, including the full
+ET0 calculation of Example 18 and the ten-day stress table of Example 37. What the Water Vault
+assumes, and what waits for an agronomist, is in
+[../docs/decisions/0011-water-vault-version-1.md](../docs/decisions/0011-water-vault-version-1.md).
 
 ## NASA POWER
 

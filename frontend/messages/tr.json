@@ -293,6 +293,94 @@
       "srtm": "Rakım ve eğim"
     }
   },
+  "crops": {
+    "winter_wheat": "Kışlık buğday",
+    "barley": "Arpa",
+    "chickpea": "Nohut",
+    "lentil": "Mercimek",
+    "grain_maize": "Dane mısır",
+    "sugar_beet": "Şeker pancarı",
+    "sunflower": "Ayçiçeği",
+    "alfalfa_hay": "Yonca (kuru ot)"
+  },
+  "waterVault": {
+    "form": {
+      "field": "Tarla",
+      "crop": "Ürün",
+      "date": "Tarih",
+      "dateHint": "Boş bırakırsanız ürünün son karar günü kullanılır.",
+      "submit": "Göster"
+    },
+    "noFieldsTitle": "Henüz tarla yok",
+    "noFieldsDescription": "Su Kasası, bir tarlanın NASA verisinden hesaplanır. Önce bir tarla ekleyin.",
+    "addField": "Tarla ekle",
+    "goToField": "Tarlaya git",
+    "kpi": {
+      "usable": "Kullanılabilir su",
+      "capacity": "Toprak kapasitesi (TAW)",
+      "range": "Alt – üst değer",
+      "gaps": "Eksik gün"
+    },
+    "mm": "{value} mm",
+    "rangeValue": "{low} – {high} mm",
+    "fill": "Kapasitenin yüzde {percent}'i",
+    "decisionDay": "Karar günü: {date}",
+    "chosenDay": "Seçilen gün: {date}",
+    "window": "Hesap {start} – {end} arasındaki {days} günlük veriye dayanır.",
+    "draft": {
+      "title": "Taslak parametrelerle hesaplandı",
+      "body": "Şu parametreler ziraat mühendisi onayı bekliyor; sonuç onaydan sonra değişebilir:"
+    },
+    "params": {
+      "decision_date": "karar günü",
+      "fallow_efficiency": "nadas verimi",
+      "initial_storage_frac": "başlangıç depolaması",
+      "spinup_seasons": "ısınma süresi",
+      "uncertainty_rain_delta": "yağış belirsizliği",
+      "min_valid_day_share": "asgari geçerli gün oranı"
+    },
+    "assumptionsTitle": "Bu sayı neye dayanıyor",
+    "assumptions": {
+      "fallow_before_the_day": "Tarlanın karar gününden önceki {days} gün boyunca nadasta olduğu varsayılır. Ürün geçmişi Tarla Hafızası (Faz 5) ile gelecek.",
+      "regional_weather": "Yağış NASA POWER'dan gelir. Yaklaşık 50 km çözünürlüklü bölgesel veridir; tarlanın kendi ölçümü değildir.",
+      "no_sensor": "Sensör verisi yok, bu yüzden aralık geniş gösterilir. Sensör geldiğinde (Faz 7) model durumu düzeltilir.",
+      "range_from_soil_and_fallow_efficiency": "Alt ve üst değer, toprak türünün su tutma aralığından ve nadas veriminin ±{delta} sapmasından hesaplanır."
+    },
+    "charts": {
+      "storageTitle": "Kök bölgesindeki su (mm)",
+      "storageAria": "Kök bölgesinde depolanan suyu ve toprak kapasitesini gösteren çizgi grafik",
+      "storageLegend": "Depolanan su",
+      "capacityLegend": "Kapasite (TAW)",
+      "et0Title": "Referans evapotranspirasyon ET0 (mm/gün)",
+      "et0Aria": "Günlük referans evapotranspirasyonu gösteren çizgi grafik",
+      "et0Legend": "ET0"
+    },
+    "et0Blocker": {
+      "no_elevation": "ET0 için tarlanın rakımı gerekir. Rakım, NASA verisi çekilince tarla profiline yazılır."
+    },
+    "recentTitle": "Son günler",
+    "columns": {
+      "date": "Tarih",
+      "precip": "Yağış (mm)",
+      "et0": "ET0 (mm)",
+      "storage": "Depolanan su (mm)"
+    },
+    "season": {
+      "title": "Ürün sezonu: ETc, gerçek ET ve stres",
+      "blocked": "{crop} için büyüme evrelerinin süreleri henüz belirlenmedi (config/crops.yaml). Bu süreleri ziraat mühendisi Konya takvimine göre belirler. O zamana kadar ürün sezonu hesaplanmaz; uydurma bir değerle gösterilmez."
+    },
+    "errors": {
+      "unknown_crop": "Bu ürün tanımlı değil.",
+      "no_location": "Tarlanın konumu yok.",
+      "no_weather_data": "Bu tarla için NASA verisi henüz yok. Tarla sayfasından 25 yıllık veriyi çekin.",
+      "no_soil": "Tarlanın toprak profili eksik.",
+      "season_type_not_set": "Bu ürünün ekim mevsimi (güz ya da yaz) ziraat mühendisi tarafından henüz belirlenmedi. Bir tarih seçerek devam edebilirsiniz.",
+      "date_after_data": "Seçilen tarih verinin ötesinde. Veri {last_date} tarihine kadar var.",
+      "not_enough_history": "Seçilen tarihten önce yeterli veri yok. Veri {first_date} tarihinde başlıyor; en erken {earliest_date} seçilebilir.",
+      "too_many_gaps": "Hesap döneminde çok fazla eksik gün var ({missing_days} / {days}); sonuç güvenilir olmaz.",
+      "generic": "Su Kasası hesaplanamadı. Yeniden deneyin."
+    }
+  },
   "login": {
     "description": "Zira hesabınızla giriş yapın.",
     "errors": {

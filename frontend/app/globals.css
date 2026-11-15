@@ -127,3 +127,48 @@
   fill: var(--uds-muted-foreground);
   font-size: 11px;
 }
+
+/* Lines in the line chart: tokens only, so they follow light and dark mode. */
+.zira-line {
+  fill: none;
+  stroke: var(--uds-primary);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.zira-line--muted {
+  stroke: var(--uds-muted-foreground);
+  stroke-width: 1.5;
+}
+
+.zira-line--dashed {
+  stroke-dasharray: 6 4;
+}
+
+.zira-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--uds-space-4);
+  color: var(--uds-muted-foreground);
+  font-size: 0.8125rem;
+}
+
+.zira-legend-swatch {
+  display: inline-block;
+  width: 1.5rem;
+  margin-right: var(--uds-space-2);
+  border-top: 2px solid var(--uds-primary);
+  vertical-align: middle;
+}
+
+.zira-legend-swatch--muted {
+  border-top-color: var(--uds-muted-foreground);
+  border-top-style: dashed;
+}
+
+.zira-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--uds-space-4);
+  align-items: flex-end;
+}

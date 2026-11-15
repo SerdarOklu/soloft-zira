@@ -25,6 +25,7 @@ function topLevelKeys(file: string, section: string): string[] {
 describe('labels for the lists in config/', () => {
   const soils = topLevelKeys('soils.yaml', 'soils');
   const sources = topLevelKeys('data_sources.yaml', 'sources');
+  const crops = topLevelKeys('crops.yaml', 'crops');
 
   it('reads the keys it is meant to check', () => {
     expect(soils).toContain('loam');
@@ -36,6 +37,13 @@ describe('labels for the lists in config/', () => {
     ['en', en],
   ])('has a soil label for every soil texture (%s)', (_language, messages) => {
     expect(Object.keys(messages.soils).sort()).toEqual([...soils].sort());
+  });
+
+  it.each([
+    ['tr', tr],
+    ['en', en],
+  ])('has a name for every crop (%s)', (_language, messages) => {
+    expect(Object.keys(messages.crops).sort()).toEqual([...crops].sort());
   });
 
   it.each([

@@ -10,6 +10,8 @@ from pydantic import BaseModel
 from app.api.deps import require_roles
 from app.core.parameters import get_config
 from app.models import Role, User
+from app.schemas.water import CropOption
+from app.services.water.vault import crop_options
 
 router = APIRouter(prefix="/reference", tags=["reference"])
 
@@ -22,6 +24,12 @@ class SoilOut(BaseModel):
     key: str
     name_tr: str
     taw_mm_per_m: tuple[float, float]
+
+
+@router.get("/crops", response_model=list[CropOption])
+def crops(_user: StaffUser) -> list[CropOption]:
+    """The crops of config/crops.yaml, and whether their season can be run yet."""
+    return crop_options(get_config())
 
 
 @router.get("/soils", response_model=list[SoilOut])

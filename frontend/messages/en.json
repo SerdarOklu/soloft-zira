@@ -293,6 +293,94 @@
       "srtm": "Elevation and slope"
     }
   },
+  "crops": {
+    "winter_wheat": "Winter wheat",
+    "barley": "Barley",
+    "chickpea": "Chickpea",
+    "lentil": "Lentil",
+    "grain_maize": "Grain maize",
+    "sugar_beet": "Sugar beet",
+    "sunflower": "Sunflower",
+    "alfalfa_hay": "Alfalfa (hay)"
+  },
+  "waterVault": {
+    "form": {
+      "field": "Field",
+      "crop": "Crop",
+      "date": "Date",
+      "dateHint": "Leave empty to use the latest decision day of the crop.",
+      "submit": "Show"
+    },
+    "noFieldsTitle": "No fields yet",
+    "noFieldsDescription": "The Water Vault is calculated from a field's NASA data. Add a field first.",
+    "addField": "Add a field",
+    "goToField": "Go to the field",
+    "kpi": {
+      "usable": "Usable water",
+      "capacity": "Soil capacity (TAW)",
+      "range": "Low – high",
+      "gaps": "Missing days"
+    },
+    "mm": "{value} mm",
+    "rangeValue": "{low} – {high} mm",
+    "fill": "{percent}% of the capacity",
+    "decisionDay": "Decision day: {date}",
+    "chosenDay": "Chosen day: {date}",
+    "window": "The result rests on {days} days of data from {start} to {end}.",
+    "draft": {
+      "title": "Calculated with draft parameters",
+      "body": "These parameters still wait for an agronomist's sign-off; the result may change after it:"
+    },
+    "params": {
+      "decision_date": "decision date",
+      "fallow_efficiency": "fallow efficiency",
+      "initial_storage_frac": "starting storage",
+      "spinup_seasons": "warm-up period",
+      "uncertainty_rain_delta": "rain uncertainty",
+      "min_valid_day_share": "minimum share of valid days"
+    },
+    "assumptionsTitle": "What this number rests on",
+    "assumptions": {
+      "fallow_before_the_day": "The field is assumed to have been fallow for the {days} days before the day. The crop history arrives with Field Memory (phase 5).",
+      "regional_weather": "Rain comes from NASA POWER. It is a regional product of roughly 50 km resolution, not a measurement taken on the field.",
+      "no_sensor": "There is no sensor data, so the range is shown wide. A sensor (phase 7) corrects the model state.",
+      "range_from_soil_and_fallow_efficiency": "The low and high values come from the water range of the soil texture and from the fallow efficiency shifted by ±{delta}."
+    },
+    "charts": {
+      "storageTitle": "Water in the root zone (mm)",
+      "storageAria": "Line chart of the water stored in the root zone and the soil capacity",
+      "storageLegend": "Stored water",
+      "capacityLegend": "Capacity (TAW)",
+      "et0Title": "Reference evapotranspiration ET0 (mm/day)",
+      "et0Aria": "Line chart of daily reference evapotranspiration",
+      "et0Legend": "ET0"
+    },
+    "et0Blocker": {
+      "no_elevation": "ET0 needs the elevation of the field. It is written to the field profile when NASA data is fetched."
+    },
+    "recentTitle": "Latest days",
+    "columns": {
+      "date": "Date",
+      "precip": "Precipitation (mm)",
+      "et0": "ET0 (mm)",
+      "storage": "Stored water (mm)"
+    },
+    "season": {
+      "title": "Crop season: ETc, actual ET and stress",
+      "blocked": "The lengths of the growth stages for {crop} are not set yet (config/crops.yaml). The agronomist sets them for the Konya calendar. Until then the crop season is not calculated and no invented value is shown."
+    },
+    "errors": {
+      "unknown_crop": "This crop is not defined.",
+      "no_location": "The field has no location.",
+      "no_weather_data": "There is no NASA data for this field yet. Fetch the 25 years from the field page.",
+      "no_soil": "The field's soil profile is missing.",
+      "season_type_not_set": "The sowing season (autumn or summer) of this crop has not been set by the agronomist yet. You can continue by choosing a date.",
+      "date_after_data": "The chosen date is beyond the data. The data ends on {last_date}.",
+      "not_enough_history": "There is not enough data before the chosen date. The data starts on {first_date}; the earliest date you can choose is {earliest_date}.",
+      "too_many_gaps": "There are too many missing days in the period of the calculation ({missing_days} of {days}); the result would not be reliable.",
+      "generic": "The Water Vault could not be calculated. Try again."
+    }
+  },
   "login": {
     "description": "Sign in with your Zira account.",
     "errors": {

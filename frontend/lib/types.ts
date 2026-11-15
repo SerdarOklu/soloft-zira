@@ -123,3 +123,47 @@ export interface SoilOption {
   name_tr: string;
   taw_mm_per_m: [number, number];
 }
+
+export interface CropOption {
+  key: string;
+  name_tr: string;
+  season_type: string | null;
+  root_depth_m: number;
+  season_ready: boolean;
+}
+
+export interface WaterVaultDay {
+  date: string;
+  precipitation_mm: number | null;
+  et0_mm: number | null;
+  storage_mm: number;
+}
+
+export interface WaterVault {
+  field_id: string;
+  crop: CropOption & { season_blocker: string | null };
+  date: string;
+  date_is_default: boolean;
+  decision: {
+    storage_mm: number;
+    low_mm: number;
+    high_mm: number;
+    taw_mm: number;
+    taw_low_mm: number;
+    taw_high_mm: number;
+    fill_fraction: number;
+  };
+  window: { start: string; end: string; days: number; missing_days: number };
+  parameters: {
+    fallow_efficiency: number;
+    initial_storage_frac: number;
+    spinup_days: number;
+    uncertainty_delta: number;
+  };
+  needs_signoff: string[];
+  assumptions: string[];
+  soil_calibrated: boolean;
+  et0_days: number;
+  et0_blocker: string | null;
+  daily: WaterVaultDay[];
+}

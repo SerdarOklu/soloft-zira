@@ -8,6 +8,8 @@ export class ApiError extends Error {
   constructor(
     readonly status: number,
     message: string,
+    /** The `code` and details of a refusal the backend explains, such as a missing date. */
+    readonly detail: { code?: string; [key: string]: unknown } | null = null,
   ) {
     super(message);
     this.name = 'ApiError';
@@ -25,7 +27,12 @@ export async function api<T>(path: string): Promise<T> {
     cache: 'no-store',
   });
   if (!response.ok) {
-    throw new ApiError(response.status, `${path} answered HTTP ${response.status}`);
+    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
+    const detail =
+      body && typeof body.detail === 'object' && body.detail !== null
+        ? (body.detail as ApiError['detail'])
+        : null;
+    throw new ApiError(response.status, `${path} answered HTTP ${response.status}`, detail);
   }
   return (await response.json()) as T;
 }
