@@ -6,6 +6,8 @@ import { useState } from 'react';
 
 import { useRouter } from '@/i18n/navigation';
 
+import { AuthLogo } from './brand';
+
 const KNOWN_ERRORS = ['invalid_credentials', 'backend_unreachable'] as const;
 type KnownError = (typeof KNOWN_ERRORS)[number];
 
@@ -43,7 +45,7 @@ export function LoginScreen() {
 
   return (
     <AuthLayout
-      icon={<span className="zira-wordmark zira-wordmark--auth">{t('app.name')}</span>}
+      icon={<AuthLogo name={t('app.name')} />}
     >
       <LoginForm
         locale={locale === 'en' ? 'en' : 'tr'}
