@@ -85,6 +85,29 @@ git pull
 Pin a specific build instead of `latest` for a reproducible rollout or a rollback by
 setting `IMAGE_TAG` (e.g. `sha-abc1234`) in `.env`, then running `deploy.sh`.
 
+### Deploying without the registry (how the live server is updated today)
+
+CI cannot build the frontend image until the `UDS_READ_TOKEN` secret can read the private
+`soloft-uds` repository, so the images are built on a machine that can, and sent to the
+server directly. Tag every build, so the previous one stays on the server for a rollback.
+
+```bash
+TAG=p3-$(git rev-parse --short HEAD)
+export UDS_READ_TOKEN="$(gh auth token)"          # read access to SerdarOklu/soloft-uds
+docker build -f backend/Dockerfile -t ghcr.io/serdaroklu/zira-backend:$TAG .
+docker build --secret id=uds_token,env=UDS_READ_TOKEN \
+  -f frontend/Dockerfile -t ghcr.io/serdaroklu/zira-frontend:$TAG frontend
+for image in zira-backend zira-frontend; do
+  docker save ghcr.io/serdaroklu/$image:$TAG | gzip -1 | ssh root@<server> 'gunzip | docker load'
+done
+# On the server: point the stack at the new tag and start it.
+sed -i "s/^IMAGE_TAG=.*/IMAGE_TAG=$TAG/" .env && ./infra/scripts/deploy.sh
+```
+
+`deploy.sh` runs the migrations, restarts the services and reloads Nginx. To roll back, set
+`IMAGE_TAG` in `.env` to the previous tag and run `deploy.sh` again. Migrations are not
+undone by a rollback; write them so the previous version still works.
+
 ## Certificate renewal
 
 Let's Encrypt certificates last 90 days. Renew with a host cron entry (e.g. weekly):
