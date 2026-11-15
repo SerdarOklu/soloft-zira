@@ -52,12 +52,16 @@ sources:
       cover 25 seasons.
   modis:
     name: MODIS
-    role: Regional phenology; support for cloudy Landsat periods
-    access: earth_engine
-    collection_id: MODIS/061/MOD13Q1
-    resolution: 250 m, 16-day composite
+    role: Vegetation index (NDVI) time series for Field Memory; support for cloudy Landsat periods
+    # Not read through Earth Engine: the NASA MOD13Q1 and MYD13Q1 version 061 cloud-optimised
+    # GeoTIFFs of the public Microsoft Planetary Computer STAC catalogue, no account needed.
+    access: stac_cog
+    collection_id: modis-13Q1-061
+    resolution: 250 m, 16-day composite (Terra and Aqua together, about every 8 days)
     priority: medium
-    scale_warning: Does not replace Landsat on small fields.
+    scale_warning: >-
+      One pixel is about 6 ha, so a small parcel gives a mixed signal. Does not replace Landsat
+      on small fields, and cannot tell crop species.
   grace:
     name: GRACE / GRACE-FO
     role: Basin-scale total water storage trend

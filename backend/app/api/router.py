@@ -6,6 +6,7 @@ from app.api import (
     auth,
     dashboard,
     data_center,
+    field_memory,
     fields,
     messages,
     reference,
@@ -17,6 +18,7 @@ api_router = APIRouter(prefix="/api/v1")
 api_router.include_router(auth.router)
 api_router.include_router(reference.router)
 api_router.include_router(fields.router)
+api_router.include_router(field_memory.router)
 api_router.include_router(water_vault.router)
 api_router.include_router(rotation.router)
 api_router.include_router(messages.router)

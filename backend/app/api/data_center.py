@@ -10,7 +10,15 @@ from sqlalchemy import func, select
 from app.api.deps import SessionDep, require_roles
 from app.api.fields import job_out
 from app.core.parameters import get_config
-from app.models import DataFetchJob, DataSource, Field, Role, User, WeatherObservation
+from app.models import (
+    DataFetchJob,
+    DataSource,
+    Field,
+    Role,
+    SatelliteObservation,
+    User,
+    WeatherObservation,
+)
 from app.schemas.fields import JobCounts, JobOut, SourceOut
 
 router = APIRouter(prefix="/data-center", tags=["data-center"])
@@ -18,6 +26,7 @@ router = APIRouter(prefix="/data-center", tags=["data-center"])
 Analyst = Annotated[User, Depends(require_roles(Role.ADMIN, Role.AGRONOMIST))]
 
 MAX_JOBS = 200
+CONNECTED_ACCESS = {"power_daily_api", "stac_cog"}
 
 
 @router.get("/sources", response_model=list[SourceOut])
@@ -37,11 +46,19 @@ def sources(session: SessionDep, _user: Analyst) -> list[SourceOut]:
         ).all()
     )
 
+    satellite_rows = dict(
+        session.execute(
+            select(SatelliteObservation.source, func.count()).group_by(SatelliteObservation.source)
+        ).all()
+    )
+    observation_counts = {**weather_rows, **satellite_rows}
+
     result: list[SourceOut] = []
     for key, source in get_config().data_sources.items():
         row = rows.get(key)
-        # Only POWER is connected in phase 3; the Earth Engine sources arrive in phase 5.
-        connected = source.access == "power_daily_api"
+        # POWER (daily API) and MODIS (STAC cloud GeoTIFFs) are connected; the Earth Engine
+        # sources need an Earth Engine project that is not set up.
+        connected = source.access in CONNECTED_ACCESS
         if not connected:
             state = "not_connected"
         else:
@@ -59,7 +76,7 @@ def sources(session: SessionDep, _user: Analyst) -> list[SourceOut]:
                 connected=connected,
                 status=state,
                 last_success_at=row.last_success_at if row else None,
-                observations=weather_rows.get(key, 0),
+                observations=observation_counts.get(key, 0),
                 jobs=counts.get(str(row.id), JobCounts()) if row else JobCounts(),
             )
         )

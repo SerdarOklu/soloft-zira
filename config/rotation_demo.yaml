@@ -25,6 +25,16 @@ irrigation_efficiency:
   basis: team_assumption
   note: Sprinkler-type efficiency, FAO order of magnitude. Needs the agronomist.
 
+# Field Memory (phase 5): the highest MODIS NDVI of the March to September window at or above
+# this value means the field was cropped that season. parameters.yaml keeps
+# field_memory.ndvi_cropped_threshold unset ("missing in all sources"); this is a starting value
+# from typical NDVI of winter cereals at their peak (above 0.5) against bare or weedy fallow
+# (below 0.35). It must be calibrated with ground truth for Konya.
+ndvi_cropped_threshold:
+  value: 0.40
+  basis: team_assumption
+  note: Provisional. Calibrate against fields whose history is known.
+
 crops:
   winter_wheat:
     sowing_date: "11-01"       # month-day; the season runs into the next year

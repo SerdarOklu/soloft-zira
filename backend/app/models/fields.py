@@ -41,6 +41,7 @@ class CycleState(enum.StrEnum):
 
 class CycleSource(enum.StrEnum):
     LANDSAT = "landsat"
+    MODIS = "modis"
     USER = "user"
     AGRONOMIST = "agronomist"
 

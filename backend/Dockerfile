@@ -42,6 +42,9 @@ ENV PYTHONUNBUFFERED=1 \
 
 WORKDIR /app
 
+# rasterio (MODIS NDVI) needs libexpat, which the slim image does not carry.
+RUN apt-get update \n    && apt-get install -y --no-install-recommends libexpat1 \n    && rm -rf /var/lib/apt/lists/*
+
 RUN groupadd --system app && useradd --system --gid app --home-dir /app app
 
 # The virtual environment installs the app as editable, pointing at /app/app, so the

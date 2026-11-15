@@ -172,7 +172,7 @@ class DataSource(BaseModel):
 
     name: str
     role: str
-    access: Literal["power_daily_api", "earth_engine"]
+    access: Literal["power_daily_api", "stac_cog", "earth_engine"]
     collection_id: str | None = None
     collection_id_before_2023_12_04: str | None = None
     resolution: str
@@ -197,6 +197,14 @@ class DemoCrop(BaseModel):
     source: str
 
 
+class DemoThreshold(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    value: float = Field(gt=0, lt=1)
+    basis: Basis
+    note: str | None = None
+
+
 class RotationDemo(BaseModel):
     """Provisional season values for the rotation comparison (config/rotation_demo.yaml)."""
 
@@ -205,6 +213,7 @@ class RotationDemo(BaseModel):
     status: Literal["provisional_demo"]
     strategy_c_legume: str
     irrigation_efficiency: DemoIrrigation
+    ndvi_cropped_threshold: DemoThreshold
     crops: dict[str, DemoCrop]
 
 

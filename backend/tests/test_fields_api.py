@@ -365,8 +365,12 @@ def test_the_data_center_lists_every_source_and_what_arrived(pg_client: TestClie
     assert power_source["observations"] == 31
     assert power_source["jobs"] == {"queued": 0, "running": 0, "done": 1, "failed": 0}
     assert power_source["last_success_at"] is not None
-    # Earth Engine sources arrive in phase 5 and are reported as not connected, not as healthy.
-    for key in ("landsat8", "gpm", "smap", "modis", "grace"):
+    # MODIS is read from the public STAC catalogue (phase 5): connected, but nothing fetched yet.
+    assert by_key["modis"]["connected"] is True
+    assert by_key["modis"]["status"] == "never_fetched"
+    assert by_key["modis"]["collection_id"] == "modis-13Q1-061"
+    # The Earth Engine sources are not set up and are reported as not connected, not as healthy.
+    for key in ("landsat8", "gpm", "smap", "grace"):
         assert by_key[key]["connected"] is False
         assert by_key[key]["status"] == "not_connected"
         assert by_key[key]["observations"] == 0
