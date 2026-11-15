@@ -1,4 +1,4 @@
-# 0015: Landsat goes live; what stays out and why
+# 0015: Landsat and SRTM go live; what stays out and why
 
 **Status:** Accepted for the demo, 15 November 2026. Items marked **Open** need a decision or access.
 
@@ -17,16 +17,20 @@
   MODIS and both Landsat platforms, one job each. The NDVI threshold is the same provisional 0.40
   (decision 0013); a 30 m pixel is purer than a 250 m one, so its best threshold is probably higher,
   which only a calibration with fields of known history can settle.
+- **SRTM is connected** through NASADEM, NASA's reprocessing of the SRTM data (30 m), read from the
+  same open catalogue. For the pixels inside the polygon the job stores the mean, lowest and highest
+  elevation and the mean slope (`regional_observations`, migration 0004). A missing field elevation
+  is filled from it; an elevation that POWER already gave is kept, so no stored result changes.
 - **Landsat 9** has scenes only from 2022; for earlier years it returns nothing, which is not an error.
 
 ## What is still not connected
 
 | Source | State | Why |
 | --- | --- | --- |
-| GPM IMERG | Not a separate source | NASA POWER's precipitation already uses IMERG, so it is the input; a second IMERG series would be a cross-check of one number against its own ingredient. |
+| GPM IMERG | Not a separate source | NASA POWER's precipitation already uses IMERG. The Planetary Computer copy (`gpm-imerg-hhr`) ends in May 2021 and the recent files need an Earthdata login, so no verified route exists for a second, recent series. |
 | SMAP | Not connected | The science files need an Earthdata login. GIBS offers browse imagery that can be decoded through published colour maps (the browser prototype does this), but the colour-map and date-coverage details could not be verified from the server in the time available, and the result would be a trend check, not a measurement. |
 | GRACE / GRACE-FO | Not connected | Same reason as SMAP. |
-| ECOSTRESS, SRTM | Not connected | Not needed by the current model; SRTM's job (elevation) is done by the POWER response. |
+| ECOSTRESS | Not connected | Needs an Earthdata login (LP DAAC); the current model does not use it. |
 
 **Open.** Connecting SMAP and GRACE needs one of: (a) a free NASA Earthdata account, whose
 credentials would go in the server environment, to read the science files; or (b) a verified GIBS

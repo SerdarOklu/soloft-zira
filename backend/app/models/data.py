@@ -163,3 +163,25 @@ class SensorCalibration(UuidPk, Base):
     calibrated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
+
+
+class RegionalObservation(Base):
+    """A value read for a field from a source that is not a daily weather record or an NDVI image:
+    terrain from SRTM today, regional soil moisture or water storage later. Unique per field,
+    source, variable and day, so fetching again is safe."""
+
+    __tablename__ = "regional_observations"
+    __table_args__ = (UniqueConstraint("field_id", "source", "variable", "observed_on"),)
+
+    id: Mapped[int] = mapped_column(BigInteger, Identity(), primary_key=True)
+    field_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("fields.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    source: Mapped[str] = mapped_column(String(32), nullable=False)
+    variable: Mapped[str] = mapped_column(String(32), nullable=False)
+    observed_on: Mapped[date] = mapped_column(Date, nullable=False)
+    value: Mapped[float | None] = mapped_column(Float)
+    unit: Mapped[str | None] = mapped_column(String(16))
+    fetched_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )

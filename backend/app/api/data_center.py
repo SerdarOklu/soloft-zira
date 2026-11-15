@@ -14,6 +14,7 @@ from app.models import (
     DataFetchJob,
     DataSource,
     Field,
+    RegionalObservation,
     Role,
     SatelliteObservation,
     User,
@@ -51,7 +52,12 @@ def sources(session: SessionDep, _user: Analyst) -> list[SourceOut]:
             select(SatelliteObservation.source, func.count()).group_by(SatelliteObservation.source)
         ).all()
     )
-    observation_counts = {**weather_rows, **satellite_rows}
+    regional_rows = dict(
+        session.execute(
+            select(RegionalObservation.source, func.count()).group_by(RegionalObservation.source)
+        ).all()
+    )
+    observation_counts = {**weather_rows, **satellite_rows, **regional_rows}
 
     result: list[SourceOut] = []
     for key, source in get_config().data_sources.items():

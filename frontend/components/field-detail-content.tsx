@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getLocale, getTranslations } from 'next-intl/server';
 
 import { FieldMap } from '@/components/field-map';
+import { TerrainPanel, type Terrain } from '@/components/terrain-panel';
 import { WeatherPanel } from '@/components/weather-panel';
 import { ApiError, api } from '@/lib/api';
 import { formatDate, formatNumber } from '@/lib/format';
@@ -12,10 +13,12 @@ export async function FieldDetailContent({ id }: { id: string }) {
   const path = `/fields/${encodeURIComponent(id)}`;
   let field: FieldOut;
   let weather: WeatherSummary;
+  let terrain: Terrain;
   try {
-    [field, weather] = await Promise.all([
+    [field, weather, terrain] = await Promise.all([
       api<FieldOut>(path),
       api<WeatherSummary>(`${path}/weather/summary`),
+      api<Terrain>(`${path}/terrain`),
     ]);
   } catch (error) {
     // Unknown, malformed or someone else's field: all look the same from here.
@@ -82,6 +85,8 @@ export async function FieldDetailContent({ id }: { id: string }) {
       </div>
 
       <WeatherPanel fieldId={field.id} initial={weather} />
+
+      <TerrainPanel fieldId={field.id} initial={terrain} />
 
       <p className="zira-statement">{t('app.supportStatement')}</p>
     </div>

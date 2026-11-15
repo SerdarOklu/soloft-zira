@@ -283,7 +283,7 @@
     "sourcesTitle": "Veri kaynakları",
     "jobsTitle": "Son veri çekme işleri",
     "regionalNote": "Bölgesel uydu ve model verileri, tek bir tarlanın doğrudan ölçümü olarak sunulmaz.",
-    "notConnected": "Landsat 8/9 ve MODIS, NASA'nın açık STAC kataloğundan okunur ve bağlıdır. GPM IMERG yağışı NASA POWER'ın içinde gelir; SMAP ve GRACE için Earthdata girişi gerekir, ECOSTRESS ve SRTM bağlı değildir.",
+    "notConnected": "Landsat 8/9, MODIS ve SRTM (NASADEM), NASA'nın açık STAC kataloğundan okunur ve bağlıdır. GPM IMERG yağışı NASA POWER'ın içinde gelir. SMAP, GRACE ve ECOSTRESS için NASA Earthdata girişi gerekir; henüz kurulu değil.",
     "jobsSummary": "{done} tamamlandı · {failed} başarısız · {active} süren",
     "jobsEmpty": "Henüz veri çekme işi yok.",
     "cached": "önbellekten, yeni satır yok",
@@ -310,7 +310,7 @@
       "modis": "Bitki örtüsü (NDVI) zaman serisi: Tarla Hafızası; bulutlu Landsat dönemlerine destek",
       "grace": "Havza ölçeğinde toplam su depolama eğilimi",
       "ecostress": "Buharlaşma ve terleme desteği",
-      "srtm": "Rakım ve eğim"
+      "srtm": "Tarlanın rakımı ve eğimi"
     },
     "images": "{count} görüntü"
   },
@@ -786,5 +786,27 @@
       "card": "Tarla kartı"
     },
     "support": "Bu bilgiler kararınıza yardımcıdır; karar sizin ve ziraat mühendisinizindir."
+  },
+  "terrain": {
+    "title": "Arazi (SRTM)",
+    "description": "Tarla poligonunun içindeki rakım ve eğim, NASA'nın SRTM verisinin yeniden işlenmiş hâli olan NASADEM'den (30 m) okunur.",
+    "fetch": "Araziyi oku",
+    "refetch": "Yeniden oku",
+    "fetching": "NASADEM okunuyor…",
+    "done": "Arazi verisi alındı.",
+    "failed": "Arazi okunamadı",
+    "none": "Bu tarla için henüz arazi verisi yok.",
+    "elevation": "Ortalama rakım",
+    "range": "Rakım aralığı",
+    "slope": "Ortalama eğim",
+    "meters": "{value} m",
+    "rangeValue": "{low}–{high} m",
+    "degrees": "{value}°",
+    "limits": "Şubat 2000'de tek seferde ölçülmüş bir yüzey modelidir (ağaç ve yapılar görünür). Küçük bir tarlada eğim az piksele dayanır.",
+    "errors": {
+      "generic": "İşlem yapılamadı.",
+      "running": "Bir okuma zaten sürüyor.",
+      "slow": "İş hâlâ sürüyor; biraz sonra sayfayı yenileyin."
+    }
   }
 }

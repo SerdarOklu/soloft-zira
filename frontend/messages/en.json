@@ -283,7 +283,7 @@
     "sourcesTitle": "Data sources",
     "jobsTitle": "Latest fetch jobs",
     "regionalNote": "Regional satellite and model data is never presented as a direct measurement of a single field.",
-    "notConnected": "Landsat 8/9 and MODIS are read from NASA's public STAC catalogue and are connected. GPM IMERG rainfall already comes inside NASA POWER; SMAP and GRACE need an Earthdata login; ECOSTRESS and SRTM are not connected.",
+    "notConnected": "Landsat 8/9, MODIS and SRTM (NASADEM) are read from NASA's public STAC catalogue and are connected. GPM IMERG rainfall already comes inside NASA POWER. SMAP, GRACE and ECOSTRESS need a NASA Earthdata login, which is not set up yet.",
     "jobsSummary": "{done} done · {failed} failed · {active} running",
     "jobsEmpty": "There are no fetch jobs yet.",
     "cached": "from the cache, no new rows",
@@ -310,7 +310,7 @@
       "modis": "Vegetation index (NDVI) time series for Field Memory; support for cloudy Landsat periods",
       "grace": "Basin-scale total water storage trend",
       "ecostress": "Evapotranspiration support",
-      "srtm": "Elevation and slope"
+      "srtm": "Elevation and slope of the field"
     },
     "images": "{count} images"
   },
@@ -786,5 +786,27 @@
       "card": "Field card"
     },
     "support": "This information supports your decision; the decision is yours and your agronomist's."
+  },
+  "terrain": {
+    "title": "Terrain (SRTM)",
+    "description": "Elevation and slope inside the field polygon, read from NASADEM (30 m), NASA's reprocessing of the SRTM data.",
+    "fetch": "Read the terrain",
+    "refetch": "Read again",
+    "fetching": "Reading NASADEM…",
+    "done": "Terrain data received.",
+    "failed": "The terrain could not be read",
+    "none": "There is no terrain data for this field yet.",
+    "elevation": "Mean elevation",
+    "range": "Elevation range",
+    "slope": "Mean slope",
+    "meters": "{value} m",
+    "rangeValue": "{low}–{high} m",
+    "degrees": "{value}°",
+    "limits": "A surface model measured once, in February 2000 (trees and buildings show). On a small field the slope rests on few pixels.",
+    "errors": {
+      "generic": "The action could not be done.",
+      "running": "A read is already running.",
+      "slow": "The job is still running; reload the page in a moment."
+    }
   }
 }

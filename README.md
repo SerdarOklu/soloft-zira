@@ -119,6 +119,7 @@ flowchart LR
 | **NASA POWER** (daily) | Temperature, humidity, wind, solar radiation, pressure and precipitation for ET0 and the water balance | **Yes**: the weather behind the water balance |
 | **MODIS** (MOD13Q1 and MYD13Q1 v061) | NDVI time series for Field Memory, read for the field polygon from the public Planetary Computer catalogue | **Yes** |
 | **Landsat 8 and 9** | NDVI at 30 m inside the field polygon; Field Memory prefers it when it covers enough seasons | **Yes**, from the same open catalogue ([decision 0015](docs/decisions/0015-landsat-and-the-other-nasa-sources.md)) |
+| **SRTM** (via NASADEM) | Elevation and slope of the field polygon at 30 m | **Yes**, same open catalogue |
 | GPM IMERG | Precipitation cross-check | Inside NASA POWER's precipitation; not a separate source |
 | SMAP | Regional surface soil moisture, a cross-check only | Not connected: needs an Earthdata login |
 | GRACE / GRACE-FO | Basin water storage context | Not connected: needs an Earthdata login |

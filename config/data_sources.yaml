@@ -83,9 +83,12 @@ sources:
     scale_warning: Not needed for the first working demo.
   srtm:
     name: SRTM
-    role: Elevation and slope
-    access: earth_engine
-    collection_id: null   # to be selected
+    role: Elevation and slope of the field
+    # NASADEM, NASA's reprocessing of the SRTM data, from the open Planetary Computer catalogue.
+    access: stac_cog
+    collection_id: nasadem
     resolution: 30 m
     priority: optional
-    scale_warning: Not needed for the first working demo.
+    scale_warning: >-
+      A single acquisition from February 2000 (a surface model, so trees and buildings show);
+      slope on a small field rests on few pixels.

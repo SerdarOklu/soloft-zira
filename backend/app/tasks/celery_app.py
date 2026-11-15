@@ -10,7 +10,13 @@ celery_app = Celery(
     "zira",
     broker=settings.redis_url,
     backend=settings.redis_url,
-    include=["app.tasks.system", "app.tasks.power", "app.tasks.modis", "app.tasks.landsat"],
+    include=[
+        "app.tasks.system",
+        "app.tasks.power",
+        "app.tasks.modis",
+        "app.tasks.landsat",
+        "app.tasks.terrain",
+    ],
 )
 celery_app.conf.update(
     task_always_eager=settings.celery_task_always_eager,
