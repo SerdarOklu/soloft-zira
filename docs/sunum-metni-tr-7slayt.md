@@ -38,7 +38,7 @@ Yağış daha az öngörülebilir, su daha kıt. Takvime bağlı bir rotasyon 24
 *Kaynaklar: Konya Teknik Üniversitesi Obruk Araştırma Merkezi (NTV/İHA, 17 Ağustos 2026) · Khorrami, Arık ve Gündüz 2021 · NASA POWER*
 
 **Konuşmacı notları**
-İlk hedefimiz Konya Kapalı Havzası'nın yarı kurak iklimi ve kuru tarım. Araştırmacılar yeraltı suyu düşüşünü yoğun pompajla, obrukların yayılmasını da bununla ilişkilendiriyor. Yaygın rotasyon ise sabit: bir yıl buğday, bir yıl nadas. GRACE verisini geniş bölge (yaklaşık 300 km) için kendimiz okuduğumuzda toplam su depolaması 2002–2022 arasında yılda 0,46 cm azalıyor; 3,4 cm ise çalışmanın havza içi yeraltı suyu tahminidir. İki rakam farklı şeyleri ölçer, birbirinin yerine konmaz. 245–534 mm demo konumunun NASA POWER kaydından gelir.
+İlk hedefimiz Konya Kapalı Havzası'nın yarı kurak iklimi ve kuru tarım. Araştırmacılar yeraltı suyu düşüşünü yoğun pompajla, obrukların yayılmasını da bununla ilişkilendiriyor. Yaygın rotasyon ise sabit: bir yıl buğday, bir yıl nadas. GRACE verisini geniş bölge (yaklaşık 300 km) için kendimiz okuduğumuzda toplam su depolaması 2002–2022 arasında yılda 0,46 cm azalıyor; 3,4 cm ise çalışmanın havza içi yeraltı suyu tahminidir. İki rakam farklı şeyleri ölçer, birbirinin yerine konmaz. 245–534 mm demo konumunun NASA POWER kaydından gelir. Platformun kendi GRACE okuması demo tarlanın 0,5° hücresi için 2003'ten beri yılda −0,73 cm veriyor; hücre ve dönem farklı olduğundan 0,46 ile birbirinin yerine konmaz.
 
 ---
 
@@ -67,15 +67,15 @@ Yağış daha az öngörülebilir, su daha kıt. Takvime bağlı bir rotasyon 24
 | Kaynak | Görevi | Ölçek |
 |---|---|---|
 | **NASA POWER** | Günlük hava, 2001–2025 (tarla başına 9.131 gün) | ~50 km |
-| **MODIS MOD13Q1 / MYD13Q1** | Tarla poligonunun içinden NDVI: 10 sezon ekili mi nadas mı (~450 görüntü) | 250 m, 16 günlük |
-| **SMAP · GPM IMERG** | Toprak nemi ve yağış için bağımsız çapraz kontrol (r = 0,61) | 9 km · ~10 km |
-| **GRACE / GRACE-FO** | Havza su depolama eğilimi | ~300 km, aylık |
-| **Landsat 8/9** | 30 m'ye geçiş için sonraki adım | 30 m |
+| **Landsat 8/9** | Tarla poligonunun içinden NDVI: 10 sezon ekili mi nadas mı; yeterli sezonu kapsıyorsa tercih edilir | 30 m |
+| **MODIS MOD13Q1 / MYD13Q1** | Aynı NDVI, Landsat'ın bulutlu kaldığı dönemler için yedek (~450 görüntü) | 250 m, 16 günlük |
+| **SMAP · GPM IMERG · GRACE** | Modelin girdisi değil, bölgesel çapraz kontrolü: toprak nemi, yağış, havza su depolama eğilimi | 9 km · ~10 km · ~300 km |
+| **SRTM (NASADEM)** | Tarla rakımı ve eğimi | 30 m |
 
 Veri Merkezi hangi kaynağın gerçekten bağlı olduğunu gösterir; bağlı olmayan kaynak asla sağlıklı gösterilmez.
 
 **Konuşmacı notları**
-Ölçek kuralları: POWER bölgesel yeniden analizdir, tarla ölçümü değildir. SMAP 9 km'lik ortalamadır. GRACE hiçbir zaman bir parselin altındaki yeraltı suyu değildir. İki yağış kaynağı asla toplanmaz: biri girdi, öteki çapraz kontroldür. MODIS'i Earth Engine yerine NASA MOD13Q1/MYD13Q1 sürüm 061 ürünlerinden, Microsoft Planetary Computer'ın açık STAC kataloğundan, hesap gerektirmeden okuyoruz. Bir MODIS pikseli yaklaşık 6 ha'dır; bu yüzden Landsat sonraki adımımız. Attribution: Hava verisi NASA LaRC POWER Projesi'nden alınmıştır; proje NASA Earth Science/Applied Science Program tarafından finanse edilmektedir. NASA GIBS, NASA ESDIS'in parçasıdır.
+Ölçek kuralları: POWER bölgesel yeniden analizdir, tarla ölçümü değildir. SMAP 9 km'lik ortalamadır. GRACE hiçbir zaman bir parselin altındaki yeraltı suyu değildir. İki yağış kaynağı asla toplanmaz: biri girdi, öteki çapraz kontroldür. Landsat 8/9 (Collection 2 Seviye-2) ve MODIS (MOD13Q1/MYD13Q1 sürüm 061) Earth Engine yerine Microsoft Planetary Computer'ın açık STAC kataloğundan, hesap gerektirmeden okunur. Landsat 30 m'de birkaç hektarlık tarlada düzinelerce piksel verir; bir MODIS pikseli yaklaşık 6 ha'dır, bu yüzden Landsat tercih edilir. SMAP, GPM ve GRACE bir NASA Earthdata jetonuyla okunur, tarlanın yalnızca kendi hücresi aralıklı okumayla alınır; SMAP ve IMERG son 60 gün için okunur. IMERG'in Final sürümü Eylül 2025'te bitiyor, sonrası için hızlı (Late) sürüm kullanılır; jeton yaklaşık 60 günde dolar ve dolunca Veri Merkezi bu kaynakları "bağlı değil" gösterir. ECOSTRESS bağlı değildir. SMAP yalnızca üst 5 cm'yi görür; Su Kasası kök bölgesini modeller, bu yüzden ikisi eğilim olarak karşılaştırılır. Attribution: Hava verisi NASA LaRC POWER Projesi'nden alınmıştır; proje NASA Earth Science/Applied Science Program tarafından finanse edilmektedir. NASA GIBS, NASA ESDIS'in parçasıdır.
 
 ---
 
@@ -83,7 +83,7 @@ Veri Merkezi hangi kaynağın gerçekten bağlı olduğunu gösterir; bağlı ol
 
 # Uydudan tarlaya: geçmiş, su, rotasyon
 
-**Tarla Hafızası:** sezonun (1 Mart – 30 Eylül) en yüksek NDVI'ı ≥ 0,40 ise *ekili*, değilse *nadas*, yeterli temiz görüntü yoksa *bilinmiyor*. NDVI = (NIR − Kırmızı) / (NIR + Kırmızı)
+**Tarla Hafızası:** Landsat 30 m (yeterli sezonu kapsamıyorsa MODIS) ile sezonun (1 Mart – 30 Eylül) en yüksek NDVI'ı ≥ 0,40 ise *ekili*, değilse *nadas*, yeterli temiz görüntü yoksa *bilinmiyor*. NDVI = (NIR − Kırmızı) / (NIR + Kırmızı)
 
 **Su Kasası (günlük FAO-56):**
 - ET₀ = [0,408 Δ (Rₙ − G) + γ · 900/(T + 273) · u₂ (eₛ − eₐ)] / [Δ + γ (1 + 0,34 u₂)]
@@ -101,11 +101,13 @@ Kendi icat ettiğimiz bir model değil: FAO-56 standardı. ET₀, Kc, TAW/RAW ve
 
 # Ne buluyoruz, ve yeri ölçünce ne değişiyor
 
-**Platformdaki demo tarlası (1 Ekim 2025, kışlık buğday, tınlı toprak, kapasite 279 mm):** kullanılabilir su 202 mm (aralık 154–249). Su yeterli sezon: A 12'de 6, B 7'de 6, C 18'de 11.
+**Canlı demo tarla (Kulu, Konya; 1 Ekim 2025, kışlık buğday, tınlı toprak, kapasite 279 mm):** kullanılabilir su 198 mm (aralık 152–243). Su yeterli sezon: A 12'de 4, B 7'de 7, C 18'de 9.
 
-**Kulu doğrulama çalışması (2016–2026):** ekili–nadas sezonları temiz ayrışıyor; su modeli NASA SMAP ve MERRA-2 toprak nemiyle r = 0,61 uyumlu; su A için 13 ekimin 6'sında, B için 10'un 5'inde, C için 21'in 3'ünde yetti.
+**Bölgesel kontroller (aynı tarla, son 60 gün, platformda canlı):** SMAP üst 5 cm nemi sabah ortalaması 0,098 m³/m³; yağış 60 günde IMERG 56 mm, NASA POWER 57 mm (günlük r = 0,46); GRACE toplam su depolaması 2003'ten beri yılda −0,73 cm.
 
-**Sensör modu:** 10–100 cm'de dört derinlik, tarlaya özgü kalibrasyon, karar günü deposu modelin yerini alır, aralık daralır. Örnek senaryoda model 231 mm derken sensör **140 mm** gösterir; fark ekranda yan yana görünür. 48 saat sessizlikte tarla otomatik uydu moduna döner.
+**Kulu doğrulama çalışması (2016–2026):** ekili–nadas sezonları temiz ayrışıyor; su modeli NASA SMAP ve MERRA-2 toprak nemiyle r = 0,61 uyumlu (platformda SMAP, GPM ve GRACE aynı türden bölgesel kontrol olarak gösterilir); su A için 13 ekimin 6'sında, B için 10'un 5'inde, C için 21'in 3'ünde yetti.
+
+**Sensör modu:** 10–100 cm'de dört derinlik, tarlaya özgü kalibrasyon, karar günü deposu modelin yerini alır, aralık daralır. Örnek senaryoda model 198 mm derken kalibre (simüle) sensör **138 mm** gösterir (aralık 110–166); fark ekranda yan yana görünür. 48 saat sessizlikte tarla otomatik uydu moduna döner.
 
 **Olaydan telefona:** ekim kararı günü, ≥ 20 mm yağış, yıkanma, stres günü, hasat özeti → taslak → **mühendis onayı** → WhatsApp. Çiftçi yalnızca gönderilmiş mesajları ve kendi tarlasını görür.
 
@@ -118,13 +120,13 @@ Platformun ve Kulu çalışmasının sayıları farklıdır, çünkü konum, top
 
 # Zira, uçtan uca
 
-▶ **[Video, 2 dk]**: tarla çiz → NASA verisi → Tarla Hafızası → Su Kasası ve sensör simülatörü (231 → 140 mm) → Zira Kartı → mühendis onayı → çiftçinin WhatsApp'ı
+▶ **[Video, 2 dk]**: tarla çiz → NASA verisi → Tarla Hafızası → Su Kasası ve sensör simülatörü (198 → 138 mm) → Zira Kartı → mühendis onayı → çiftçinin WhatsApp'ı
 
 | Dürüst sınırlar | Sonraki adım |
 |---|---|
-| POWER ~50 km, MODIS ~6 ha; ürün türünü bilmez | Landsat 30 m (Earth Engine) |
+| POWER ~50 km; Landsat ve MODIS ekili ile nadası ayırır, ürün türünü bilmez | NDVI eşiğinin Landsat için yerel kalibrasyonu |
 | Aşama süreleri ve eşikler geçici, mühendis onayı bekliyor | Bir kooperatiften gerçek tarlalar, yerel kalibrasyon |
-| Sensör verisi simülatörden; gerçek kalibrasyon yok | Referans toprak nemi probları, gerçek donanım |
+| Sensör verisi simülatörden; gerçek kalibrasyon yok | Referans toprak nemi probları, gerçek donanım; ECOSTRESS (70 m evapotranspirasyon) |
 
 **Zira karar vermez: çiftçinin delille karar vermesine yardım eder.**
 
@@ -136,8 +138,9 @@ Videoyu başlatmadan: "Şimdi aynı akışı sensör simülatörüyle baştan so
 ---
 
 ## Sunumdan önce kontrol listesi
-1. Videoda Kulu'yu tarla olarak ekleyin; test tarlasının (Konya, 32,505 / 37,905) NDVI'ı yıl boyu 0,15–0,26 olduğundan hepsi "nadas" çıkar.
-2. Slayt 6'daki 202 mm (demo tarlası) ile 231 → 140 mm (sensör senaryosu) farklı koşullardan gelir; videoda gösterdiğinizle slaydı eşitleyin.
+1. Canlıda "Demo tarla (Kulu, Konya)" hazır: Landsat, MODIS, SRTM, SMAP, GPM, GRACE ve simüle sensör verisi yüklü (demo@zira.soloftindustries.com ile girin; şifre depoda tutulmaz). Eski Konya test tarlasını videoda kullanmayın: NDVI'ı yıl boyu 0,15–0,26, hepsi "nadas" çıkar.
+2. Slayt 6'daki sayılar canlı Kulu demo tarlasından alındı (198 mm model, 138 mm simüle sensör); videoyu aynı tarlada çekin, farklı bir senaryo gösterirseniz slayttaki sayıyı ona eşitleyin.
 3. Green API QR eşleştirmesi (sunucuda "notAuthorized" idi).
 4. Depo özel: "açık kaynak" yazacaksanız karar 0005'i ve özel UDS bağımlılığını çözün, yoksa o ibareyi silin.
-5. "24 sezon" platformun, "25 sezon" kayıt uzunluğunun söylemidir; hangisini kastettiğinizi belirtin.
+5. Earthdata jetonu (SMAP, GPM, GRACE) 15 Kasım 2026'da üretildi, yaklaşık 14 Ocak 2027'de dolar; sunumdan önce Veri Merkezi'nde bu üçünün "bağlı" göründüğünü kontrol edin.
+6. "24 sezon" platformun, "25 sezon" kayıt uzunluğunun söylemidir; hangisini kastettiğinizi belirtin.

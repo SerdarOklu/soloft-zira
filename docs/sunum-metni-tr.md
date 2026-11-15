@@ -90,15 +90,16 @@ Bir karar destek aracı, karar zincirindeki herkesin yerini bilmelidir. Mühendi
 |---|---|---|---|
 | **NASA POWER** | Günlük hava: yağış, sıcaklık, nem, rüzgâr, radyasyon, basınç | ~50 km, günlük | **Platformda** · 2001–2025, tarla başına 9.131 gün |
 | **MODIS MOD13Q1 / MYD13Q1** | Tarla geçmişi: ekili mi nadas mı | 250 m, 16 günlük (Terra + Aqua) | **Platformda** · tarla poligonunun içinden, 10 sezon, ~450 görüntü |
-| **SMAP** | Toprak nemi çapraz kontrolü | 9 km | Doğrulama çalışmasında · 2015'ten beri |
-| **GPM IMERG** | İkinci yağış kaynağı, çapraz kontrol | ~10 km, günlük | Doğrulama çalışmasında |
-| **GRACE / GRACE-FO** | Havza su depolama eğilimi | ~300 km, aylık | Bağlam analizinde · 2002–2022 |
-| **Landsat 8/9** | Poligon içi bitki örtüsü deseni (30 m) | 30 m | Sonraki adım (Earth Engine) |
+| **Landsat 8/9** | Poligon içi NDVI (30 m): Tarla Hafızası yeterli sezonu kapsıyorsa Landsat'ı tercih eder | 30 m, ~16 günlük | **Platformda** · Collection 2 Seviye-2, Landsat 9 2022'den beri |
+| **SMAP** | Yüzey toprak nemi (üst 5 cm), modelle eğilim karşılaştırması | 9 km, günlük | **Platformda** · NASA Earthdata; demo tarlada son 60 gün, sabah ortalaması 0,098 m³/m³ |
+| **GPM IMERG** | POWER yağışına karşı çapraz kontrol | ~10 km, günlük | **Platformda** · NASA Earthdata; 60 günde IMERG 56 mm, POWER 57 mm, r = 0,46 (Eylül 2025 sonrası hızlı Late sürümü) |
+| **GRACE / GRACE-FO** | Havza su depolama eğilimi | ~300 km, aylık | **Platformda** · 2002'den günümüze (261 ay), NASA Earthdata; demo hücrede 2003'ten beri −0,73 cm/yıl |
+| **SRTM (NASADEM)** | Tarla rakımı ve eğimi | 30 m | **Platformda** |
 
 Veri Merkezi hangi kaynağın gerçekten bağlı olduğunu gösterir; bağlı olmayan bir kaynak asla sağlıklı gösterilmez.
 
 **Konuşmacı notları**
-Kendimize koyduğumuz ölçek kuralları: POWER bölgesel yeniden analizdir, tarlanın ölçümü değildir. SMAP 9 km'lik hücrenin ortalamasıdır, tek tarlanın ürününü göremez. GRACE geniş bir alandaki toplam su depolamasıdır, hiçbir zaman bir parselin altındaki yeraltı suyu değildir. Aynı GPM pikseline düşen tarlalar ayrı yağış gözlemi değildir. İki yağış kaynağı asla toplanmaz: biri girdi, öteki çapraz kontroldür.
+Kendimize koyduğumuz ölçek kuralları: POWER bölgesel yeniden analizdir, tarlanın ölçümü değildir. SMAP 9 km'lik hücrenin ortalamasıdır, tek tarlanın ürününü göremez. GRACE geniş bir alandaki toplam su depolamasıdır, hiçbir zaman bir parselin altındaki yeraltı suyu değildir. Aynı GPM pikseline düşen tarlalar ayrı yağış gözlemi değildir. İki yağış kaynağı asla toplanmaz: POWER girdi, GPM IMERG çapraz kontroldür. SMAP, GPM ve GRACE modelin girdisi değil, bölgesel kontrolüdür ve ekranlar bunu söyler. SMAP yalnızca üst 5 cm'yi görür, Su Kasası 1,8 m'ye kadar kök bölgesini modeller; ikisi sayı olarak değil eğilim olarak (birlikte kuruyor ve ıslanıyor mu) karşılaştırılır. ECOSTRESS bağlı değildir ve Veri Merkezi bunu böyle gösterir. Earthdata verileri sunucudaki bir Earthdata jetonuyla okunur; jeton yaklaşık 60 günde dolar ve dolunca bu üç kaynak "bağlı değil" görünür, asla sağlıklı gösterilmez.
 
 Attribution: Hava verisi NASA Langley Araştırma Merkezi (LaRC) POWER Projesi'nden alınmıştır; proje NASA Earth Science/Applied Science Program tarafından finanse edilmektedir. NASA GIBS, NASA ESDIS'in parçası olarak sunulan görüntüler kullanılmıştır.
 
@@ -108,17 +109,17 @@ Attribution: Hava verisi NASA Langley Araştırma Merkezi (LaRC) POWER Projesi'n
 
 # Uydu, tarlanın son on yılını okur
 
-1. Tarla haritada çizilir; poligonun içindeki her MODIS pikseli alınır.
-2. Piksel güvenilirliği "iyi" ya da "sınırda" olanlar tutulur; bulut, kar ve eksik pikseller dışarıda kalır ve sayılır.
+1. Tarla haritada çizilir; poligonun içindeki her Landsat 8/9 pikseli (30 m) ve MODIS pikseli (250 m) alınır.
+2. Landsat'ta kalite bandı temiz işaretleyen pikseller (dolgu, bulut, sirüs, gölge ve kar dışarıda), MODIS'te güvenilirliği "iyi" ya da "sınırda" olanlar tutulur; dışarıda kalanlar sayılır.
 3. Sezonun (1 Mart – 30 Eylül) **en yüksek NDVI'ı ≥ 0,40** ise **ekili**, altındaysa **nadas**; yeterli temiz görüntü yoksa **bilinmiyor**.
-4. Her sezon için güven düzeyi hesaplanır; mühendis ya da kullanıcı doğrular. Doğrulanmış geçmiş rotasyon A olur.
+4. Landsat, on sezonun en az altısında karar verebiliyorsa geçmiş Landsat'tan, değilse MODIS'ten çıkarılır; ekran hangisinin kullanıldığını söyler, kullanıcı istediğini seçebilir. Her sezon için güven düzeyi hesaplanır; mühendis ya da kullanıcı doğrular. Doğrulanmış geçmiş rotasyon A olur.
 
 NDVI = (NIR − Kırmızı) / (NIR + Kırmızı)
 
 **Konuşmacı notları**
 Earth Engine projemiz olmadan MODIS'i NASA'nın MOD13Q1 (Terra) ve MYD13Q1 (Aqua) sürüm 061 ürünlerinden, Microsoft Planetary Computer'ın herkese açık STAC kataloğundaki bulut için optimize GeoTIFF'lerden okuyoruz; hesap ya da anahtar gerekmiyor. Her görüntü için poligonun içindeki pikselleri alıyoruz. Ekranda her sezonun tepe NDVI'ı ve temiz görüntü sayısı görünür; düşük güvenli sezonlar işaretlenir ve bilinmeyenler kullanıcıya bırakılır. Bu şeffaflık bilinçli: sistem emin olmadığı yerde tahmin yürütmez, sorar.
 
-Sınır: bir MODIS pikseli yaklaşık 6 hektardır; küçük parsellerde komşu pikseller sinyale karışır. MODIS ekili ile nadası ayırır, ürün türünü ve kış–yaz ayrımını bilmez. Bu yüzden Landsat (30 m) sonraki adımımızdır. Güven formülü: min(1, |tepe NDVI − 0,40| / 0,20) × min(1, temiz görüntü sayısı / 13).
+Landsat 30 m'de birkaç hektarlık bir tarla düzinelerce piksel içerir; MODIS'te bir avuç. Bu yüzden küçük parsellerde Landsat tercih edilir. Tek tıkla "Getir" MODIS ile iki Landsat platformunu kuyruğa alır. Landsat 9'un sahneleri 2022'den başlar; öncesi hata değil, boş sonuçtur. Sınır: bir MODIS pikseli yaklaşık 6 hektardır, komşu pikseller sinyale karışır; iki sensör de ekili ile nadası ayırır, ürün türünü ve kış–yaz ayrımını bilmez. 30 m'lik piksel daha saf olduğundan en iyi NDVI eşiği muhtemelen 0,40'tan yüksektir; bunu ancak geçmişi bilinen tarlalarla kalibrasyon belirler. Güven formülü: min(1, |tepe NDVI − 0,40| / 0,20) × min(1, temiz görüntü sayısı / 13).
 
 ---
 
@@ -156,8 +157,8 @@ Belirsizlik: her sonuç üç kez hesaplanır; toprağın metre başına kullanı
 Kartın her strateji bloğunda aynı beş alan: **neden önerildi · dayandığı veri · beklenen fayda · bilgi boşluğu · yerelde incelenmesi gereken risk.** Kart yazdırılabilir; her rakam aralıkla gelir.
 
 **Platformdaki demo tarlasında (1 Ekim 2025, kışlık buğday, tınlı toprak, kapasite 279 mm):**
-- Kullanılabilir su 202 mm (aralık 154–249)
-- Su, A için 12 ekimin 6'sında, B için 7 ekimin 6'sında, C için 18 ekimin 11'inde yetti
+- Kullanılabilir su 198 mm (aralık 152–243)
+- Su, A için 12 ekimin 4'ünde, B için 7 ekimin 7'sinde, C için 18 ekimin 9'unda yetti
 
 **Konuşmacı notları**
 Karşılaştırma adil olsun diye üç rotasyon bir ısınma sezonundan sonra aynı depodan başlar; ısınma simüle edilir, sayılmaz. Bir sezon yalnızca günlerinin en az %95'inde tam veri varsa sayılır; böylece platformda 2001–2025 kaydı 24 tam sezona bölünür. Bu sayılar geçici başlangıç değerleriyle üretildi: ürün aşama süreleri (FAO-56 Tablo 11), ekim tarihi, sulama verimi ve NDVI eşiği ayrı bir yapılandırma dosyasında kaynağıyla yazılıdır, kartta "geçici" etiketi taşır ve ziraat mühendisi onayıyla yerel değerlere çekilir. Mühendis onaylamadıkça hiçbir ürün kesin öneri olarak gösterilmez. Rotasyon C'de baklagil olarak şimdilik mercimek kullanılıyor çünkü nohut için FAO-56 Tablo 11'de aşama süreleri yok.
@@ -175,7 +176,7 @@ Karşılaştırma adil olsun diye üç rotasyon bir ısınma sezonundan sonra ay
 4. Aralık daralır: sensör okuması ± TAW'ın %10'u.
 5. Bir düğüm 48 saat susarsa tarla **otomatik olarak uydu moduna** döner.
 
-**Ekranda "uydu ile sensör" yan yana:** örnek senaryoda model 231 mm derken sensör 140 mm (kapasite 279 mm) gösteriyor; fark ekranda görünür.
+**Ekranda "uydu ile sensör" yan yana:** örnek senaryoda model 198 mm derken sensör 138 mm (kapasite 279 mm) gösteriyor; fark ekranda görünür.
 
 **Konuşmacı notları**
 Bu, uydu ve yeryüzü arasındaki köprü. Uydu ve model bölgesel bir tahmindir; sensör tarlanın kendi ölçümüdür. İkisi birleştiğinde hem güven hem de doğruluk artar. Sensör mesajı ışığında kasa değeri değişir, aralık daralır ve kullanıcı ikisini yan yana görür. Gösterdiğimiz okumalar, gerçek donanımın göndereceği şemayla çalışan sensör simülatöründen gelir ve ekranlarda "simüle" olarak işaretlenir; donanıma geçildiğinde backend'de tek satır değişmez. Mevcut %10 bandı, gerçek bir toprakta kalibrasyon hatasından belirlenecek bir başlangıç değeridir. Sensör mesajı, sensör düğümü başına bir anahtarla doğrulanır (ortak anahtar sunucuda tanımlıdır).
@@ -231,7 +232,7 @@ Bu slayt jüri sorusunu önceden cevaplıyor: "Modele nasıl güveneceğiz?" Cev
 | **Üç rotasyon** | Su 13 ekimin 6'sında A için, 10'un 5'inde B için, 21'in 3'ünde C için yetti |
 | **Aralık** | Altı koşudan çıkar: iki yağış kaynağı × üç toprak kapasitesi |
 | **Bağımsız kontrol** | SMAP ve MERRA-2 toprak nemi ile r = 0,61 |
-| **Sensör düzeltmesi** | Simülatör verisiyle karar günü suyu 231 mm'den 140 mm'ye iner (kapasite 279 mm) |
+| **Sensör düzeltmesi** | Simülatör verisiyle karar günü suyu 198 mm'den 138 mm'ye iner (kapasite 279 mm) |
 
 Bu çalışma, tek bir 250 m MODIS pikselinde net bir ekili–nadas sinyali olan Kulu'da yapıldı: bilimi derinlemesine sınamak için seçilmiş bir konum, taranmış bir tarla değil.
 
@@ -249,7 +250,7 @@ Sistem kendini ekranda eleştirir: altı ekili yılın en zayıf bahar yeşermes
 | ETKİ | SINIRLAR (bilerek açık) | SONRAKİ ADIM |
 |---|---|---|
 | Çiftçinin okuyabileceği, tarla düzeyinde karşılaştırma; ücretsiz NASA verisiyle | POWER ~50 km bölgesel veridir; MODIS pikseli ~6 ha | Bir kooperatiften gerçek tarlalar; her kural için mühendis onayı |
-| Daha çok ekim ile daha çok karşılanmayan su arasındaki denge görünür | Aşama süreleri ve eşikler geçici; yerel ajronomi onayı bekliyor | Landsat 30 m (Earth Engine); SMAP/MERRA-2 kontrolünün platforma taşınması |
+| Daha çok ekim ile daha çok karşılanmayan su arasındaki denge görünür | Aşama süreleri ve eşikler geçici; yerel ajronomi onayı bekliyor | NDVI eşiğinin Landsat için yerel kalibrasyonu; ECOSTRESS (70 m evapotranspirasyon) |
 | Mühendis onayı olmadan hiçbir mesaj çiftçiye gitmez | Sensör verisi şimdilik simülatörden; gerçek kalibrasyon yok | Referans toprak nemi probları; gerçek donanım, gravimetrik kalibrasyon |
 | Kooperatif ölçeğinde yönetim | Belirsizlik her zaman gösterilir; yerel doğrulama mühendisindir | Aynı havzada iki tarla daha; çiftçi önceliği ve kısıtları girdi olarak |
 
@@ -274,7 +275,7 @@ Sensör donanımı tasarımı: 10, 30, 60 ve 100 cm'de toprak nemi probları, ta
 1. 0:00–0:15 · Harita: tarla çizilir; alan ve merkez otomatik hesaplanır.
 2. 0:15–0:35 · Tek tıkla 25 yıllık NASA POWER verisi gelir; yağış grafiği.
 3. 0:35–0:55 · Tarla Hafızası: MODIS NDVI, 10 sezon, ekili/nadas, güven düzeyi, doğrulama.
-4. 0:55–1:15 · Su Kasası: karar günü kullanılabilir su, aralık; sensör simülatörü başlar, değer 231'den 140 mm'ye iner, "uydu ile sensör" yan yana.
+4. 0:55–1:15 · Su Kasası: karar günü kullanılabilir su, aralık; sensör simülatörü başlar, değer 198'den 138 mm'ye iner, "uydu ile sensör" yan yana.
 5. 1:15–1:40 · Zira Kartı: A, B, C yan yana, 24 sezon, aralık.
 6. 1:40–1:55 · Mesaj taslağı mühendis kuyruğunda; onay; WhatsApp'ta çiftçi.
 7. 1:55–2:00 · "Zira karar vermez." + canlı adres.
@@ -346,9 +347,9 @@ Bir sezon ekim ile hasat arasında sürer, Ocak–Aralık arasında değil. Plat
 - Belirsizlik: toprağın metre başına kullanılabilir suyunun düşük, orta, yüksek değeriyle üç koşu; etkili yağış payı ve nadas verimi 0,10 aynı yönde kaydırılır.
 
 ## 8. Uydu işleme
-**MODIS (platformda).** MOD13Q1 ve MYD13Q1 sürüm 061, NDVI = 0,0001 × DN. Her görüntüde tarla poligonunun içindeki pikseller alınır (poligona değenler dahil); piksel güvenilirliği 0 (iyi) ya da 1 (sınırda) olanlar tutulur, 2 (kar) ve 3 (bulut) ile eksik değerler dışarıda kalır. Her görüntü için ortalama ve ortanca NDVI, temiz piksel sayısı ve dışarıda kalan pay saklanır. Sezon = hasat yılının 1 Mart – 30 Eylül penceresi. En yüksek NDVI ≥ 0,40 ise ekili, değilse nadas; temiz görüntü 5'ten azsa bilinmiyor. Güven = min(1, |tepe NDVI − 0,40| / 0,20) × min(1, temiz görüntü sayısı / 13). Eşik geçicidir; bilinen geçmişli yerel tarlalarla kalibre edilecektir.
+**MODIS (platformda).** MOD13Q1 ve MYD13Q1 sürüm 061, NDVI = 0,0001 × DN. Her görüntüde tarla poligonunun içindeki pikseller alınır (poligona değenler dahil); piksel güvenilirliği 0 (iyi) ya da 1 (sınırda) olanlar tutulur, 2 (kar) ve 3 (bulut) ile eksik değerler dışarıda kalır. Her görüntü için ortalama ve ortanca NDVI, temiz piksel sayısı ve dışarıda kalan pay saklanır. Sezon = hasat yılının 1 Mart – 30 Eylül penceresi. En yüksek NDVI ≥ 0,40 ise ekili, değilse nadas; temiz görüntü 5'ten azsa bilinmiyor (Landsat'ta sezonda en az 4 temiz sahne). Güven = min(1, |tepe NDVI − 0,40| / 0,20) × min(1, temiz görüntü sayısı / 13). Eşik geçicidir; bilinen geçmişli yerel tarlalarla kalibre edilecektir.
 
-**Landsat (sonraki adım).** Collection 2 yüzey yansıması: SR = DN × 0,0000275 − 0,2. NDVI = (NIR − Kırmızı) / (NIR + Kırmızı); Landsat 8/9 için NIR = SR_B5, Kırmızı = SR_B4. Dolgu, genişletilmiş bulut, sirüs, bulut, gölge ve kar pikselleri QA_PIXEL ile maskelenir; istatistikler tarla
+**Landsat (platformda).** Collection 2 yüzey yansıması: SR = DN × 0,0000275 − 0,2. NDVI = (NIR − Kırmızı) / (NIR + Kırmızı); Landsat 8/9 için NIR = SR_B5, Kırmızı = SR_B4. Sahne bulutluluğu %70'in altındaki sahneler okunur; dolgu, genişletilmiş bulut, sirüs, bulut, gölge ve kar pikselleri QA_PIXEL ile maskelenir; istatistikler tarla
 poligonunun içinden alınır. Landsat, en az 6 sezonda karar verebiliyorsa geçmiş Landsat'tan, değilse MODIS'ten çıkarılır.
 
 ## 9. Sensör düzeltmesi
@@ -377,7 +378,7 @@ poligonunun içinden alınır. Landsat, en az 6 sezonda karar verebiliyorsa geç
 
 ## Sunumdan önce kontrol listesi
 1. **Gösterilecek tarla.** Platformdaki test tarlasının (Konya, 32,505 / 37,905) gerçek MODIS NDVI'ı yıl boyu 0,15–0,26: on sezonun hepsi "nadas" çıkıyor, ekili–nadas değişimini göstermez. Videoda Kulu konumunu tarla olarak ekleyip NDVI'ı çekin ve değişimin göründüğünü önceden doğrulayın.
-2. **Sayıları ekrandan teyit edin.** Slayt 8'deki 202 mm (demo tarlası) ile slayt 9 ve 12'deki 231 → 140 mm (sensör senaryosu, karar 0014) farklı koşullardan gelir; videoda hangisini gösteriyorsanız slayttaki sayıyı ona eşitleyin.
+2. **Sayıları ekrandan teyit edin.** Slayt 8, 9 ve 12'deki sayılar canlı Kulu demo tarlasından alındı (198 mm model, 138 mm simüle sensör, karar 0014); videoyu aynı tarlada çekin.
 3. **Green API.** QR eşleştirmesi tamamlandı mı? Sunucuda durum "notAuthorized" idi. Tamamlanmadıysa slayt 10'da "gönderim hazır, eşleştirme bekliyor" deyin.
 4. **Depo bağlantısı ve "açık kaynak".** Depo özel. Herkese açık yapılacaksa karar 0005'i ve özel UDS bağımlılığını çözün; yapılmayacaksa slayt 13'teki "Açık kaynak" ibaresini kaldırın.
 5. **Sayı tutarlılığı.** "24 sezon" platformdaki, "25 sezon" kayıt uzunluğunun söylemidir (2001–2025); konuşurken hangisini kastettiğinizi belirtin.
