@@ -26,5 +26,9 @@ $COMPOSE pull
 echo "Starting the stack..."
 $COMPOSE up -d --remove-orphans
 
+# Nginx resolves the backend and frontend addresses when it starts. A recreated container
+# can get a new address, so make Nginx look them up again.
+$COMPOSE exec -T nginx nginx -s reload || echo "Nginx was not running; nothing to reload."
+
 echo "Current state:"
 $COMPOSE ps
