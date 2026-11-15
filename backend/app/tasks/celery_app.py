@@ -6,7 +6,12 @@ from app.core.config import get_settings
 
 settings = get_settings()
 
-celery_app = Celery("zira", broker=settings.redis_url, backend=settings.redis_url)
+celery_app = Celery(
+    "zira",
+    broker=settings.redis_url,
+    backend=settings.redis_url,
+    include=["app.tasks.system", "app.tasks.power"],
+)
 celery_app.conf.update(
     task_always_eager=settings.celery_task_always_eager,
     task_eager_propagates=True,
@@ -16,4 +21,3 @@ celery_app.conf.update(
     task_acks_late=True,
     timezone="UTC",
 )
-celery_app.autodiscover_tasks(["app.tasks"], related_name="system")
