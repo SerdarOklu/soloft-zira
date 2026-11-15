@@ -483,7 +483,8 @@
       "invalid_phone": "Check the phone number (with the area code).",
       "invalid_code": "The code is wrong or has expired. You can ask for a new one.",
       "code_unavailable": "The WhatsApp code cannot be sent right now. Ask your cooperative for a sign-in link.",
-      "invalid_link": "This sign-in link is invalid, already used or expired. Ask your cooperative for a new one."
+      "invalid_link": "This sign-in link is invalid, already used or expired. Ask your cooperative for a new one.",
+      "demo_unavailable": "Demo sign-in is off right now."
     },
     "welcome": "Welcome to Zira",
     "welcomeLead": "Reach the information about your field with ease.",
@@ -510,7 +511,26 @@
     "linkDescription": "Your sign-in link is ready. Tap the button below to continue.",
     "linkSubmit": "Sign in",
     "linkProblem": "The sign-in link cannot be used",
-    "backToLogin": "Back to sign-in"
+    "backToLogin": "Back to sign-in",
+    "demo": {
+      "title": "Choose your role",
+      "lead": "Demo version: no password, pick a role and enter.",
+      "roles": {
+        "admin": "Admin",
+        "agronomist": "Agronomist",
+        "cooperative_user": "Cooperative",
+        "farmer": "Farmer"
+      },
+      "about": {
+        "admin": "All screens, users and the Data Center",
+        "agronomist": "Fields, Water Vault, rotation card, message approval",
+        "cooperative_user": "Farmer accounts and linking fields to farmers",
+        "farmer": "My field: your water and the messages sent to you"
+      },
+      "enter": "Enter as {role}",
+      "notice": "This is a demo sign-in; real users sign in with a password or a WhatsApp code.",
+      "ordinary": "Sign in with my account"
+    }
   },
   "system": {
     "backHome": "Back to home",

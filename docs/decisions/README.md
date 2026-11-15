@@ -22,6 +22,7 @@ A decision marked **Open** is waiting for an answer and blocks the phase it name
 | [0014](0014-sensors-and-cooperative.md) | Sensors, the simulator, the cooperative panel and the farmer view | Accepted (5 open points) |
 | [0013](0013-field-memory-from-modis.md) | Field Memory from MODIS NDVI instead of Earth Engine | Accepted (5 open points) |
 | [0012](0012-rotation-demo-and-whatsapp.md) | Rotation comparison with provisional values; WhatsApp drafts through Green API | Accepted (4 open points) |
+| [0017](0017-demo-sign-in-and-seed.md) | Demo sign-in by role and a seeded demo for a jury | Accepted (demo only) |
 
 Decisions about the model itself (fallow handling, starting storage, strategy rules,
 uncertainty) are in PDT sections 7 and 15.

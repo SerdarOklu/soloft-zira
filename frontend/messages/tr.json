@@ -483,7 +483,8 @@
       "invalid_phone": "Telefon numarasını kontrol edin (alan kodu ile birlikte).",
       "invalid_code": "Kod hatalı ya da süresi dolmuş. Yeni kod isteyebilirsiniz.",
       "code_unavailable": "WhatsApp kodu şu an gönderilemiyor. Kooperatifinizden giriş linki isteyin.",
-      "invalid_link": "Bu giriş linki geçersiz, kullanılmış ya da süresi dolmuş. Kooperatifinizden yeni link isteyin."
+      "invalid_link": "Bu giriş linki geçersiz, kullanılmış ya da süresi dolmuş. Kooperatifinizden yeni link isteyin.",
+      "demo_unavailable": "Demo girişi şu an kapalı."
     },
     "welcome": "Zira'ya Hoş Geldiniz",
     "welcomeLead": "Tarlanızla ilgili bilgilere kolayca ulaşın.",
@@ -510,7 +511,26 @@
     "linkDescription": "Giriş linkiniz hazır. Devam etmek için aşağıdaki düğmeye dokunun.",
     "linkSubmit": "Giriş yap",
     "linkProblem": "Giriş linki kullanılamıyor",
-    "backToLogin": "Giriş ekranına dön"
+    "backToLogin": "Giriş ekranına dön",
+    "demo": {
+      "title": "Rolünüzü seçin",
+      "lead": "Demo sürümü: şifre gerekmez, bir rol seçip girin.",
+      "roles": {
+        "admin": "Yönetici",
+        "agronomist": "Ziraat mühendisi",
+        "cooperative_user": "Kooperatif",
+        "farmer": "Çiftçi"
+      },
+      "about": {
+        "admin": "Tüm ekranlar, kullanıcılar ve veri merkezi",
+        "agronomist": "Tarlalar, su kasası, rotasyon kartı, mesaj onayı",
+        "cooperative_user": "Çiftçi hesapları ve tarlaların çiftçilere bağlanması",
+        "farmer": "Tarlam: suyunuz ve size gönderilen mesajlar"
+      },
+      "enter": "{role} olarak gir",
+      "notice": "Bu bir demo girişidir; gerçek kullanıcılar şifre ya da WhatsApp koduyla girer.",
+      "ordinary": "Hesabımla giriş yap"
+    }
   },
   "system": {
     "backHome": "Ana sayfaya dön",

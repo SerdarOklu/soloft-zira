@@ -2,6 +2,7 @@
 
     uv run python -m app.cli create-user --email a@b.c --name "Ada" --role admin
     uv run python -m app.cli seed-reference
+    uv run python -m app.cli seed-demo --fetch-weather --drafts-for 2024
 
 The password is read from the ZIRA_PASSWORD environment variable or asked for
 interactively; it is never taken from the command line, where it would end up in
@@ -89,6 +90,30 @@ def _read_password() -> str:
     return first
 
 
+def _seed_demo(args: argparse.Namespace) -> int:
+    from app.services.demo import seed_demo
+
+    # Its own session without an outer transaction: the service commits step by step, so a
+    # failed weather fetch keeps the accounts and the field it already made.
+    with Session(get_engine()) as session:
+        report = seed_demo(
+            session,
+            get_config(),
+            fetch_weather=args.fetch_weather,
+            draft_season=args.drafts_for,
+        )
+    created = ", ".join(report.created_users) or "none (already there)"
+    print(f"Demo users created: {created}")
+    print(f"Demo field created: {report.field_created}")
+    print(f"Sensor calibration set: {report.calibration_set}")
+    if report.weather_rows is not None:
+        print(f"NASA POWER rows written: {report.weather_rows}")
+    print(f"Message drafts created: {report.drafts_created}")
+    for note in report.notes:
+        print(f"- {note}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python -m app.cli")
     commands = parser.add_subparsers(dest="command", required=True)
@@ -104,8 +129,22 @@ def main(argv: list[str] | None = None) -> int:
 
     commands.add_parser("seed-reference", help="load crops and data sources from config/")
 
+    demo = commands.add_parser(
+        "seed-demo", help="create the demo accounts and a demo field for a jury (safe to repeat)"
+    )
+    demo.add_argument("--fetch-weather", action="store_true", help="fetch NASA POWER now (network)")
+    demo.add_argument(
+        "--drafts-for",
+        type=int,
+        metavar="YEAR",
+        help="write message drafts for the season that starts on this year's decision day "
+        "(needs the weather; use with --fetch-weather the first time)",
+    )
+
     args = parser.parse_args(argv)
     try:
+        if args.command == "seed-demo":
+            return _seed_demo(args)
         with Session(get_engine()) as session, session.begin():
             if args.command == "create-user":
                 created = create_user(

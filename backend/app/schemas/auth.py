@@ -43,5 +43,19 @@ class CodeVerify(BaseModel):
     code: Annotated[str, StringConstraints(pattern=r"^\d{6}$")]
 
 
+class DemoRoleOut(BaseModel):
+    role: Role
+    name: str
+
+
+class DemoRoles(BaseModel):
+    enabled: bool
+    roles: list[DemoRoleOut] = []
+
+
+class DemoLogin(BaseModel):
+    role: Role
+
+
 class CodeSent(BaseModel):
     sent: bool = True

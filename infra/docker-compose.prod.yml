@@ -29,6 +29,7 @@ x-backend-env: &backend-env
   POWER_BASE_URL: ${POWER_BASE_URL:-https://power.larc.nasa.gov/api/temporal/daily/point}
   EARTHDATA_TOKEN: ${EARTHDATA_TOKEN:-}
   SENSOR_INGEST_KEY: ${SENSOR_INGEST_KEY:-}
+  DEMO_ROLE_LOGIN: ${DEMO_ROLE_LOGIN:-false}
   GREEN_API_URL: ${GREEN_API_URL:-https://api.green-api.com}
   GREEN_API_INSTANCE_ID: ${GREEN_API_INSTANCE_ID:-}
   GREEN_API_TOKEN: ${GREEN_API_TOKEN:-}

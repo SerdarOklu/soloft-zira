@@ -29,6 +29,9 @@ class Settings(BaseSettings):
     # A NASA Earthdata user token (SMAP, GPM IMERG and GRACE are read with it). Empty keeps those
     # sources unconnected.
     earthdata_token: str = ""
+    # Demo sign-in: pick a role and enter, no password. Meant for a jury demo; leave it off for
+    # real users. It signs in as the seeded demo-<role>@demo.zira accounts (cli seed-demo).
+    demo_role_login: bool = False
     # Green API (WhatsApp gateway). Leave empty and approved messages wait instead of sending.
     green_api_url: str = "https://api.green-api.com"
     green_api_instance_id: str = ""

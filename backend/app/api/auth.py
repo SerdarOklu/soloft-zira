@@ -10,11 +10,14 @@ from app.api.deps import CurrentUser, SessionDep
 from app.api.messages import GatewayDep
 from app.core.config import get_settings
 from app.core.security import create_access_token, hash_password, verify_password
-from app.models import User
+from app.models import Role, User
 from app.schemas.auth import (
     CodeRequest,
     CodeSent,
     CodeVerify,
+    DemoLogin,
+    DemoRoleOut,
+    DemoRoles,
     LinkRedeem,
     LoginRequest,
     LoginResponse,
@@ -49,6 +52,53 @@ def login(body: LoginRequest, session: SessionDep) -> LoginResponse:
 @router.get("/me", response_model=UserOut)
 def me(user: CurrentUser) -> User:
     return user
+
+
+# --- Demo sign-in: choose a role, no password -------------------------------------------------
+
+DEMO_DOMAIN = "demo.zira"
+DEMO_ROLES = (Role.ADMIN, Role.AGRONOMIST, Role.COOPERATIVE_USER, Role.FARMER)
+
+
+def demo_email(role: Role) -> str:
+    return f"demo-{role.value.replace('_', '-')}@{DEMO_DOMAIN}"
+
+
+def _demo_users(session) -> dict[Role, User]:
+    rows = session.scalars(
+        select(User).where(
+            func.lower(User.email).in_([demo_email(r) for r in DEMO_ROLES]),
+            User.is_active.is_(True),
+        )
+    )
+    return {user.role: user for user in rows if user.email.lower() == demo_email(user.role)}
+
+
+@router.get("/demo/roles", response_model=DemoRoles)
+def demo_roles(session: SessionDep) -> DemoRoles:
+    """The roles that can be entered without a password. Off (and empty) unless the server sets
+    DEMO_ROLE_LOGIN and the demo accounts have been seeded."""
+    if not get_settings().demo_role_login:
+        return DemoRoles(enabled=False)
+    users = _demo_users(session)
+    roles = [DemoRoleOut(role=r, name=users[r].name) for r in DEMO_ROLES if r in users]
+    return DemoRoles(enabled=bool(roles), roles=roles)
+
+
+@router.post("/demo/login", response_model=LoginResponse)
+def demo_login(body: DemoLogin, session: SessionDep) -> LoginResponse:
+    """Sign in as the demo account of a role. Only the seeded demo accounts can be entered this
+    way, never a real user, and only while DEMO_ROLE_LOGIN is on."""
+    if not get_settings().demo_role_login:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Not found")
+    user = _demo_users(session).get(body.role)
+    if user is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail={"code": "demo_not_seeded"})
+    return LoginResponse(
+        access_token=create_access_token(user.id, user.role.value),
+        expires_in=get_settings().access_token_ttl_minutes * 60,
+        user=UserOut.model_validate(user),
+    )
 
 
 # --- Passwordless sign-in for farmers (a one-time link, or a code on WhatsApp) -----------------
