@@ -11,7 +11,8 @@
     "waterVault": "Su Kasası",
     "rotation": "Rotasyon ve Zira Kartı",
     "dataCenter": "Veri Merkezi",
-    "settings": "Ayarlar"
+    "settings": "Ayarlar",
+    "messages": "WhatsApp mesajları"
   },
   "dock": {
     "dashboard": "Özet",
@@ -111,6 +112,15 @@
         "Kullanıcılar ve roller",
         "Kooperatif ve kurum kayıtları",
         "API anahtarları ve yapılandırma"
+      ]
+    },
+    "messages": {
+      "title": "WhatsApp mesajları",
+      "description": "Zira mesaj taslağı yazar; ziraat mühendisi onaylar; onaylanan mesaj çiftçinin telefonuna gider.",
+      "items": [
+        "Model olaylarından yazılmış taslaklar",
+        "Mühendis onayı olmadan hiçbir şey gitmez",
+        "Gönderim durumu"
       ]
     }
   },
@@ -337,7 +347,12 @@
       "initial_storage_frac": "başlangıç depolaması",
       "spinup_seasons": "ısınma süresi",
       "uncertainty_rain_delta": "yağış belirsizliği",
-      "min_valid_day_share": "asgari geçerli gün oranı"
+      "min_valid_day_share": "asgari geçerli gün oranı",
+      "eff_rain_fraction": "yağışın toprağa giren payı",
+      "sufficiency_ratio": "yeterlilik oranı",
+      "flex_sow_threshold_frac": "esnek ekim eşiği",
+      "legume_every_n_fallow": "baklagil sıklığı",
+      "legume_crop": "baklagil ürünü"
     },
     "assumptionsTitle": "Bu sayı neye dayanıyor",
     "assumptions": {
@@ -392,5 +407,177 @@
   "system": {
     "backHome": "Ana sayfaya dön",
     "retry": "Yeniden dene"
+  },
+  "rotation": {
+    "form": {
+      "field": "Tarla",
+      "rotation": "Mevcut rotasyon",
+      "submit": "Karşılaştır",
+      "presets": {
+        "wheatFallow": "Buğday – nadas",
+        "wheatEvery": "Her yıl buğday",
+        "wheatLentil": "Buğday – mercimek"
+      }
+    },
+    "noFieldsTitle": "Karşılaştırılacak tarla yok",
+    "noFieldsDescription": "Rotasyonlar bir tarlanın 25 yıllık verisiyle karşılaştırılır. Önce bir tarla ekleyin.",
+    "addField": "Tarla ekle",
+    "goToField": "Tarlaya git",
+    "summary": "{field} · {count} sezon ({first}–{last}) · mevcut rotasyon kullanıcı beyanıdır",
+    "provisional": {
+      "title": "Geçici değerlerle hesaplandı",
+      "body": "Ürün aşama süreleri, ekim tarihleri, sulama verimi ve baklagil seçimi ziraat mühendisinin onayını bekleyen başlangıç değerleridir. Sonuçlar karar için değil, yöntemi göstermek içindir:"
+    },
+    "provisionalSources": {
+      "stage_lengths": "aşama süreleri",
+      "sowing_dates": "ekim tarihleri",
+      "irrigation_efficiency": "sulama verimi",
+      "legume": "C stratejisindeki baklagil (mercimek)"
+    },
+    "strategy": {
+      "A": "A: Mevcut rotasyon",
+      "B": "B: Suya bağlı esnek rotasyon",
+      "C": "C: Baklagilli rotasyon"
+    },
+    "fields": {
+      "rationale": "Gerekçe",
+      "evidence": "Kanıt",
+      "benefit": "Beklenen fayda",
+      "gap": "Bilgi boşluğu",
+      "risk": "Yerel inceleme riski"
+    },
+    "text": {
+      "A": {
+        "rationale": "Çiftçinin bildiği düzen; karşılaştırmanın tabanı.",
+        "evidence": "Bu sürümde rotasyonu kullanıcı beyan eder; Landsat ve MODIS geçmişi Tarla Hafızası ile gelecek.",
+        "benefit": "Bilinen risk, yeni ekipman gerekmez.",
+        "gap": "Uydu, ürün türünü değil ekili ve nadas ayrımını verir.",
+        "risk": "Çiftçi ürün sırasını doğrulamalı."
+      },
+      "B": {
+        "rationale": "Takvim değil, o yılın suyu karar verir.",
+        "evidence": "Karar günündeki kasa, yağış ve 25 sezonluk su dengesi.",
+        "benefit": "Kurak yıllarda boşa ekim ve sulama olmaz.",
+        "gap": "Sensör olmayan yerde uydu nem verisi kaba kalır.",
+        "risk": "Eşik toprak türüne göre ayarlanmalı."
+      },
+      "C": {
+        "rationale": "Azot bağlar, çıplak tarla süresini kısaltır.",
+        "evidence": "Baklagilin su ihtiyacıyla 25 sezonluk su dengesi.",
+        "benefit": "Azot, organik madde, ek gelir.",
+        "gap": "Yerel verim ve piyasa fiyatı yok.",
+        "risk": "Çeşidin soğuk ve hastalığa dayanımı."
+      }
+    },
+    "metrics": {
+      "enough": "{sufficient} / {valid} ekimde su yetti",
+      "range": "Aralık {low}–{high}",
+      "sown": "{sown} ekim, {fallow} nadas",
+      "stress": "Hassas dönemde ortalama stres günü",
+      "deficit": "Ortalama su açığı (mm)",
+      "irrigation": "Ortalama sulama ihtiyacı (mm)",
+      "diff": "Mevcut rotasyona göre",
+      "points": "{value} puan",
+      "noValid": "Değerlendirilecek ekim yok"
+    },
+    "seasons": {
+      "title": "Sezonlar",
+      "aria": "{name} için sezon sonuçları",
+      "sufficient": "Su yetti",
+      "short": "Su yetmedi",
+      "fallow": "Nadas",
+      "heldBack": "Ekilmedi (kasa eşiğin altında)",
+      "invalid": "Veri eksik, sayılmadı"
+    },
+    "assumptionsTitle": "Bu sonuç neye dayanıyor",
+    "assumptions": {
+      "rotation_user_supplied": "Mevcut rotasyonu kullanıcı yazdı; Tarla Hafızası (Faz 5) henüz yok.",
+      "fallow_between_seasons": "Ürün yokken toprak nadas kuralıyla yağışın bir kısmını tutar.",
+      "no_sensor": "Sensör düzeltmesi yok (Faz 7); aralık geniş gösterilir.",
+      "regional_weather": "Hava verisi NASA POWER'ın bölgesel değeridir, tarlada ölçülmemiştir.",
+      "kc_mid_table_value": "Kc orta değeri tablo değeridir, bölge iklimine göre düzeltilmemiştir.",
+      "range_from_soil_and_rain": "Aralık toprağın su tutma aralığından ve yağış payından gelir."
+    },
+    "needsSignoff": "Onay bekleyen parametreler:",
+    "print": "Yazdır",
+    "errors": {
+      "generic": "Karşılaştırma yapılamadı.",
+      "no_weather_data": "Bu tarlanın hava verisi yok. Önce NASA verisini çekin.",
+      "no_soil": "Tarlanın toprak profili eksik.",
+      "no_elevation": "Tarlanın rakımı yok; NASA verisi çekilince dolar.",
+      "no_location": "Tarlanın konumu yok.",
+      "not_enough_history": "Tam bir sezon için yeterli geçmiş veri yok.",
+      "rotation_without_crop": "Rotasyonda en az bir ürün olmalı.",
+      "unknown_crop": "Bilinmeyen ürün.",
+      "season_values_missing": "Bu ürün için sezon değerleri henüz yok."
+    }
+  },
+  "messages": {
+    "gateway": {
+      "on": "WhatsApp bağlantısı hazır: onaylanan mesajlar gönderilir.",
+      "off": "WhatsApp bağlantısı kurulu değil: onaylanan mesajlar bekler, hiçbir şey gönderilmez."
+    },
+    "generate": {
+      "title": "Taslak yaz",
+      "field": "Tarla",
+      "year": "Sonbahar karar yılı",
+      "language": "Dil",
+      "phone": "Çiftçinin telefonu",
+      "phoneHint": "Ülke koduyla, örneğin +90 5xx xxx xx xx. Sonra da girilebilir.",
+      "submit": "Taslakları yaz",
+      "result": "{created} taslak yazıldı, {skipped} zaten vardı."
+    },
+    "queue": {
+      "title": "Onay kuyruğu",
+      "empty": "Bu durumda taslak yok.",
+      "all": "Tümü"
+    },
+    "status": {
+      "pending": "Onay bekliyor",
+      "approved": "Onaylandı, gönderim bekliyor",
+      "sent": "Gönderildi",
+      "rejected": "Reddedildi",
+      "failed": "Gönderilemedi"
+    },
+    "events": {
+      "decision": "Ekim kararı",
+      "heavy_rain": "Şiddetli yağış",
+      "leaching": "Yıkanma uyarısı",
+      "stress": "Su stresi",
+      "harvest": "Sezon özeti",
+      "card": "Tarla kartı"
+    },
+    "preview": {
+      "title": "Çiftçinin telefonunda",
+      "to": "Alıcı",
+      "noRecipient": "Telefon numarası yok"
+    },
+    "actions": {
+      "approve": "Onayla ve gönder",
+      "reject": "Reddet",
+      "save": "Metni kaydet",
+      "retry": "Tekrar dene",
+      "phone": "Telefon numarası"
+    },
+    "support": "Ziraat mühendisi onaylamadan hiçbir mesaj çiftçiye gitmez.",
+    "errors": {
+      "generic": "İşlem yapılamadı.",
+      "no_recipient": "Önce çiftçinin telefon numarasını girin.",
+      "invalid_phone": "Telefon numarası geçersiz.",
+      "not_editable": "Bu taslak artık değiştirilemez.",
+      "not_approvable": "Bu taslak onaylanamaz.",
+      "not_rejectable": "Bu taslak reddedilemez.",
+      "not_sendable": "Bu taslak gönderilemez.",
+      "empty_body": "Mesaj boş olamaz.",
+      "season_outside_record": "Bu yıl için veri yok. Veri {first} – {last} arasında.",
+      "no_weather_data": "Bu tarlanın hava verisi yok.",
+      "no_soil": "Tarlanın toprak profili eksik.",
+      "no_elevation": "Tarlanın rakımı yok.",
+      "unknown_crop": "Bilinmeyen ürün.",
+      "not_enough_history": "Yeterli geçmiş veri yok.",
+      "rotation_without_crop": "Rotasyonda ürün yok.",
+      "season_values_missing": "Bu ürün için sezon değerleri yok.",
+      "gateway_not_configured": "WhatsApp bağlantısı kurulu değil."
+    }
   }
 }

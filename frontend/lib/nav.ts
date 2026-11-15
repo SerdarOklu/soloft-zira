@@ -10,6 +10,7 @@ export type ScreenKey =
   | 'fieldMemory'
   | 'waterVault'
   | 'rotation'
+  | 'messages'
   | 'dataCenter'
   | 'settings';
 
@@ -31,6 +32,7 @@ export const SCREENS: readonly Screen[] = [
   { key: 'fieldMemory', href: '/field-memory', roles: STAFF, phase: 5 },
   { key: 'waterVault', href: '/water-vault', roles: STAFF, phase: 4 },
   { key: 'rotation', href: '/rotation', roles: STAFF, phase: 6 },
+  { key: 'messages', href: '/messages', roles: ['admin', 'agronomist'], phase: 6 },
   { key: 'dataCenter', href: '/data-center', roles: ['admin', 'agronomist'], phase: 3 },
   { key: 'settings', href: '/settings', roles: ['admin', 'cooperative_user'], phase: 7, bottom: true },
 ];

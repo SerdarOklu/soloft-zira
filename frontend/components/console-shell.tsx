@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
   LogOut,
   MapPinned,
+  MessageCircle,
   Repeat,
   Settings,
 } from 'lucide-react';
@@ -29,6 +30,7 @@ const ICONS: Record<ScreenKey, ReactNode> = {
   fieldMemory: <History />,
   waterVault: <Droplets />,
   rotation: <Repeat />,
+  messages: <MessageCircle />,
   dataCenter: <Database />,
   settings: <Settings />,
 };

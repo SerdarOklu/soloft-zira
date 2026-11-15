@@ -98,7 +98,7 @@ def test_the_season_gets_a_draft_for_each_event(pg_client: TestClient, admin, fi
     decision = by_type["decision"]
     assert decision["event_date"] == "2023-10-01"
     assert decision["body"].startswith("Ekim kararı, 1 Eki 2023.")
-    assert "Kışlık buğday" in decision["body"]
+    assert "bu sonbahar kışlık buğday ekimini destekliyor" in decision["body"]
     assert "Zira karar vermez" in decision["body"]
     assert decision["payload"]["above_threshold"] is True
 

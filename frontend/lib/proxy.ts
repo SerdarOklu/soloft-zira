@@ -4,7 +4,7 @@
  * must be a plain identifier: no dots, slashes or encoded tricks.
  */
 const SEGMENT = /^[A-Za-z0-9_-]+$/;
-const ALLOWED_ROOTS = new Set(['fields']);
+const ALLOWED_ROOTS = new Set(['fields', 'messages']);
 
 /** The backend path for the proxied segments, or null when they must not be forwarded. */
 export function backendPath(segments: string[]): string | null {

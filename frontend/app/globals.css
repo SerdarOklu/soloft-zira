@@ -183,3 +183,181 @@
   gap: var(--uds-space-4);
   align-items: flex-end;
 }
+
+/* Zira Card: three strategies side by side. Colours are UDS tokens only. */
+.zira-strategies {
+  display: grid;
+  gap: var(--uds-space-4);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 64rem) {
+  .zira-strategies {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.zira-strategy {
+  display: grid;
+  gap: var(--uds-space-3);
+  align-content: start;
+  padding: var(--uds-space-4);
+  border: 1px solid var(--uds-border);
+  border-radius: var(--uds-radius-md);
+  background: var(--uds-card);
+}
+
+.zira-strategy-figure {
+  color: var(--uds-foreground);
+  font-size: 1.125rem;
+  font-weight: var(--uds-font-weight-semibold);
+}
+
+.zira-season-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.zira-season {
+  display: inline-block;
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 3px;
+  border: 1px solid var(--uds-border-strong);
+}
+
+.zira-season--sufficient {
+  background: var(--uds-success);
+  border-color: var(--uds-success);
+}
+
+.zira-season--short {
+  background: var(--uds-danger);
+  border-color: var(--uds-danger);
+}
+
+.zira-season--fallow {
+  background: var(--uds-muted);
+}
+
+.zira-season--heldBack {
+  background: var(--uds-warning-subtle);
+  border-color: var(--uds-warning);
+}
+
+.zira-season--invalid {
+  background: transparent;
+  border-style: dashed;
+}
+
+.zira-season-legend {
+  list-style: none;
+  padding: 0;
+}
+
+.zira-season-legend .zira-season {
+  margin-right: var(--uds-space-2);
+  vertical-align: middle;
+}
+
+.zira-metrics,
+.zira-fieldlist {
+  display: grid;
+  gap: var(--uds-space-2);
+  margin: 0;
+}
+
+.zira-metrics {
+  grid-template-columns: 1fr auto;
+  font-size: 0.8125rem;
+}
+
+.zira-metrics dd {
+  margin: 0;
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.zira-metrics dt,
+.zira-fieldlist dt {
+  color: var(--uds-muted-foreground);
+}
+
+.zira-fieldlist dt {
+  font-size: 0.75rem;
+  font-weight: var(--uds-font-weight-semibold);
+}
+
+.zira-fieldlist dd {
+  margin: 0;
+  font-size: 0.8125rem;
+}
+
+/* WhatsApp drafts: the queue and a phone-shaped preview. */
+.zira-draft-list {
+  display: grid;
+  gap: var(--uds-space-2);
+  margin-top: var(--uds-space-3);
+  list-style: none;
+  padding: 0;
+}
+
+.zira-draft {
+  display: grid;
+  gap: var(--uds-space-1);
+  width: 100%;
+  padding: var(--uds-space-3);
+  border: 1px solid var(--uds-border);
+  border-radius: var(--uds-radius-md);
+  background: var(--uds-card);
+  color: var(--uds-foreground);
+  text-align: start;
+  cursor: pointer;
+}
+
+.zira-draft[aria-pressed='true'] {
+  border-color: var(--uds-primary);
+  background: var(--uds-primary-faint);
+}
+
+.zira-draft-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--uds-space-2);
+  align-items: center;
+}
+
+.zira-phone {
+  display: grid;
+  gap: var(--uds-space-3);
+  max-width: 26rem;
+  padding: var(--uds-space-4);
+  border: 1px solid var(--uds-border-strong);
+  border-radius: var(--uds-radius-lg);
+  background: var(--uds-muted);
+}
+
+.zira-bubble {
+  padding: var(--uds-space-3);
+  border-radius: var(--uds-radius-md);
+  background: var(--uds-card);
+  color: var(--uds-foreground);
+  font-size: 0.875rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.zira-bubble--edit {
+  width: 100%;
+  border: 1px solid var(--uds-border);
+  font-family: inherit;
+  resize: vertical;
+}
+
+@media print {
+  .zira-no-print {
+    display: none;
+  }
+}

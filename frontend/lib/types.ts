@@ -167,3 +167,95 @@ export interface WaterVault {
   et0_blocker: string | null;
   daily: WaterVaultDay[];
 }
+
+export interface RotationSeason {
+  year: number;
+  planned: string | null;
+  crop: string | null;
+  valid: boolean;
+  sufficient: boolean;
+  ratio: number | null;
+  deficit_mm: number;
+  stress_days: number;
+  storage_at_decision_mm: number | null;
+}
+
+export interface RotationMetrics {
+  sown: number;
+  valid: number;
+  sufficient: number;
+  fallow: number;
+  share: number | null;
+  share_low: number | null;
+  share_high: number | null;
+  sufficient_low: number;
+  sufficient_high: number;
+  stress_days_mean: number | null;
+  deficit_mean_mm: number | null;
+  irrigation_need_mean_mm: number | null;
+}
+
+export interface RotationDifference {
+  share_points: number | null;
+  stress_days_mean: number | null;
+  deficit_mean_mm: number | null;
+  irrigation_need_mean_mm: number | null;
+  sufficient: number;
+}
+
+export interface RotationStrategy {
+  key: 'A' | 'B' | 'C';
+  crops: string[];
+  metrics: RotationMetrics;
+  difference: RotationDifference | null;
+  seasons: RotationSeason[];
+}
+
+export interface RotationComparison {
+  field_id: string;
+  model_version: string;
+  provisional: boolean;
+  provisional_sources: string[];
+  rotation: (string | null)[];
+  first_day: string;
+  last_day: string;
+  seasons: number;
+  reference: {
+    crop: string;
+    root_depth_m: number;
+    taw_mm: number;
+    taw_low_mm: number;
+    taw_high_mm: number;
+  };
+  flex_threshold_mm: number;
+  sufficiency_ratio: number;
+  irrigation_efficiency: number;
+  needs_signoff: string[];
+  assumptions: string[];
+  strategies: RotationStrategy[];
+}
+
+export type DraftStatus = 'pending' | 'approved' | 'sent' | 'rejected' | 'failed';
+
+export interface MessageDraft {
+  id: string;
+  field_id: string;
+  field_name: string;
+  event_type: string;
+  event_date: string;
+  locale: string;
+  body: string;
+  payload: Record<string, unknown>;
+  status: DraftStatus;
+  recipient_hint: string | null;
+  has_recipient: boolean;
+  error: string | null;
+  created_at: string;
+  decided_at: string | null;
+  sent_at: string | null;
+}
+
+export interface GatewayStatus {
+  configured: boolean;
+  provider: string;
+}

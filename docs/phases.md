@@ -11,7 +11,7 @@ one starts only after the pull request is approved and merged.
 | 3. Fields, NASA POWER, Data Center | `faz-3/tarlalar-power` | Field records with polygons, POWER client and cache, fetch jobs, Data Center screens | A field is added, 25 years of data is fetched and displayed | In review (PR #4); live at `https://zira.soloftindustries.com` |
 | 4. Water Vault | `faz-4/su-kasasi` | ET0, Kc curve, daily water balance, uncertainty; tests against FAO-56 worked examples; screens | Usable water on the decision day is shown in mm | Decision-day water built and checked; the crop season waits for the stage lengths ([0011](decisions/0011-water-vault-version-1.md)) |
 | 5. Field Memory | `faz-5/tarla-hafizasi` | Earth Engine: Landsat and MODIS, NDVI, cropped or fallow classification, confirmation screen | The 10-year history is shown and confirmed by the user | Not started |
-| 6. Rotation and Zira Card | `faz-6/rotasyon-kart` | Strategies A, B and C, the six metrics, card and export | Three rotations are compared on one card | Not started |
+| 6. Rotation and Zira Card | `faz-6/rotasyon-kart` | Strategies A, B and C, the six metrics, card and export | Three rotations are compared on one card | Built with provisional season values and a user-supplied rotation ([0012](decisions/0012-rotation-demo-and-whatsapp.md)); WhatsApp drafts with agronomist approval added |
 | 7. Sensors and cooperative | `faz-7/sensor-kooperatif` | Sensor ingest, simulator, cooperative panel, farmer view | Simulator data corrects the Water Vault | Not started |
 
 ## Differences from the PDT

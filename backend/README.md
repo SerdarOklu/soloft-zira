@@ -42,6 +42,10 @@ Roles: `admin`, `agronomist`, `cooperative_user`. The command asks for the passw
 | `GET /api/v1/dashboard/summary` | Field and job counts, fields without data, map markers |
 | `GET /api/v1/reference/crops` | Crops of `config/crops.yaml` and whether their season can run yet |
 | `GET /api/v1/fields/{id}/water-vault?crop=...&date=...` | Usable water in the root zone on a day, in mm, with a low to high range, the daily series and what it rests on |
+| `GET /api/v1/fields/{id}/rotation?rotation=winter_wheat,fallow` | Strategies A, B and C over the stored record: sufficient seasons with a range, stress days, deficit, irrigation need, per-season results (provisional values, see decision 0012) |
+| `POST /api/v1/fields/{id}/messages/generate` | Write WhatsApp drafts for the events of one season (admin, agronomist) |
+| `GET /api/v1/messages`, `GET /api/v1/messages/gateway` | The draft queue; whether the WhatsApp gateway is configured |
+| `PATCH /api/v1/messages/{id}`, `POST .../approve`, `.../reject`, `.../send` | Edit, approve (sends when configured), reject, retry (admin, agronomist) |
 
 ## Water Vault
 
@@ -52,6 +56,12 @@ reproduce the worked examples printed in FAO Irrigation and Drainage Paper 56, i
 ET0 calculation of Example 18 and the ten-day stress table of Example 37. What the Water Vault
 assumes, and what waits for an agronomist, is in
 [../docs/decisions/0011-water-vault-version-1.md](../docs/decisions/0011-water-vault-version-1.md).
+
+## WhatsApp
+
+Drafts are approved by an agronomist before anything is sent. Sending uses Green API: set
+`GREEN_API_INSTANCE_ID` and `GREEN_API_TOKEN` in `.env` (see `.env.example`). Without them
+approved drafts wait. Wording and thresholds: `config/message_templates.yaml`.
 
 ## NASA POWER
 

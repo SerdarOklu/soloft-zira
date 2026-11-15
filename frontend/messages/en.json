@@ -11,7 +11,8 @@
     "waterVault": "Water Vault",
     "rotation": "Rotation and Zira Card",
     "dataCenter": "Data Center",
-    "settings": "Settings"
+    "settings": "Settings",
+    "messages": "WhatsApp messages"
   },
   "dock": {
     "dashboard": "Home",
@@ -111,6 +112,15 @@
         "Users and roles",
         "Cooperative and institution records",
         "API keys and configuration"
+      ]
+    },
+    "messages": {
+      "title": "WhatsApp messages",
+      "description": "Zira drafts a message; the agronomist approves it; the approved message goes to the farmer's phone.",
+      "items": [
+        "Drafts written from model events",
+        "Nothing is sent without agronomist approval",
+        "Delivery status"
       ]
     }
   },
@@ -337,7 +347,12 @@
       "initial_storage_frac": "starting storage",
       "spinup_seasons": "warm-up period",
       "uncertainty_rain_delta": "rain uncertainty",
-      "min_valid_day_share": "minimum share of valid days"
+      "min_valid_day_share": "minimum share of valid days",
+      "eff_rain_fraction": "share of rain entering the soil",
+      "sufficiency_ratio": "sufficiency ratio",
+      "flex_sow_threshold_frac": "flexible sowing threshold",
+      "legume_every_n_fallow": "legume frequency",
+      "legume_crop": "legume crop"
     },
     "assumptionsTitle": "What this number rests on",
     "assumptions": {
@@ -392,5 +407,177 @@
   "system": {
     "backHome": "Back to home",
     "retry": "Try again"
+  },
+  "rotation": {
+    "form": {
+      "field": "Field",
+      "rotation": "Current rotation",
+      "submit": "Compare",
+      "presets": {
+        "wheatFallow": "Wheat – fallow",
+        "wheatEvery": "Wheat every year",
+        "wheatLentil": "Wheat – lentil"
+      }
+    },
+    "noFieldsTitle": "No field to compare",
+    "noFieldsDescription": "Rotations are compared on a field's 25 years of data. Add a field first.",
+    "addField": "Add a field",
+    "goToField": "Go to the field",
+    "summary": "{field} · {count} seasons ({first}–{last}) · the current rotation is user-supplied",
+    "provisional": {
+      "title": "Computed with provisional values",
+      "body": "Crop stage lengths, sowing dates, irrigation efficiency and the legume choice are starting values that await agronomist sign-off. The results show the method; they are not for decisions:"
+    },
+    "provisionalSources": {
+      "stage_lengths": "stage lengths",
+      "sowing_dates": "sowing dates",
+      "irrigation_efficiency": "irrigation efficiency",
+      "legume": "the legume in strategy C (lentil)"
+    },
+    "strategy": {
+      "A": "A: Current rotation",
+      "B": "B: Water-dependent flexible rotation",
+      "C": "C: Legume rotation"
+    },
+    "fields": {
+      "rationale": "Rationale",
+      "evidence": "Evidence",
+      "benefit": "Expected benefit",
+      "gap": "Information gap",
+      "risk": "Local review risk"
+    },
+    "text": {
+      "A": {
+        "rationale": "The pattern the farmer knows; the baseline.",
+        "evidence": "In this version the user states the rotation; the Landsat and MODIS history arrives with Field Memory.",
+        "benefit": "Known risk, no new equipment.",
+        "gap": "Satellites separate cropped from fallow, not the crop species.",
+        "risk": "The farmer must confirm the crop sequence."
+      },
+      "B": {
+        "rationale": "The year's water, not the calendar, decides.",
+        "evidence": "Storage on the decision day, precipitation and the 25-season balance.",
+        "benefit": "No wasted sowing or irrigation in dry years.",
+        "gap": "Satellite soil moisture is coarse where there is no sensor.",
+        "risk": "The threshold must be calibrated to the soil type."
+      },
+      "C": {
+        "rationale": "Fixes nitrogen and shortens bare-field time.",
+        "evidence": "The legume's water need and the 25-season balance.",
+        "benefit": "Nitrogen, organic matter, extra income.",
+        "gap": "No local yield or market price.",
+        "risk": "The variety's tolerance to cold and disease."
+      }
+    },
+    "metrics": {
+      "enough": "Water was enough in {sufficient} of {valid} sowings",
+      "range": "Range {low}–{high}",
+      "sown": "{sown} sown, {fallow} fallow",
+      "stress": "Mean stress days in the sensitive stage",
+      "deficit": "Mean water deficit (mm)",
+      "irrigation": "Mean irrigation need (mm)",
+      "diff": "Against the current rotation",
+      "points": "{value} points",
+      "noValid": "No sowing to judge"
+    },
+    "seasons": {
+      "title": "Seasons",
+      "aria": "Season results for {name}",
+      "sufficient": "Water was enough",
+      "short": "Water was not enough",
+      "fallow": "Fallow",
+      "heldBack": "Not sown (storage below the threshold)",
+      "invalid": "Data missing, not counted"
+    },
+    "assumptionsTitle": "What this result rests on",
+    "assumptions": {
+      "rotation_user_supplied": "The current rotation was typed in; Field Memory (phase 5) does not exist yet.",
+      "fallow_between_seasons": "With no crop the soil keeps part of the rain under the fallow rule.",
+      "no_sensor": "No sensor correction (phase 7); the range is shown wide.",
+      "regional_weather": "Weather is the regional NASA POWER value, not measured on the field.",
+      "kc_mid_table_value": "Kc mid is the table value, not corrected for the local climate.",
+      "range_from_soil_and_rain": "The range comes from the soil's water range and the rain share."
+    },
+    "needsSignoff": "Parameters awaiting sign-off:",
+    "print": "Print",
+    "errors": {
+      "generic": "The comparison could not be made.",
+      "no_weather_data": "This field has no weather data. Fetch the NASA data first.",
+      "no_soil": "The field's soil profile is missing.",
+      "no_elevation": "The field has no elevation; it is filled when NASA data is fetched.",
+      "no_location": "The field has no location.",
+      "not_enough_history": "Not enough history for one full season.",
+      "rotation_without_crop": "The rotation needs at least one crop.",
+      "unknown_crop": "Unknown crop.",
+      "season_values_missing": "This crop has no season values yet."
+    }
+  },
+  "messages": {
+    "gateway": {
+      "on": "WhatsApp is connected: approved messages are sent.",
+      "off": "WhatsApp is not connected: approved messages wait and nothing is sent."
+    },
+    "generate": {
+      "title": "Write drafts",
+      "field": "Field",
+      "year": "Autumn decision year",
+      "language": "Language",
+      "phone": "Farmer's phone",
+      "phoneHint": "With the country code, for example +90 5xx xxx xx xx. It can be added later.",
+      "submit": "Write drafts",
+      "result": "{created} drafts written, {skipped} already existed."
+    },
+    "queue": {
+      "title": "Approval queue",
+      "empty": "No drafts in this state.",
+      "all": "All"
+    },
+    "status": {
+      "pending": "Awaiting approval",
+      "approved": "Approved, waiting to send",
+      "sent": "Sent",
+      "rejected": "Rejected",
+      "failed": "Not sent"
+    },
+    "events": {
+      "decision": "Autumn decision",
+      "heavy_rain": "Heavy rain",
+      "leaching": "Leaching warning",
+      "stress": "Water stress",
+      "harvest": "Season summary",
+      "card": "Field card"
+    },
+    "preview": {
+      "title": "On the farmer's phone",
+      "to": "To",
+      "noRecipient": "No phone number"
+    },
+    "actions": {
+      "approve": "Approve and send",
+      "reject": "Reject",
+      "save": "Save text",
+      "retry": "Try again",
+      "phone": "Phone number"
+    },
+    "support": "No message reaches the farmer before the agronomist approves it.",
+    "errors": {
+      "generic": "The action could not be done.",
+      "no_recipient": "Enter the farmer's phone number first.",
+      "invalid_phone": "The phone number is not valid.",
+      "not_editable": "This draft can no longer be changed.",
+      "not_approvable": "This draft cannot be approved.",
+      "not_rejectable": "This draft cannot be rejected.",
+      "not_sendable": "This draft cannot be sent.",
+      "empty_body": "The message cannot be empty.",
+      "season_outside_record": "There is no data for that year. Data runs from {first} to {last}.",
+      "no_weather_data": "This field has no weather data.",
+      "no_soil": "The field's soil profile is missing.",
+      "no_elevation": "The field has no elevation.",
+      "unknown_crop": "Unknown crop.",
+      "not_enough_history": "Not enough history.",
+      "rotation_without_crop": "The rotation has no crop.",
+      "season_values_missing": "This crop has no season values.",
+      "gateway_not_configured": "WhatsApp is not connected."
+    }
   }
 }

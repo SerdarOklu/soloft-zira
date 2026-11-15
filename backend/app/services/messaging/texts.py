@@ -29,6 +29,10 @@ def crop_name(key: str | None, locale: str, config: Config) -> str:
     return config.messages.crop_names_en.get(key, key)
 
 
+def _mid_sentence(name: str) -> str:
+    return name[:1].lower() + name[1:]
+
+
 def _template(config: Config, name: str, locale: str) -> str:
     return config.messages.templates[name][locale]
 
@@ -56,7 +60,7 @@ def render(
             storage=_number(payload["storage_mm"]),
             taw=_number(payload["taw_mm"]),
             threshold=_number(payload["threshold_mm"]),
-            crop=crop_name(payload["planned_crop"], locale, config),
+            crop=_mid_sentence(crop_name(payload["planned_crop"], locale, config)),
         )
         return f"{body}\n\n{disclaimer}"
     if event.type == "heavy_rain":
@@ -101,6 +105,8 @@ def _strategy_name(key: str, comparison: RotationOut, locale: str, config: Confi
         ordered = [c for c in comparison.rotation if c and c in sown]
         ordered += [c for c in sown if c not in ordered]
         names = [crop_name(crop, locale, config) for crop in ordered]
+    # Only the first name keeps its capital: "Kışlık buğday – mercimek".
+    names = [n if i == 0 else n[:1].lower() + n[1:] for i, n in enumerate(names)]
     return " – ".join(names)
 
 

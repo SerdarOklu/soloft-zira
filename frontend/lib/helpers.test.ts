@@ -15,6 +15,7 @@ describe('proxy path (the browser may only reach the fields API)', () => {
   it('refuses every other part of the API', () => {
     expect(backendPath(['auth', 'login'])).toBeNull();
     expect(backendPath(['data-center', 'jobs'])).toBeNull();
+    expect(backendPath(['messages', 'abc', 'approve'])).toBe('/api/v1/messages/abc/approve');
     expect(backendPath([])).toBeNull();
   });
 

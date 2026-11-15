@@ -6,7 +6,7 @@ import { backendPath } from '@/lib/proxy';
 
 /**
  * The browser's way to the backend. The access token lives in an httpOnly cookie, so
- * scripts on the page cannot send it; this route adds it. Only the fields API is
+ * scripts on the page cannot send it; this route adds it. Only the fields and messages APIs are
  * forwarded (see lib/proxy.ts) and the backend still checks the role on every call.
  */
 async function forward(request: Request, context: { params: Promise<{ path: string[] }> }) {
@@ -16,7 +16,7 @@ async function forward(request: Request, context: { params: Promise<{ path: stri
   const token = (await cookies()).get(SESSION_COOKIE)?.value;
   if (!token) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
 
-  const hasBody = request.method === 'POST';
+  const hasBody = request.method === 'POST' || request.method === 'PATCH';
   // A cross-site form cannot send JSON, so this closes the last gap beside SameSite=Lax.
   if (hasBody && !request.headers.get('content-type')?.includes('application/json')) {
     return NextResponse.json({ error: 'invalid_request' }, { status: 415 });
@@ -45,4 +45,5 @@ async function forward(request: Request, context: { params: Promise<{ path: stri
 
 export const GET = forward;
 export const POST = forward;
+export const PATCH = forward;
 export const DELETE = forward;
