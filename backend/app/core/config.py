@@ -20,9 +20,17 @@ class Settings(BaseSettings):
     secret_key: str = INSECURE_SECRET
     access_token_ttl_minutes: int = 720
     power_base_url: str = "https://power.larc.nasa.gov/api/temporal/daily/point"
+    # Green API (WhatsApp gateway). Leave empty and approved messages wait instead of sending.
+    green_api_url: str = "https://api.green-api.com"
+    green_api_instance_id: str = ""
+    green_api_token: str = ""
     config_dir: Path = REPO_ROOT / "config"
     # Run Celery tasks inline instead of sending them to the worker (tests, quick checks).
     celery_task_always_eager: bool = False
+
+    @property
+    def whatsapp_configured(self) -> bool:
+        return bool(self.green_api_instance_id and self.green_api_token)
 
     @property
     def is_production(self) -> bool:

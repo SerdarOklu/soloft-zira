@@ -133,8 +133,14 @@ def _difference(candidate: MetricsOut, baseline: MetricsOut) -> DifferenceOut:
 
 
 def rotation_comparison(
-    session: Session, field: Field, rotation: list[str | None], config: Config
+    session: Session,
+    field: Field,
+    rotation: list[str | None],
+    config: Config,
+    inputs_out: dict | None = None,
 ) -> RotationOut:
+    """``inputs_out``, when given, receives what the runs used so a caller can replay one run
+    (the message events read the daily trace of strategy A)."""
     if not any(rotation):
         raise VaultError("rotation_without_crop")
     location = session.execute(
@@ -240,6 +246,21 @@ def rotation_comparison(
         "B": (plan_a, flexible),
         "C": (plan_c, frozenset()),
     }
+    if inputs_out is not None:
+        inputs_out.update(
+            days=days,
+            rain=rain,
+            et0=et0,
+            crops=crops,
+            plan_a=plan_a,
+            years=years,
+            middle_params=params_for(soil_mid, 0.0),
+            reference_taw=total_available_water(soil_mid, reference_depth),
+            decision_month=decision_month,
+            decision_day=decision_day,
+            flex_threshold_mm=float(parameters.get("core", "flex_sow_threshold_frac"))
+            * total_available_water(soil_mid, reference_depth),
+        )
     strategies: list[StrategyOut] = []
     baseline: MetricsOut | None = None
     for key, (plan, flex) in plans.items():

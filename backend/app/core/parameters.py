@@ -208,6 +208,35 @@ class RotationDemo(BaseModel):
     crops: dict[str, DemoCrop]
 
 
+class MessageValue(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    value: Any
+
+
+class MessageTemplates(BaseModel):
+    """Draft WhatsApp texts and the events that raise them (config/message_templates.yaml)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    status: Literal["draft_texts"]
+    thresholds: dict[str, MessageValue]
+    months: dict[str, list[str]]
+    crop_names_en: dict[str, str]
+    disclaimer: dict[str, str]
+    templates: dict[str, dict[str, str]]
+
+    @model_validator(mode="after")
+    def _every_template_has_both_languages(self) -> MessageTemplates:
+        for name, texts in self.templates.items():
+            if set(texts) != {"tr", "en"}:
+                raise ValueError(f"template '{name}' needs exactly tr and en")
+        for lang in ("tr", "en"):
+            if len(self.months.get(lang, [])) != 12:
+                raise ValueError(f"months.{lang} needs 12 names")
+        return self
+
+
 class Config(BaseModel):
     parameters: ParameterSet
     crops: dict[str, Crop]
@@ -215,6 +244,7 @@ class Config(BaseModel):
     climate: ClimateProfiles
     data_sources: dict[str, DataSource]
     rotation_demo: RotationDemo
+    messages: MessageTemplates
 
     @model_validator(mode="after")
     def _cross_references(self) -> Config:
@@ -245,6 +275,7 @@ def load_config(config_dir: Path) -> Config:
         climate=ClimateProfiles(**_read(config_dir / "climate_profiles.yaml")),
         data_sources=_read(config_dir / "data_sources.yaml")["sources"],
         rotation_demo=RotationDemo(**_read(config_dir / "rotation_demo.yaml")),
+        messages=MessageTemplates(**_read(config_dir / "message_templates.yaml")),
     )
 
 

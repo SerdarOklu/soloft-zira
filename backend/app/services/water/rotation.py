@@ -118,6 +118,22 @@ def legume_plan(
     return result
 
 
+@dataclass(frozen=True)
+class DayTrace:
+    """What one day looked like in a run; the message events are read from these."""
+
+    day: date
+    crop: str | None
+    storage: float
+    precipitation: float
+    deep_percolation: float
+    ks: float | None
+    stress_in_mid: bool
+    sowing_year: int | None
+    season_day: int | None
+    season_length: int | None
+
+
 def simulate(
     days: Sequence[date],
     rain: Sequence[float | None],
@@ -127,6 +143,7 @@ def simulate(
     plan: dict[int, str | None],
     flexible: frozenset[int] = frozenset(),
     params: RunParams,
+    trace: list[DayTrace] | None = None,
 ) -> list[SeasonResult]:
     """Run one strategy over the record and return one result per sowing year of ``plan``.
 
@@ -159,8 +176,12 @@ def simulate(
                 active = (year, crop, season_day)
                 break
 
+        drained = 0.0
+        day_crop: str | None = None
+        stressed_mid = False
+        day_ks: float | None = None
         if active is None:
-            storage, _ = fallow_day(
+            storage, drained = fallow_day(
                 storage,
                 precipitation,
                 taw=reference_taw,
@@ -200,6 +221,8 @@ def simulate(
                 eff_rain_fraction=params.eff_rain_fraction,
             )
             storage = outcome.storage
+            drained = outcome.deep_percolation
+            day_crop, day_ks = crop.key, outcome.ks
             result = results[year]
             result.crop = crop.key
             result.days += 1
@@ -209,6 +232,23 @@ def simulate(
             mid_start = crop.l_ini + crop.l_dev
             if mid_start < season_day <= mid_start + crop.l_mid and outcome.ks < 1.0:
                 result.stress_days += 1
+                stressed_mid = True
+
+        if trace is not None:
+            trace.append(
+                DayTrace(
+                    day=day,
+                    crop=day_crop,
+                    storage=storage,
+                    precipitation=precipitation,
+                    deep_percolation=drained,
+                    ks=day_ks,
+                    stress_in_mid=stressed_mid,
+                    sowing_year=active[0] if active else None,
+                    season_day=active[2] if active else None,
+                    season_length=active[1].length if active else None,
+                )
+            )
 
         # Strategy B decides at the end of the decision day (PDT 7.8).
         if (

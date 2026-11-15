@@ -33,6 +33,7 @@ from app.models.fields import (
     SoilProfile,
     WaterRegime,
 )
+from app.models.messages import MessageDraft
 
 __all__ = [
     "AnalysisRun",
@@ -46,6 +47,7 @@ __all__ = [
     "FarmerConstraint",
     "Field",
     "JobStatus",
+    "MessageDraft",
     "Organization",
     "OrganizationType",
     "Role",

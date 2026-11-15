@@ -1,0 +1,117 @@
+# WhatsApp message drafts: when one is written, and what it says (phase 6).
+#
+# Zira writes a draft, an agronomist approves it, and only then does it go to the farmer.
+# The wording below is a first draft for the Space Apps demo; the agronomist should read and
+# adjust every sentence. Placeholders in {braces} are filled from the model's numbers.
+#
+# The thresholds are team assumptions and need sign-off like the other model values.
+
+status: draft_texts
+
+thresholds:
+  heavy_rain_mm:
+    value: 20          # rain in one day at or above this raises a message
+  leaching_mm:
+    value: 5           # water leaving the root zone in one day at or above this
+  stress_day_marks:
+    value: [5, 15]     # message on these counts of stress days in the sensitive stage
+
+months:
+  tr: [Oca, Şub, Mar, Nis, May, Haz, Tem, Ağu, Eyl, Eki, Kas, Ara]
+  en: [Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
+
+# English names for crops (Turkish names come from crops.yaml).
+crop_names_en:
+  winter_wheat: winter wheat
+  lentil: lentil
+  chickpea: chickpea
+  barley: barley
+
+disclaimer:
+  tr: Zira karar vermez; ziraat mühendisinin ve çiftçinin kararını destekler.
+  en: Zira does not decide; it supports the agronomist's and the farmer's decision.
+
+templates:
+  decision_crop_low:
+    tr: >-
+      Ekim kararı, {date}. Toprakta {storage} mm kullanılabilir su var (kapasite {taw} mm);
+      bu, {threshold} mm eşiğinin altında. Alışılmış rotasyonunuzda bu yıl {crop} var, ama
+      esnek kurala göre tarla nadasa bırakılır. Ekmeden önce ziraat mühendisinizle konuşun.
+    en: >-
+      Autumn decision, {date}. The soil holds {storage} mm of usable water (capacity {taw} mm),
+      below the {threshold} mm threshold. Your usual rotation has {crop} this year, but the
+      flexible rule would leave the field fallow. Talk to your agronomist before sowing.
+  decision_crop_ok:
+    tr: >-
+      Ekim kararı, {date}. Toprakta {storage} mm kullanılabilir su var (kapasite {taw} mm).
+      Bu, {threshold} mm eşiğinin üzerinde: su bu sonbahar {crop} ekimini destekliyor.
+    en: >-
+      Autumn decision, {date}. The soil holds {storage} mm of usable water (capacity {taw} mm),
+      above the {threshold} mm threshold: the water supports sowing {crop} this autumn.
+  decision_fallow_low:
+    tr: >-
+      Ekim kararı, {date}. Toprakta {storage} mm kullanılabilir su var (kapasite {taw} mm);
+      bu, {threshold} mm eşiğinin altında. Rotasyonunuzda bu yıl zaten nadas var ve su da
+      bunu destekliyor: tarlayı nadasa bırakın.
+    en: >-
+      Autumn decision, {date}. The soil holds {storage} mm of usable water (capacity {taw} mm),
+      below the {threshold} mm threshold. Your rotation already has a fallow year and the water
+      agrees: leave the field fallow.
+  decision_fallow_ok:
+    tr: >-
+      Ekim kararı, {date}. Toprakta {storage} mm kullanılabilir su var (kapasite {taw} mm);
+      bu, {threshold} mm eşiğinin üzerinde. Rotasyonunuzda bu yıl nadas var, ama su bir ürünü
+      taşıyabilir. Ekip ekmemeyi ziraat mühendisinizle konuşun.
+    en: >-
+      Autumn decision, {date}. The soil holds {storage} mm of usable water (capacity {taw} mm),
+      above the {threshold} mm threshold. Your rotation has a fallow year, but the water could
+      carry a crop. Talk to your agronomist about sowing.
+  heavy_rain:
+    tr: >-
+      Şiddetli yağış, {date}: bir günde {rain} mm. Toprakta şimdi {storage} mm kullanılabilir
+      su var (kapasite {taw} mm).
+    en: >-
+      Heavy rain, {date}: {rain} mm in one day. The soil now holds {storage} mm of usable
+      water (capacity {taw} mm).
+  leaching:
+    tr: >-
+      Yıkanma uyarısı, {date}: {drained} mm su kök bölgesinin altına indi. Azot da suyla
+      birlikte aşağı taşınabilir; gübre vermeden önce bekleyin.
+    en: >-
+      Leaching warning, {date}: {drained} mm of water moved below the root zone. Nitrogen can
+      be carried down with it; wait before applying fertiliser.
+  stress:
+    tr: >-
+      Su stresi, {date}: {crop} en hassas döneminde şimdiye kadar {days} gün susuz kaldı.
+    en: >-
+      Water stress, {date}: the {crop} has now gone {days} days without enough water in its
+      most sensitive stage.
+  harvest_ok:
+    tr: >-
+      Sezon özeti, {date}. {crop} kullanabileceği suyun %{pct} kadarını aldı; hassas dönemde
+      {days} stres günü oldu. Zira'nın kuralına göre bu sezon su yetti.
+    en: >-
+      Season summary, {date}. The {crop} received {pct}% of the water it could use, with
+      {days} stress days in the sensitive stage. By Zira's rule the water was enough this season.
+  harvest_short:
+    tr: >-
+      Sezon özeti, {date}. {crop} kullanabileceği suyun %{pct} kadarını aldı; hassas dönemde
+      {days} stres günü oldu. Zira'nın kuralına göre bu sezon su yetmedi.
+    en: >-
+      Season summary, {date}. The {crop} received {pct}% of the water it could use, with
+      {days} stress days in the sensitive stage. By Zira's rule the water was not enough this season.
+  card_head:
+    tr: "*Zira tarla kartı* · {date}\nTarla: {field}\nBugün topraktaki su: {storage} / {taw} mm"
+    en: "*Zira field card* · {date}\nField: {field}\nWater in the soil today: {storage} / {taw} mm"
+  card_line:
+    tr: "{key}) {name}: {valid} ekimin {sufficient} tanesinde su yetti (aralık {low}–{high})"
+    en: "{key}) {name}: water was enough in {sufficient} of {valid} sowings (range {low}–{high})"
+  card_flexible_name:
+    tr: Esnek nadas
+    en: Flexible fallow
+  card_provisional:
+    tr: "Not: ürün aşama süreleri geçici, ziraat mühendisi onayı bekliyor."
+    en: "Note: crop stage lengths are provisional and await agronomist sign-off."
+  card_unchecked:
+    tr: "Kontrol edilmedi: toprak analizi, çeşit, fiyat, tarla sensörü."
+    en: "Not checked: soil analysis, variety, price, field sensor."
