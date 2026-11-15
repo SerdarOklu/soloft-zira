@@ -34,3 +34,96 @@
   color: var(--uds-muted-foreground);
   font-size: 0.8125rem;
 }
+
+/* Layout helpers. Spacing comes from the UDS tokens; there is no colour literal here. */
+.zira-stack {
+  display: grid;
+  gap: var(--uds-space-6);
+}
+
+.zira-grid-2 {
+  display: grid;
+  gap: var(--uds-space-6);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+@media (min-width: 64rem) {
+  .zira-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.zira-form {
+  display: grid;
+  gap: var(--uds-space-4);
+  max-width: 40rem;
+}
+
+.zira-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--uds-space-3);
+  align-items: center;
+}
+
+.zira-muted {
+  color: var(--uds-muted-foreground);
+  font-size: 0.8125rem;
+}
+
+.zira-subheading {
+  margin-bottom: var(--uds-space-2);
+  color: var(--uds-foreground);
+  font-size: 0.9375rem;
+  font-weight: var(--uds-font-weight-semibold);
+}
+
+.zira-list {
+  display: grid;
+  gap: var(--uds-space-2);
+  list-style: none;
+  padding: 0;
+}
+
+/* Maps. Leaflet stacks its panes up to z-index 700; isolating keeps them under the app shell. */
+.zira-map {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  width: 100%;
+  height: 22rem;
+  border: 1px solid var(--uds-border);
+  border-radius: var(--uds-radius-md);
+  overflow: hidden;
+}
+
+.zira-map--tall {
+  height: 28rem;
+}
+
+/* The basemap tiles are light; in dark mode they are inverted so the map does not glare. */
+[data-uds-mode='dark'] .zira-map .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9);
+}
+
+/* The precipitation chart follows the theme through tokens. */
+.zira-chart {
+  width: 100%;
+  height: auto;
+  max-height: 18rem;
+}
+
+.zira-chart-bar {
+  fill: var(--uds-primary);
+}
+
+.zira-chart-grid {
+  stroke: var(--uds-border);
+  stroke-width: 1;
+}
+
+.zira-chart-text {
+  fill: var(--uds-muted-foreground);
+  font-size: 11px;
+}

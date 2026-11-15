@@ -30,6 +30,29 @@ Roles: `admin`, `agronomist`, `cooperative_user`. The command asks for the passw
 | `GET /api/v1/meta` | Versions, and the parameters still unset or awaiting sign-off |
 | `POST /api/v1/auth/login` | Email and password in, access token and user out |
 | `GET /api/v1/auth/me` | The signed-in user (`Authorization: Bearer <token>`) |
+| `GET /api/v1/reference/soils` | Soil textures from `config/soils.yaml`, with the water they hold |
+| `GET /api/v1/fields` | The fields the user may see (all for admin and agronomist; the organization's for a cooperative user) |
+| `POST /api/v1/fields` | Add a field from a GeoJSON polygon; PostGIS derives the centroid and the area |
+| `GET /api/v1/fields/{id}` | One field with its geometry |
+| `DELETE /api/v1/fields/{id}` | Delete a field and its data (admin) |
+| `POST /api/v1/fields/{id}/weather/fetch` | Queue a NASA POWER fetch (default: the 25 years of the parameter sheet); answers 202 with the job |
+| `GET /api/v1/fields/{id}/weather/summary` | Coverage, yearly totals, the latest days and the latest job |
+| `GET /api/v1/data-center/sources` | Every NASA source: connected or not, last success, rows, jobs (admin, agronomist) |
+| `GET /api/v1/data-center/jobs` | The latest fetch jobs with their outcome (admin, agronomist) |
+| `GET /api/v1/dashboard/summary` | Field and job counts, fields without data, map markers |
+
+## NASA POWER
+
+The fetch runs in the Celery worker, never in a request. The request is built from
+`power_request` in `config/parameters.yaml` and the location is read from the field's centroid.
+It asks for UTC explicitly (POWER answers in local solar time otherwise), turns the fill value
+into missing, retries transient failures, and upserts into `weather_observations` (unique per
+field, day and source). A period that is already stored is served from the cache unless the
+request sets `force`. A failure is recorded on the job and shown in the Data Center.
+
+```bash
+uv run celery -A app.tasks.celery_app worker --loglevel INFO   # on Windows add: --pool=solo
+```
 
 ## Database migrations
 

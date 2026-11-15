@@ -55,6 +55,10 @@ These are recorded in `../docs/decisions/0002-frontend-nextjs-and-uds.md`:
 | `app/[locale]/login/` | Sign-in screen |
 | `app/[locale]/(console)/` | The signed-in area; its layout redirects to sign-in without a session |
 | `app/api/session/route.ts` | Sign in and sign out; keeps the access token in an httpOnly cookie |
+| `app/api/backend/[...path]/route.ts` | The browser's way to the fields API: adds the token from the cookie; only `fields/...` is forwarded (`lib/proxy.ts`) |
+| `app/[locale]/(console)/fields/` | Field list, add (draw the boundary on a map) and detail with the NASA data |
+| `app/[locale]/(console)/data-center/` | Sources and fetch jobs |
+| `lib/api.ts` | Server-side reads from the backend with the user's token |
 | `lib/nav.ts` | The screens and which role sees each (PDT section 10.3) |
 | `lib/session.ts` | Reads the signed-in user from the backend on every request |
 | `components/` | Shell, sign-in, placeholder and system screens, all composed from UDS |
@@ -71,6 +75,9 @@ The browser never talks to the backend directly and never sees the access token.
   package, so it is blocked on the same UDS access as the image build
   (`../docs/decisions/0009-self-hosted-fonts.md`). `public/fonts/` is reserved for the
   hosted files.
+- **Map tiles come from OpenStreetMap** (`tile.openstreetmap.org`), a third-party request
+  from the browser, like the fonts above. Their tile usage policy allows light use; move to a
+  tile service of our own before heavy use (`../docs/decisions/0010-field-access-and-map.md`).
 - **The not-found page renders in the browser, not on the server.** The address returns
   status 404 and the localized page appears once the page script runs.
 

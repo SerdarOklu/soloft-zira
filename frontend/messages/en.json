@@ -114,6 +114,185 @@
       ]
     }
   },
+  "regimes": {
+    "rainfed": "Rainfed",
+    "irrigated": "Irrigated"
+  },
+  "soils": {
+    "sand": "Sand",
+    "loamy_sand": "Loamy sand",
+    "sandy_loam": "Sandy loam",
+    "loam": "Loam",
+    "silt_loam": "Silt loam",
+    "silt": "Silt",
+    "silty_clay_loam": "Silty clay loam",
+    "silty_clay": "Silty clay",
+    "clay": "Clay"
+  },
+  "status": {
+    "job": {
+      "queued": "Queued",
+      "running": "Running",
+      "done": "Done",
+      "failed": "Failed"
+    },
+    "source": {
+      "ok": "Connected",
+      "error": "Error",
+      "never_fetched": "Nothing fetched yet",
+      "not_connected": "Not connected"
+    }
+  },
+  "dashboard": {
+    "kpiFields": "Registered fields",
+    "kpiWithData": "Fields with NASA data",
+    "kpiActiveJobs": "Running data jobs",
+    "kpiFailedJobs": "Failed data jobs",
+    "missingTitle": "Fields missing data",
+    "missingEmpty": "Every field has NASA data.",
+    "noFields": "No fields yet. Start by adding the first one.",
+    "addField": "Add a field",
+    "updateTitle": "Last NASA update",
+    "updateNever": "Nothing fetched yet",
+    "mapTitle": "Field locations",
+    "mapAria": "Map showing where the fields are",
+    "mapEmpty": "There are no fields to show on the map.",
+    "mapLegend": "Solid dot: NASA data is available. Faint dot: not fetched yet."
+  },
+  "fields": {
+    "add": "Add a field",
+    "open": "Open",
+    "back": "Back to fields",
+    "columns": {
+      "code": "Code",
+      "name": "Field",
+      "region": "Region",
+      "area": "Area",
+      "soil": "Soil",
+      "regime": "Water regime",
+      "data": "NASA data"
+    },
+    "dataDays": "{days} days",
+    "dataMissing": "No data",
+    "emptyTitle": "No fields yet",
+    "emptyDescription": "Draw the boundary on the map to add the first field. NASA data is fetched for its centre point.",
+    "form": {
+      "title": "New field",
+      "description": "Enter the field's name, soil and boundary. The area and the centre point are calculated from the boundary.",
+      "name": "Field name",
+      "region": "Region (optional)",
+      "regime": "Water regime",
+      "soil": "Soil texture",
+      "soilChoose": "Choose",
+      "soilHint": "Available water capacity {low}–{high} mm/m. The middle of the range is used until a sensor calibrates it.",
+      "map": "Field boundary",
+      "mapHint": "Click the map to mark the corners of the field. At least three corners are needed.",
+      "mapAria": "Map for drawing the field boundary",
+      "points": "{count} corners",
+      "undo": "Undo last corner",
+      "clear": "Clear",
+      "goTo": "Go to a location",
+      "goToHint": "Latitude, longitude (for example 37.90, 32.50)",
+      "goToButton": "Go",
+      "goToError": "Write the latitude and longitude as \"37.90, 32.50\".",
+      "submit": "Save field",
+      "cancel": "Cancel",
+      "errors": {
+        "needName": "Enter the field name.",
+        "needSoil": "Choose the soil texture.",
+        "needPolygon": "Mark at least three corners on the map.",
+        "invalidPolygon": "The boundary is not valid: its edges must not cross.",
+        "unreachable": "The server cannot be reached. Try again in a moment.",
+        "generic": "The field could not be saved. Try again."
+      }
+    },
+    "detail": {
+      "profile": "Field profile",
+      "code": "Code",
+      "region": "Region",
+      "area": "Area",
+      "areaValue": "{value} ha",
+      "elevation": "Elevation",
+      "elevationValue": "{value} m",
+      "elevationPending": "Set when NASA data is fetched",
+      "soil": "Soil",
+      "regime": "Water regime",
+      "created": "Registered",
+      "location": "Location",
+      "mapAria": "Map showing the field boundary"
+    }
+  },
+  "weather": {
+    "title": "NASA POWER daily climate data",
+    "description": "Precipitation, temperature, humidity, wind, solar radiation and pressure for the field's centre point over 25 years. POWER is a regional product: it is not presented as a measurement taken on the field.",
+    "fetch": "Fetch 25 years of data",
+    "refetch": "Fetch again",
+    "fetching": "Fetching data from NASA…",
+    "fetchDone": "Data fetched.",
+    "fetchFailed": "The data could not be fetched",
+    "none": "There is no NASA data for this field yet.",
+    "coverage": "{days} days · {from} – {to}",
+    "lastFetched": "Last fetched",
+    "stored": "Stored data",
+    "chartTitle": "Total precipitation per year (mm)",
+    "chartAria": "Bar chart of total precipitation for each year",
+    "yearsTitle": "Yearly summary",
+    "recentTitle": "Latest days",
+    "partialDay": "Day with a missing value",
+    "columns": {
+      "year": "Year",
+      "days": "Days",
+      "precip": "Precipitation (mm)",
+      "tavg": "Mean temp. (°C)",
+      "tmin": "Lowest (°C)",
+      "tmax": "Highest (°C)",
+      "date": "Date",
+      "humidity": "Humidity (%)",
+      "wind": "Wind (m/s)",
+      "solar": "Radiation (MJ/m²)",
+      "pressure": "Pressure (kPa)"
+    },
+    "windNote": "Wind is measured at {height} m and converted to 2 m for evapotranspiration.",
+    "errors": {
+      "queue": "The job queue cannot be reached. Try again in a moment.",
+      "generic": "The fetch could not be started. Try again.",
+      "slow": "The fetch is taking longer than expected. You can follow it in the Data Center."
+    }
+  },
+  "dataCenter": {
+    "sourcesTitle": "Data sources",
+    "jobsTitle": "Latest fetch jobs",
+    "regionalNote": "Regional satellite and model data is never presented as a direct measurement of a single field.",
+    "notConnected": "The Earth Engine sources connect in phase 5.",
+    "jobsSummary": "{done} done · {failed} failed · {active} running",
+    "jobsEmpty": "There are no fetch jobs yet.",
+    "cached": "from the cache, no new rows",
+    "records": "{count} days",
+    "columns": {
+      "source": "Source",
+      "resolution": "Resolution",
+      "status": "Status",
+      "lastSuccess": "Last successful fetch",
+      "records": "Records",
+      "jobs": "Jobs",
+      "field": "Field",
+      "period": "Period",
+      "rows": "Rows written",
+      "started": "Created",
+      "error": "Error"
+    },
+    "roles": {
+      "power": "Daily climate inputs: precipitation, temperature, humidity, wind, radiation",
+      "landsat8": "10-year vegetation pattern inside the field",
+      "landsat9": "10-year vegetation pattern inside the field",
+      "gpm": "Precipitation series; cross-check for POWER precipitation",
+      "smap": "Regional surface soil moisture",
+      "modis": "Regional phenology; support for cloudy Landsat periods",
+      "grace": "Basin-scale total water storage trend",
+      "ecostress": "Evapotranspiration support",
+      "srtm": "Elevation and slope"
+    }
+  },
   "login": {
     "description": "Sign in with your Zira account.",
     "errors": {

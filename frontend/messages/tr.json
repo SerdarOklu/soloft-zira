@@ -114,6 +114,185 @@
       ]
     }
   },
+  "regimes": {
+    "rainfed": "Kuru tarım",
+    "irrigated": "Sulu tarım"
+  },
+  "soils": {
+    "sand": "Kum",
+    "loamy_sand": "Tınlı kum",
+    "sandy_loam": "Kumlu tın",
+    "loam": "Tın",
+    "silt_loam": "Siltli tın",
+    "silt": "Silt",
+    "silty_clay_loam": "Siltli killi tın",
+    "silty_clay": "Siltli kil",
+    "clay": "Kil"
+  },
+  "status": {
+    "job": {
+      "queued": "Sırada",
+      "running": "Çalışıyor",
+      "done": "Tamamlandı",
+      "failed": "Başarısız"
+    },
+    "source": {
+      "ok": "Bağlı",
+      "error": "Hata",
+      "never_fetched": "Henüz veri çekilmedi",
+      "not_connected": "Bağlı değil"
+    }
+  },
+  "dashboard": {
+    "kpiFields": "Kayıtlı tarla",
+    "kpiWithData": "NASA verisi olan tarla",
+    "kpiActiveJobs": "Süren veri işi",
+    "kpiFailedJobs": "Başarısız veri işi",
+    "missingTitle": "Verisi eksik tarlalar",
+    "missingEmpty": "Tüm tarlaların NASA verisi var.",
+    "noFields": "Henüz tarla eklenmedi. İlk tarlayı ekleyerek başlayın.",
+    "addField": "Tarla ekle",
+    "updateTitle": "Son NASA güncellemesi",
+    "updateNever": "Henüz veri çekilmedi",
+    "mapTitle": "Tarla konumları",
+    "mapAria": "Tarlaların konumlarını gösteren harita",
+    "mapEmpty": "Haritada gösterilecek tarla yok.",
+    "mapLegend": "Dolu nokta: NASA verisi var. Soluk nokta: veri henüz çekilmedi."
+  },
+  "fields": {
+    "add": "Tarla ekle",
+    "open": "Aç",
+    "back": "Tarlalara dön",
+    "columns": {
+      "code": "Kod",
+      "name": "Tarla",
+      "region": "Bölge",
+      "area": "Alan",
+      "soil": "Toprak",
+      "regime": "Tarım şekli",
+      "data": "NASA verisi"
+    },
+    "dataDays": "{days} gün",
+    "dataMissing": "Veri yok",
+    "emptyTitle": "Henüz tarla yok",
+    "emptyDescription": "Haritada sınırı çizerek ilk tarlayı ekleyin. NASA verisi tarlanın merkezinden çekilir.",
+    "form": {
+      "title": "Yeni tarla",
+      "description": "Tarlanın adını, toprağını ve sınırını girin. Alan ve merkez koordinatı sınırdan hesaplanır.",
+      "name": "Tarla adı",
+      "region": "Bölge (isteğe bağlı)",
+      "regime": "Tarım şekli",
+      "soil": "Toprak türü",
+      "soilChoose": "Seçin",
+      "soilHint": "Kullanılabilir su kapasitesi {low}–{high} mm/m. Sensör kalibrasyonu gelene kadar aralığın ortası kullanılır.",
+      "map": "Tarla sınırı",
+      "mapHint": "Haritaya tıklayarak tarlanın köşelerini işaretleyin. En az üç köşe gerekir.",
+      "mapAria": "Tarla sınırını çizmek için harita",
+      "points": "{count} köşe",
+      "undo": "Son köşeyi geri al",
+      "clear": "Temizle",
+      "goTo": "Konuma git",
+      "goToHint": "Enlem, boylam (örneğin 37.90, 32.50)",
+      "goToButton": "Git",
+      "goToError": "Enlem ve boylamı \"37.90, 32.50\" biçiminde yazın.",
+      "submit": "Tarlayı kaydet",
+      "cancel": "Vazgeç",
+      "errors": {
+        "needName": "Tarla adını yazın.",
+        "needSoil": "Toprak türünü seçin.",
+        "needPolygon": "Haritada en az üç köşe işaretleyin.",
+        "invalidPolygon": "Sınır geçerli değil: kenarlar birbirini kesmemeli.",
+        "unreachable": "Sunucuya ulaşılamıyor. Biraz sonra yeniden deneyin.",
+        "generic": "Tarla kaydedilemedi. Yeniden deneyin."
+      }
+    },
+    "detail": {
+      "profile": "Tarla profili",
+      "code": "Kod",
+      "region": "Bölge",
+      "area": "Alan",
+      "areaValue": "{value} ha",
+      "elevation": "Rakım",
+      "elevationValue": "{value} m",
+      "elevationPending": "NASA verisi çekilince belirlenir",
+      "soil": "Toprak",
+      "regime": "Tarım şekli",
+      "created": "Kayıt tarihi",
+      "location": "Konum",
+      "mapAria": "Tarla sınırını gösteren harita"
+    }
+  },
+  "weather": {
+    "title": "NASA POWER günlük iklim verisi",
+    "description": "Yağış, sıcaklık, nem, rüzgâr, güneş radyasyonu ve basınç; tarlanın merkez noktası için 25 yıllık dönem. POWER bölgesel bir üründür: tarlanın kendi ölçümü olarak sunulmaz.",
+    "fetch": "25 yıllık veriyi çek",
+    "refetch": "Yeniden çek",
+    "fetching": "NASA'dan veri çekiliyor…",
+    "fetchDone": "Veri çekildi.",
+    "fetchFailed": "Veri çekilemedi",
+    "none": "Bu tarla için henüz NASA verisi yok.",
+    "coverage": "{days} gün · {from} – {to}",
+    "lastFetched": "Son çekim",
+    "stored": "Saklanan veri",
+    "chartTitle": "Yıllık toplam yağış (mm)",
+    "chartAria": "Yıllara göre toplam yağışı gösteren çubuk grafik",
+    "yearsTitle": "Yıllık özet",
+    "recentTitle": "Son günler",
+    "partialDay": "Eksik değer içeren gün",
+    "columns": {
+      "year": "Yıl",
+      "days": "Gün",
+      "precip": "Yağış (mm)",
+      "tavg": "Ort. sıcaklık (°C)",
+      "tmin": "En düşük (°C)",
+      "tmax": "En yüksek (°C)",
+      "date": "Tarih",
+      "humidity": "Nem (%)",
+      "wind": "Rüzgâr (m/s)",
+      "solar": "Radyasyon (MJ/m²)",
+      "pressure": "Basınç (kPa)"
+    },
+    "windNote": "Rüzgâr {height} m yükseklikte ölçülür; buharlaşma hesabında 2 m'ye çevrilir.",
+    "errors": {
+      "queue": "İş kuyruğuna ulaşılamıyor. Biraz sonra yeniden deneyin.",
+      "generic": "Veri çekme başlatılamadı. Yeniden deneyin.",
+      "slow": "Çekme işi beklenenden uzun sürüyor. Durumu Veri Merkezi'nden izleyebilirsiniz."
+    }
+  },
+  "dataCenter": {
+    "sourcesTitle": "Veri kaynakları",
+    "jobsTitle": "Son veri çekme işleri",
+    "regionalNote": "Bölgesel uydu ve model verileri, tek bir tarlanın doğrudan ölçümü olarak sunulmaz.",
+    "notConnected": "Earth Engine kaynakları Faz 5'te bağlanacak.",
+    "jobsSummary": "{done} tamamlandı · {failed} başarısız · {active} süren",
+    "jobsEmpty": "Henüz veri çekme işi yok.",
+    "cached": "önbellekten, yeni satır yok",
+    "records": "{count} gün",
+    "columns": {
+      "source": "Kaynak",
+      "resolution": "Çözünürlük",
+      "status": "Durum",
+      "lastSuccess": "Son başarılı çekim",
+      "records": "Kayıt",
+      "jobs": "İşler",
+      "field": "Tarla",
+      "period": "Dönem",
+      "rows": "Yazılan satır",
+      "started": "Oluşturulma",
+      "error": "Hata"
+    },
+    "roles": {
+      "power": "Günlük iklim girdileri: yağış, sıcaklık, nem, rüzgâr, radyasyon",
+      "landsat8": "Tarla içindeki 10 yıllık bitki örtüsü deseni",
+      "landsat9": "Tarla içindeki 10 yıllık bitki örtüsü deseni",
+      "gpm": "Yağış serisi; POWER yağışı için çapraz kontrol",
+      "smap": "Bölgesel yüzey toprak nemi",
+      "modis": "Bölgesel fenoloji; bulutlu Landsat dönemlerine destek",
+      "grace": "Havza ölçeğinde toplam su depolama eğilimi",
+      "ecostress": "Buharlaşma ve terleme desteği",
+      "srtm": "Rakım ve eğim"
+    }
+  },
   "login": {
     "description": "Zira hesabınızla giriş yapın.",
     "errors": {

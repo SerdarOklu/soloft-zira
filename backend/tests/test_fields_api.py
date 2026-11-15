@@ -205,6 +205,16 @@ def test_only_an_admin_deletes_a_field(pg_client: TestClient, admin, make_user, 
     assert pg_client.get(url, headers=admin).status_code == 404
 
 
+def test_the_soil_list_is_the_configuration(pg_client: TestClient, admin):
+    from app.core.parameters import get_config
+
+    soils = pg_client.get("/api/v1/reference/soils", headers=admin).json()
+    assert [s["key"] for s in soils] == list(get_config().soils)
+    loam = next(s for s in soils if s["key"] == "loam")
+    assert loam["taw_mm_per_m"] == [130, 180]
+    assert pg_client.get("/api/v1/reference/soils").status_code == 401
+
+
 # --- fetching NASA POWER weather -------------------------------------------------------
 
 
