@@ -198,7 +198,7 @@ Bu, uydu ve yeryüzü arasındaki köprü. Uydu ve model bölgesel bir tahmindir
 **Çiftçi ekranı "Tarlam":** tek ekran: karar gününde kullanılabilir su, aralığı, **gönderilmiş** mesajlar.
 
 **Konuşmacı notları**
-Çiftçiye giden her mesaj kısa, Türkçe ve altında aynı cümle var: "Zira karar vermez." Taslaklar mühendisin kuyruğunda bekler; hiçbir mesaj onaysız çıkmaz. Kooperatif panelinin amacı ölçek: bir kooperatif kullanıcısı kendi organizasyonundaki çiftçileri açar, tarlaları bağlar; yönetici her yerde aynısını yapabilir. Çiftçi yalnızca gönderilmiş mesajları ve kendi tarlasını görür. [Sunumdan önce Green API eşleştirmesini doğrulayın; çalışmıyorsa "gönderim hazır, eşleştirme bekliyor" deyin.]
+Çiftçiye giden mesajlar kısa ve Türkçedir; ekim kararı ve tarla kartı mesajlarının altında "Zira karar vermez" cümlesi yer alır. Taslaklar mühendisin kuyruğunda bekler; hiçbir mesaj onaysız çıkmaz. Kooperatif panelinin amacı ölçek: bir kooperatif kullanıcısı kendi organizasyonundaki çiftçileri açar, tarlaları bağlar; yönetici her yerde aynısını yapabilir. Çiftçi yalnızca gönderilmiş mesajları ve kendi tarlasını görür. [Sunumdan önce Green API eşleştirmesini doğrulayın; çalışmıyorsa "gönderim hazır, eşleştirme bekliyor" deyin.]
 
 ---
 
