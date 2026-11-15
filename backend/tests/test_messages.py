@@ -8,7 +8,7 @@ replaced by a recorder.
 
 from __future__ import annotations
 
-from datetime import date, timedelta
+from datetime import date
 
 import httpx
 import pytest

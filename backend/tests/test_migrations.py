@@ -10,7 +10,9 @@ from app.models import Base
 
 pytestmark = pytest.mark.db
 
+# The 16 tables of PDT section 9, plus message_drafts (phase 6, WhatsApp drafts).
 EXPECTED_TABLES = {
+    "message_drafts",
     "users",
     "organizations",
     "fields",
@@ -52,7 +54,7 @@ def _tables(url: str) -> set[str]:
     return names - {"spatial_ref_sys", "alembic_version"}
 
 
-def test_models_define_exactly_the_pdt_tables():
+def test_models_define_exactly_the_expected_tables():
     assert set(Base.metadata.tables) == EXPECTED_TABLES
 
 
