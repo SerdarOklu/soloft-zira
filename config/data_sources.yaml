@@ -16,8 +16,10 @@ sources:
   landsat8:
     name: Landsat 8
     role: 10-year vegetation pattern inside the field polygon
-    access: earth_engine
-    collection_id: LANDSAT/LC08/C02/T1_L2
+    # Read from the NASA and USGS Collection 2 Level-2 cloud-optimised GeoTIFFs of the public
+    # Microsoft Planetary Computer STAC catalogue (no Earth Engine project needed).
+    access: stac_cog
+    collection_id: landsat-c2-l2
     resolution: 30 m
     priority: first
     scale_warning: >-
@@ -26,11 +28,11 @@ sources:
   landsat9:
     name: Landsat 9
     role: 10-year vegetation pattern inside the field polygon
-    access: earth_engine
-    collection_id: LANDSAT/LC09/C02/T1_L2
+    access: stac_cog
+    collection_id: landsat-c2-l2
     resolution: 30 m
     priority: first
-    scale_warning: Same as Landsat 8.
+    scale_warning: Same as Landsat 8. Launched in September 2021, so it adds scenes from 2022.
   gpm:
     name: GPM IMERG
     role: Precipitation series; cross-check for POWER precipitation

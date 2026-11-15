@@ -283,7 +283,7 @@
     "sourcesTitle": "Veri kaynakları",
     "jobsTitle": "Son veri çekme işleri",
     "regionalNote": "Bölgesel uydu ve model verileri, tek bir tarlanın doğrudan ölçümü olarak sunulmaz.",
-    "notConnected": "MODIS, NASA'nın açık STAC kataloğundan okunur ve bağlıdır. Landsat, GPM, SMAP, GRACE ve ECOSTRESS için Earth Engine projesi gerekir; henüz kurulu değil.",
+    "notConnected": "Landsat 8/9 ve MODIS, NASA'nın açık STAC kataloğundan okunur ve bağlıdır. GPM IMERG yağışı NASA POWER'ın içinde gelir; SMAP ve GRACE için Earthdata girişi gerekir, ECOSTRESS ve SRTM bağlı değildir.",
     "jobsSummary": "{done} tamamlandı · {failed} başarısız · {active} süren",
     "jobsEmpty": "Henüz veri çekme işi yok.",
     "cached": "önbellekten, yeni satır yok",
@@ -612,9 +612,9 @@
     "noFieldsTitle": "Geçmişi çıkarılacak tarla yok",
     "noFieldsDescription": "Tarla Hafızası bir tarlanın uydu görüntülerini okur. Önce bir tarla ekleyin.",
     "addField": "Tarla ekle",
-    "fetch": "NDVI verisini çek",
+    "fetch": "NDVI verisini çek (Landsat ve MODIS)",
     "refetch": "Yeniden çek",
-    "fetching": "MODIS NDVI çekiliyor, birkaç dakika sürebilir…",
+    "fetching": "Landsat ve MODIS NDVI çekiliyor, birkaç dakika sürebilir…",
     "fetchDone": "NDVI verisi alındı.",
     "fetchFailed": "NDVI çekilemedi",
     "errors": {
@@ -624,7 +624,7 @@
       "unknown_season": "Bilinmeyen sezon."
     },
     "none": "Bu tarla için henüz NDVI verisi yok. Verileri çekin.",
-    "source": "Kaynak: NASA MODIS MOD13Q1 ve MYD13Q1 sürüm 061 (250 m, yaklaşık 8 günde bir), Microsoft Planetary Computer açık kataloğundan. Tarla sınırının içindeki temiz pikseller kullanılır.",
+    "source": "Kaynak: NASA/USGS Landsat 8 ve 9 Collection 2 yüzey yansıması (30 m) ve NASA MODIS MOD13Q1 / MYD13Q1 sürüm 061 (250 m), Microsoft Planetary Computer açık kataloğundan. Tarla sınırının içindeki temiz pikseller kullanılır.",
     "coverage": "{count} görüntü, {good} tanesi temiz · {from} – {to}",
     "chart": {
       "title": "NDVI zaman serisi",
@@ -668,8 +668,15 @@
       "body": "Bir sezonun en yüksek NDVI değeri {value} ve üzerindeyse tarla ekili sayılıyor. Bu değer, kışlık tahılın tepe noktası ile çıplak ya da otlu nadasın tipik aralığından alınmış bir başlangıçtır; ziraat mühendisinin bilinen tarlalarla kalibre etmesi gerekir."
     },
     "unknownWarning": "{count} sezonda yeterli temiz görüntü yok (bulut, kar ya da eksik veri); bu sezonlar \"bilinmiyor\" bırakıldı. Elle doğrulayın.",
-    "limits": "Bu yöntem ekili ile nadası ayırır; ürün türünü ve kışlık ile yazlık ayrımını bilmez. Bir MODIS pikseli yaklaşık 6 hektardır, küçük parsellerde sinyal karışır. Landsat (30 m) Earth Engine gerektirir ve bağlı değil.",
-    "needsLogin": "Doğrulama için giriş yapılmış olmalı."
+    "limits": "Bu yöntem ekili ile nadası ayırır; ürün türünü ve kışlık ile yazlık ayrımını bilmez. Landsat (30 m) küçük parsellerde MODIS'ten (250 m, yaklaşık 6 hektar) çok daha uygundur; Landsat bulutlu sezonlarda boşluk bırakabilir.",
+    "needsLogin": "Doğrulama için giriş yapılmış olmalı.",
+    "satellite": "Uydu",
+    "sources": {
+      "auto": "Otomatik (Landsat yeterliyse)",
+      "landsat": "Landsat 8/9 (30 m)",
+      "modis": "MODIS (250 m)"
+    },
+    "usedSource": "Geçmiş {source} verisinden çıkarıldı. Temiz görüntü: Landsat {landsat}, MODIS {modis}."
   },
   "sensors": {
     "title": "Sensörler",

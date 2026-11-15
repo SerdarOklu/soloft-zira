@@ -59,4 +59,4 @@ def test_seed_reference_is_repeatable(session: Session):
     assert barley.season_type is None
 
     landsat = session.scalar(select(DataSource).where(DataSource.key == "landsat8"))
-    assert landsat.collection_id == "LANDSAT/LC08/C02/T1_L2"
+    assert landsat.collection_id == "landsat-c2-l2"

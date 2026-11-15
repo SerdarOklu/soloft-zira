@@ -60,14 +60,20 @@ def season_name(harvest_year: int) -> str:
 
 
 def detect(
-    observations: Sequence[Obs], *, threshold: float, history_years: int, today: date
+    observations: Sequence[Obs],
+    *,
+    threshold: float,
+    history_years: int,
+    today: date,
+    min_good: int = MIN_GOOD_OBSERVATIONS,
+    full_coverage: int = FULL_COVERAGE_OBSERVATIONS,
 ) -> list[SeasonDetection]:
     seasons = []
     for year in harvest_years(today, history_years):
         start, end = date(year, *WINDOW_START), date(year, *WINDOW_END)
         window = [o for o in observations if start <= o.day <= end]
         good = [o for o in window if o.ndvi is not None and o.valid_pixels >= 1]
-        if len(good) < MIN_GOOD_OBSERVATIONS:
+        if len(good) < min_good:
             seasons.append(
                 SeasonDetection(
                     season_name(year), year, UNKNOWN, None, None, len(good), len(window), None
@@ -78,7 +84,7 @@ def detect(
         peak_value = peak.ndvi or 0.0
         state = CROPPED if peak_value >= threshold else FALLOW
         margin = min(1.0, abs(peak_value - threshold) / FULL_CONFIDENCE_MARGIN)
-        coverage = min(1.0, len(good) / FULL_COVERAGE_OBSERVATIONS)
+        coverage = min(1.0, len(good) / full_coverage)
         seasons.append(
             SeasonDetection(
                 season_name(year),

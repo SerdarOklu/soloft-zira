@@ -8,6 +8,7 @@ import type { FieldMemory, FieldOut } from '@/lib/types';
 
 export interface FieldMemoryParams {
   field?: string;
+  source?: string;
 }
 
 /** Was the field cropped or fallow in each of the last seasons? From MODIS, confirmed by a person. */
@@ -41,7 +42,10 @@ export async function FieldMemoryContent({ params }: { params: FieldMemoryParams
   }
 
   const field = fields.find((candidate) => candidate.id === params.field) ?? fields[0];
-  const memory = await api<FieldMemory>(`/fields/${encodeURIComponent(field.id)}/field-memory`);
+  const source = ['modis', 'landsat'].includes(params.source ?? '') ? params.source : 'auto';
+  const memory = await api<FieldMemory>(
+    `/fields/${encodeURIComponent(field.id)}/field-memory?source=${source}`,
+  );
 
   return (
     <div className="zira-stack">
@@ -49,6 +53,7 @@ export async function FieldMemoryContent({ params }: { params: FieldMemoryParams
       <FieldMemoryForm
         fields={fields.map(({ id, name, code }) => ({ id, name, code }))}
         field={field.id}
+        source={source ?? 'auto'}
       />
       <FieldMemoryPanel fieldId={field.id} memory={memory} />
       <p className="zira-statement">{t('app.supportStatement')}</p>

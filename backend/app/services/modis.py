@@ -250,7 +250,10 @@ def fetch_observations(
 
 
 def store_observations(
-    session: Session, field_id: uuid.UUID, observations: list[Observation]
+    session: Session,
+    field_id: uuid.UUID,
+    observations: list[Observation],
+    source: str = SOURCE,
 ) -> int:
     """Upsert: unique per field, source and scene, so fetching again is safe."""
     if not observations:
@@ -259,7 +262,7 @@ def store_observations(
         [
             {
                 "field_id": field_id,
-                "source": SOURCE,
+                "source": source,
                 "image_date": o.image_date,
                 "scene_id": o.scene_id,
                 "ndvi_mean": o.ndvi_mean,

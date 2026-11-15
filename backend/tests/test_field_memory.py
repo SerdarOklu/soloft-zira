@@ -380,20 +380,37 @@ def test_a_cooperative_user_is_recorded_as_the_user(pg, pg_client, admin, make_u
 @pytest.mark.db
 def test_a_fetch_is_queued_once_at_a_time(pg, pg_client, admin, monkeypatch):
     queued = []
-    monkeypatch.setattr(
-        "app.api.field_memory.fetch_field_ndvi",
-        type("T", (), {"delay": staticmethod(queued.append)}),
-    )
+    recorder = type("T", (), {"delay": staticmethod(queued.append)})
+    monkeypatch.setattr("app.api.field_memory.fetch_modis", recorder)
+    monkeypatch.setattr("app.api.field_memory.fetch_landsat", recorder)
     field = create_field(pg_client, admin)["id"]
-    first = pg_client.post(f"/api/v1/fields/{field}/field-memory/fetch", headers=admin)
-    assert first.status_code == 202 and first.json()["source"] == "modis"
-    assert first.json()["status"] == "queued" and len(queued) == 1
-    second = pg_client.post(f"/api/v1/fields/{field}/field-memory/fetch", headers=admin)
-    assert second.status_code == 409
-    latest = pg_client.get(f"/api/v1/fields/{field}/field-memory", headers=admin).json()[
-        "latest_job"
-    ]
-    assert latest["status"] == "queued"
+    url = f"/api/v1/fields/{field}/field-memory/fetch"
+
+    first = pg_client.post(url, params={"source": "modis"}, headers=admin)
+    assert first.status_code == 202 and [j["source"] for j in first.json()] == ["modis"]
+    assert first.json()[0]["status"] == "queued" and len(queued) == 1
+    assert pg_client.post(url, params={"source": "modis"}, headers=admin).status_code == 409
+    latest = pg_client.get(f"/api/v1/fields/{field}/field-memory", headers=admin).json()
+    assert latest["latest_job"]["status"] == "queued"
+
+    # Landsat is a separate source, so it can be queued while MODIS is still waiting; "all"
+    # then refuses because one of its sources is busy.
+    both = pg_client.post(url, params={"source": "landsat"}, headers=admin)
+    assert both.status_code == 202
+    assert sorted(j["source"] for j in both.json()) == ["landsat8", "landsat9"]
+    assert pg_client.post(url, headers=admin).status_code == 409
+
+
+@pytest.mark.db
+def test_all_sources_are_queued_by_default(pg, pg_client, admin, monkeypatch):
+    queued = []
+    recorder = type("T", (), {"delay": staticmethod(queued.append)})
+    monkeypatch.setattr("app.api.field_memory.fetch_modis", recorder)
+    monkeypatch.setattr("app.api.field_memory.fetch_landsat", recorder)
+    field = create_field(pg_client, admin)["id"]
+    response = pg_client.post(f"/api/v1/fields/{field}/field-memory/fetch", headers=admin)
+    assert response.status_code == 202 and len(queued) == 3
+    assert sorted(j["source"] for j in response.json()) == ["landsat8", "landsat9", "modis"]
 
 
 @pytest.mark.db
@@ -433,7 +450,8 @@ def test_the_data_center_shows_modis_as_connected(pg, pg_client, admin):
         s["key"]: s for s in pg_client.get("/api/v1/data-center/sources", headers=admin).json()
     }
     assert sources["modis"]["connected"] is True and sources["modis"]["status"] == "never_fetched"
-    assert sources["landsat8"]["connected"] is False
+    assert sources["landsat8"]["connected"] and sources["landsat9"]["connected"]
+    assert sources["landsat8"]["status"] == "never_fetched"
     seed_ndvi(pg, field)
     sources = {
         s["key"]: s for s in pg_client.get("/api/v1/data-center/sources", headers=admin).json()

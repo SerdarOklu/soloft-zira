@@ -72,7 +72,7 @@ def test_only_the_konya_profile_is_implemented(config):
 
 
 def test_data_sources(config):
-    assert config.data_sources["landsat8"].collection_id == "LANDSAT/LC08/C02/T1_L2"
+    assert config.data_sources["landsat8"].collection_id == "landsat-c2-l2"
     assert config.data_sources["power"].access == "power_daily_api"
 
 

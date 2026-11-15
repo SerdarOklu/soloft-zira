@@ -118,10 +118,10 @@ flowchart LR
 | --- | --- | --- |
 | **NASA POWER** (daily) | Temperature, humidity, wind, solar radiation, pressure and precipitation for ET0 and the water balance | **Yes**: the weather behind the water balance |
 | **MODIS** (MOD13Q1 and MYD13Q1 v061) | NDVI time series for Field Memory, read for the field polygon from the public Planetary Computer catalogue | **Yes** |
-| Landsat 8/9 | Field history at 30 m | Not connected: needs an Earth Engine project |
-| GPM IMERG | Precipitation cross-check | Planned |
-| SMAP | Regional surface soil moisture, a cross-check only | Planned |
-| GRACE / GRACE-FO | Basin water storage context | Planned |
+| **Landsat 8 and 9** | NDVI at 30 m inside the field polygon; Field Memory prefers it when it covers enough seasons | **Yes**, from the same open catalogue ([decision 0015](docs/decisions/0015-landsat-and-the-other-nasa-sources.md)) |
+| GPM IMERG | Precipitation cross-check | Inside NASA POWER's precipitation; not a separate source |
+| SMAP | Regional surface soil moisture, a cross-check only | Not connected: needs an Earthdata login |
+| GRACE / GRACE-FO | Basin water storage context | Not connected: needs an Earthdata login |
 
 POWER is requested with `time-standard=UTC` explicitly (its default is local solar time),
 `-999` is treated as missing, and wind measured at 10 m is converted to 2 m for ET0. Roles,
@@ -199,7 +199,7 @@ Work proceeds in phases, each one branch and one pull request
 | 2. VPS deployment | Docker Compose, Nginx with HTTPS, memory limits, backups, runbook | Done, live |
 | 3. Fields, NASA POWER, Data Center | Polygons, 25-year fetch with cache, jobs, Data Center | Done, live |
 | 4. Water Vault | ET0, Kc, daily balance, uncertainty, screens | Done, live (decision-day water) |
-| 5. Field Memory | MODIS NDVI, cropped or fallow history, confirmation | Done with a **provisional threshold**; Landsat not connected ([decision 0013](docs/decisions/0013-field-memory-from-modis.md)) |
+| 5. Field Memory | Landsat and MODIS NDVI, cropped or fallow history, confirmation | Done with a **provisional threshold** ([decision 0013](docs/decisions/0013-field-memory-from-modis.md), [0015](docs/decisions/0015-landsat-and-the-other-nasa-sources.md)) |
 | 6. Rotation and Zira Card | Strategies A, B, C, six metrics, card, WhatsApp drafts | Done with **provisional crop values**, live |
 | 7. Sensors and cooperative | Sensor ingest, simulator, cooperative panel, farmer view | Done with a **simulator** (no hardware yet); a calibrated sensor corrects the Water Vault ([decision 0014](docs/decisions/0014-sensors-and-cooperative.md)) |
 

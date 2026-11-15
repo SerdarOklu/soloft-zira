@@ -369,12 +369,13 @@ def test_the_data_center_lists_every_source_and_what_arrived(pg_client: TestClie
     assert by_key["modis"]["connected"] is True
     assert by_key["modis"]["status"] == "never_fetched"
     assert by_key["modis"]["collection_id"] == "modis-13Q1-061"
+    assert by_key["landsat8"]["connected"] and by_key["landsat9"]["connected"]
     # The Earth Engine sources are not set up and are reported as not connected, not as healthy.
-    for key in ("landsat8", "gpm", "smap", "grace"):
+    for key in ("gpm", "smap", "grace"):
         assert by_key[key]["connected"] is False
         assert by_key[key]["status"] == "not_connected"
         assert by_key[key]["observations"] == 0
-    assert by_key["landsat8"]["collection_id"] == "LANDSAT/LC08/C02/T1_L2"
+    assert by_key["landsat8"]["collection_id"] == "landsat-c2-l2"
 
 
 def test_the_data_center_lists_recent_jobs_with_their_field(pg_client: TestClient, admin, nasa):

@@ -49,10 +49,14 @@ class FieldMemoryOut(BaseModel):
     threshold: float
     # The threshold is a starting value that an agronomist has not calibrated.
     provisional: bool
+    # The satellite the history was called from, and how many clear images each one has.
+    source: Literal["modis", "landsat"]
+    available_sources: dict[str, int]
     coverage: Coverage
     seasons: list[SeasonOut]
     series: list[NdviPoint]
     latest_job: JobOut | None
+    latest_jobs: list[JobOut]
     confirmed_count: int
 
 

@@ -283,7 +283,7 @@
     "sourcesTitle": "Data sources",
     "jobsTitle": "Latest fetch jobs",
     "regionalNote": "Regional satellite and model data is never presented as a direct measurement of a single field.",
-    "notConnected": "MODIS is read from NASA's public STAC catalogue and is connected. Landsat, GPM, SMAP, GRACE and ECOSTRESS need an Earth Engine project, which is not set up yet.",
+    "notConnected": "Landsat 8/9 and MODIS are read from NASA's public STAC catalogue and are connected. GPM IMERG rainfall already comes inside NASA POWER; SMAP and GRACE need an Earthdata login; ECOSTRESS and SRTM are not connected.",
     "jobsSummary": "{done} done · {failed} failed · {active} running",
     "jobsEmpty": "There are no fetch jobs yet.",
     "cached": "from the cache, no new rows",
@@ -612,9 +612,9 @@
     "noFieldsTitle": "No field to read the history of",
     "noFieldsDescription": "Field Memory reads a field's satellite images. Add a field first.",
     "addField": "Add a field",
-    "fetch": "Fetch NDVI data",
+    "fetch": "Fetch NDVI data (Landsat and MODIS)",
     "refetch": "Fetch again",
-    "fetching": "Fetching MODIS NDVI, this can take a few minutes…",
+    "fetching": "Fetching Landsat and MODIS NDVI, this can take a few minutes…",
     "fetchDone": "NDVI data received.",
     "fetchFailed": "NDVI could not be fetched",
     "errors": {
@@ -624,7 +624,7 @@
       "unknown_season": "Unknown season."
     },
     "none": "There is no NDVI data for this field yet. Fetch it.",
-    "source": "Source: NASA MODIS MOD13Q1 and MYD13Q1 version 061 (250 m, about every 8 days), from the public Microsoft Planetary Computer catalogue. The clear pixels inside the field boundary are used.",
+    "source": "Source: NASA/USGS Landsat 8 and 9 Collection 2 surface reflectance (30 m) and NASA MODIS MOD13Q1 / MYD13Q1 version 061 (250 m), from the public Microsoft Planetary Computer catalogue. The clear pixels inside the field boundary are used.",
     "coverage": "{count} images, {good} clear · {from} – {to}",
     "chart": {
       "title": "NDVI time series",
@@ -668,8 +668,15 @@
       "body": "A field counts as cropped when its highest NDVI in a season reaches {value}. That is a starting value taken from the typical range of winter cereals at their peak against bare or weedy fallow; an agronomist must calibrate it with fields of known history."
     },
     "unknownWarning": "{count} seasons have too few clear images (cloud, snow or missing data) and were left \"unknown\". Confirm them by hand.",
-    "limits": "This method separates cropped from fallow; it does not know the crop species or winter from summer crops. A MODIS pixel is about 6 hectares, so small parcels give a mixed signal. Landsat (30 m) needs Earth Engine and is not connected.",
-    "needsLogin": "You need to be signed in to confirm."
+    "limits": "This method separates cropped from fallow; it does not know the crop species or winter from summer crops. Landsat (30 m) suits small parcels far better than MODIS (250 m, about 6 hectares); Landsat can leave gaps in cloudy seasons.",
+    "needsLogin": "You need to be signed in to confirm.",
+    "satellite": "Satellite",
+    "sources": {
+      "auto": "Automatic (Landsat if enough)",
+      "landsat": "Landsat 8/9 (30 m)",
+      "modis": "MODIS (250 m)"
+    },
+    "usedSource": "The history was called from {source} data. Clear images: Landsat {landsat}, MODIS {modis}."
   },
   "sensors": {
     "title": "Sensors",

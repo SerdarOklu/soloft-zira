@@ -58,10 +58,10 @@ export function FieldMemoryPanel({ fieldId, memory }: { fieldId: string; memory:
   const choice = (season: FieldMemory['seasons'][number]): CycleState =>
     choices[season.season] ?? season.confirmed_state ?? season.detected_state;
 
-  async function latestJob(): Promise<JobOut | null> {
+  async function latestJobs(): Promise<JobOut[] | null> {
     try {
       const response = await fetch(base, { cache: 'no-store' });
-      return response.ok ? ((await response.json()) as FieldMemory).latest_job : null;
+      return response.ok ? ((await response.json()) as FieldMemory).latest_jobs : null;
     } catch {
       return null;
     }
@@ -85,22 +85,28 @@ export function FieldMemoryPanel({ fieldId, memory }: { fieldId: string; memory:
         });
         return;
       }
-      const job = (await response.json()) as JobOut;
-      let current: JobOut = job;
-      for (let poll = 0; poll < MAX_POLLS && isActive(current.status) && mounted.current; poll++) {
+      const queued = (await response.json()) as JobOut[];
+      const ids = new Set(queued.map((job) => job.id));
+      let current: JobOut[] = queued;
+      for (
+        let poll = 0;
+        poll < MAX_POLLS && current.some((job) => isActive(job.status)) && mounted.current;
+        poll++
+      ) {
         await sleep(POLL_MS);
-        const next = await latestJob();
-        if (next?.id === job.id) current = next;
+        const next = await latestJobs();
+        if (next) current = next.filter((job) => ids.has(job.id));
       }
       if (!mounted.current) return;
-      if (current.status === 'done') {
+      const failed = current.find((job) => job.status === 'failed');
+      if (failed) {
+        setNotice({ tone: 'danger', text: `${t('fetchFailed')}: ${failed.error_message ?? ''}`.trim() });
+      } else if (current.every((job) => job.status === 'done')) {
         setNotice({ tone: 'success', text: t('fetchDone') });
-        router.refresh();
-      } else if (current.status === 'failed') {
-        setNotice({ tone: 'danger', text: `${t('fetchFailed')}: ${current.error_message ?? ''}`.trim() });
       } else {
         setNotice({ tone: 'warning', text: t('errors.slow') });
       }
+      router.refresh();
     } catch {
       setNotice({ tone: 'danger', text: t('errors.generic') });
     } finally {
@@ -112,7 +118,7 @@ export function FieldMemoryPanel({ fieldId, memory }: { fieldId: string; memory:
     setBusy(true);
     setNotice(null);
     try {
-      const response = await fetch(`${base}/confirm`, {
+      const response = await fetch(`${base}/confirm?source=${memory.source}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -160,6 +166,13 @@ export function FieldMemoryPanel({ fieldId, memory }: { fieldId: string; memory:
             !busy && <p>{t('none')}</p>
           ) : (
             <>
+              <p className="zira-muted">
+                {t('usedSource', {
+                  source: t(`sources.${memory.source}`),
+                  landsat: memory.available_sources.landsat ?? 0,
+                  modis: memory.available_sources.modis ?? 0,
+                })}
+              </p>
               <p className="zira-muted">
                 {t('coverage', {
                   count: memory.coverage.observations,

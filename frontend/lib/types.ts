@@ -285,10 +285,13 @@ export interface FieldMemory {
   history_years: number;
   threshold: number;
   provisional: boolean;
+  source: 'modis' | 'landsat';
+  available_sources: Record<string, number>;
   coverage: { observations: number; good: number; first_date: string | null; last_date: string | null };
   seasons: FieldMemorySeason[];
   series: { date: string; ndvi: number | null; valid_pixels: number; flag: string | null }[];
   latest_job: JobOut | null;
+  latest_jobs: JobOut[];
   confirmed_count: number;
 }
 
