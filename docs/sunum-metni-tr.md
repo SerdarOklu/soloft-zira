@@ -348,7 +348,8 @@ Bir sezon ekim ile hasat arasında sürer, Ocak–Aralık arasında değil. Plat
 ## 8. Uydu işleme
 **MODIS (platformda).** MOD13Q1 ve MYD13Q1 sürüm 061, NDVI = 0,0001 × DN. Her görüntüde tarla poligonunun içindeki pikseller alınır (poligona değenler dahil); piksel güvenilirliği 0 (iyi) ya da 1 (sınırda) olanlar tutulur, 2 (kar) ve 3 (bulut) ile eksik değerler dışarıda kalır. Her görüntü için ortalama ve ortanca NDVI, temiz piksel sayısı ve dışarıda kalan pay saklanır. Sezon = hasat yılının 1 Mart – 30 Eylül penceresi. En yüksek NDVI ≥ 0,40 ise ekili, değilse nadas; temiz görüntü 5'ten azsa bilinmiyor. Güven = min(1, |tepe NDVI − 0,40| / 0,20) × min(1, temiz görüntü sayısı / 13). Eşik geçicidir; bilinen geçmişli yerel tarlalarla kalibre edilecektir.
 
-**Landsat (sonraki adım).** Collection 2 yüzey yansıması: SR = DN × 0,0000275 − 0,2. NDVI = (NIR − Kırmızı) / (NIR + Kırmızı); Landsat 8/9 için NIR = SR_B5, Kırmızı = SR_B4. Bulut ve gölge pikselleri QA_PIXEL ile maskelenir; istatistikler tarla poligonunun içinden alınır.
+**Landsat (sonraki adım).** Collection 2 yüzey yansıması: SR = DN × 0,0000275 − 0,2. NDVI = (NIR − Kırmızı) / (NIR + Kırmızı); Landsat 8/9 için NIR = SR_B5, Kırmızı = SR_B4. Dolgu, genişletilmiş bulut, sirüs, bulut, gölge ve kar pikselleri QA_PIXEL ile maskelenir; istatistikler tarla
+poligonunun içinden alınır. Landsat, en az 6 sezonda karar verebiliyorsa geçmiş Landsat'tan, değilse MODIS'ten çıkarılır.
 
 ## 9. Sensör düzeltmesi
 - Kalibrasyon: θ = eğim × ham + kesişim (tarla başına, gravimetrik örnekle)
