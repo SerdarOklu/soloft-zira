@@ -849,5 +849,13 @@
       "fetch_already_running": "A read is already running.",
       "slow": "The job is still running; reload the page in a few minutes."
     }
+  },
+  "map": {
+    "layers": {
+      "satellite": "Satellite",
+      "streets": "Map",
+      "google": "Google Satellite",
+      "labels": "Place names"
+    }
   }
 }

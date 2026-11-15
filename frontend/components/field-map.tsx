@@ -3,14 +3,24 @@
 import 'leaflet/dist/leaflet.css';
 
 import type * as Leaflet from 'leaflet';
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 
 import type { LonLat } from '@/lib/geometry';
 import type { GeoJsonPolygon } from '@/lib/types';
 
-// Basemap tiles come from OpenStreetMap, which asks for this credit on every map.
-const TILE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
-const ATTRIBUTION = '© OpenStreetMap contributors';
+// Basemaps. Satellite imagery is the default because a farmer recognises a field from above.
+// Esri World Imagery (Maxar and others) needs no key; each map carries the credit its terms ask for.
+const ESRI_IMAGERY =
+  'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+const ESRI_LABELS =
+  'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}';
+const ESRI_ATTRIBUTION = 'Tiles © Esri — Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community';
+const OSM_TILES = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+const OSM_ATTRIBUTION = '© OpenStreetMap contributors';
+// Google's satellite tiles come from its Map Tiles API and need a key (see /api/map-config).
+const GOOGLE_SESSION_URL = 'https://tile.googleapis.com/v1/createSession';
+const GOOGLE_ATTRIBUTION = 'Imagery © Google';
 // Where the map opens before the user has chosen a place. Not a field coordinate.
 const OPENING_VIEW: [number, number] = [39, 35];
 const OPENING_ZOOM = 6;
@@ -58,6 +68,7 @@ export function FieldMap({
   onSelectMarker,
   className,
 }: Props) {
+  const t = useTranslations('map');
   const container = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState<Ready | null>(null);
   const onAdd = useRef(onAddCorner);
@@ -81,7 +92,45 @@ export function FieldMap({
         doubleClickZoom: mode !== 'draw',
       });
       instance = map;
-      lib.tileLayer(TILE_URL, { attribution: ATTRIBUTION, maxZoom: 19 }).addTo(map);
+      // Imagery at the closest zoom Esri has, stretched a little beyond it, with place names on top.
+      const imagery = lib.tileLayer(ESRI_IMAGERY, {
+        attribution: ESRI_ATTRIBUTION,
+        maxNativeZoom: 18,
+        maxZoom: 21,
+      });
+      const labels = lib.tileLayer(ESRI_LABELS, { maxNativeZoom: 18, maxZoom: 21, opacity: 0.9 });
+      const streets = lib.tileLayer(OSM_TILES, { attribution: OSM_ATTRIBUTION, maxZoom: 19 });
+      const bases: Record<string, Leaflet.Layer> = {
+        [t('layers.satellite')]: imagery,
+        [t('layers.streets')]: streets,
+      };
+      imagery.addTo(map);
+      labels.addTo(map);
+      const control = lib.control
+        .layers(bases, { [t('layers.labels')]: labels }, { position: 'topright' })
+        .addTo(map);
+      // Google satellite is added when the server has a key; the others work without it.
+      void (async () => {
+        try {
+          const config = (await fetch('/api/map-config', { cache: 'no-store' }).then((r) => r.json())) as {
+            googleMapsKey: string | null;
+          };
+          if (!config.googleMapsKey || cancelled) return;
+          const session = (await fetch(`${GOOGLE_SESSION_URL}?key=${encodeURIComponent(config.googleMapsKey)}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mapType: 'satellite', language: document.documentElement.lang || 'tr', region: 'TR', layerTypes: ['layerRoadmap'] }),
+          }).then((r) => (r.ok ? r.json() : null))) as { session?: string } | null;
+          if (!session?.session || cancelled) return;
+          const google = lib.tileLayer(
+            `https://tile.googleapis.com/v1/2dtiles/{z}/{x}/{y}?session=${session.session}&key=${encodeURIComponent(config.googleMapsKey)}`,
+            { attribution: GOOGLE_ATTRIBUTION, maxZoom: 21 },
+          );
+          control.addBaseLayer(google, t('layers.google'));
+        } catch {
+          // No key or no network: the other basemaps stay.
+        }
+      })();
       const layers = lib.layerGroup().addTo(map);
       if (mode === 'draw') {
         map.on('click', (event: Leaflet.LeafletMouseEvent) =>
@@ -130,7 +179,7 @@ export function FieldMap({
     const shape = lib
       .geoJSON(geometry as GeoJSON.Polygon, { style: { color: accent, weight: 2, fillOpacity: 0.2 } })
       .addTo(layers);
-    map.fitBounds(shape.getBounds(), { padding: [24, 24], maxZoom: 17 });
+    map.fitBounds(shape.getBounds(), { padding: [24, 24], maxZoom: 18 });
   }, [ready, mode, geometry]);
 
   // View mode: field locations.

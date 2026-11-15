@@ -135,6 +135,9 @@ services:
       NODE_ENV: production
       # Server-side only; the browser never receives this or talks to the backend directly.
       BACKEND_URL: http://backend:8000
+      # Optional. A Google Maps Platform key for the Google satellite basemap (Map Tiles API).
+      # It reaches the browser by design: restrict it to this site's address in Google Cloud.
+      GOOGLE_MAPS_API_KEY: ${GOOGLE_MAPS_API_KEY:-}
     depends_on:
       backend:
         condition: service_started

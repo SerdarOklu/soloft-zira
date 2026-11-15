@@ -849,5 +849,13 @@
       "fetch_already_running": "Bir okuma zaten sürüyor.",
       "slow": "İş hâlâ sürüyor; birkaç dakika sonra sayfayı yenileyin."
     }
+  },
+  "map": {
+    "layers": {
+      "satellite": "Uydu",
+      "streets": "Harita",
+      "google": "Google Uydu",
+      "labels": "Yer adları"
+    }
   }
 }
