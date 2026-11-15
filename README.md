@@ -120,9 +120,10 @@ flowchart LR
 | **MODIS** (MOD13Q1 and MYD13Q1 v061) | NDVI time series for Field Memory, read for the field polygon from the public Planetary Computer catalogue | **Yes** |
 | **Landsat 8 and 9** | NDVI at 30 m inside the field polygon; Field Memory prefers it when it covers enough seasons | **Yes**, from the same open catalogue ([decision 0015](docs/decisions/0015-landsat-and-the-other-nasa-sources.md)) |
 | **SRTM** (via NASADEM) | Elevation and slope of the field polygon at 30 m | **Yes**, same open catalogue |
-| GPM IMERG | Precipitation cross-check | Inside NASA POWER's precipitation; not a separate source |
-| SMAP | Regional surface soil moisture, a cross-check only | Not connected: needs an Earthdata login |
-| GRACE / GRACE-FO | Basin water storage context | Not connected: needs an Earthdata login |
+| **GPM IMERG** | Daily rainfall of the 10 km cell, a consistency check of POWER | **Yes**, with a NASA Earthdata token ([decision 0016](docs/decisions/0016-earthdata-smap-gpm-grace.md)) |
+| **SMAP** | Regional surface soil moisture (top 5 cm, 9 km), a cross-check only | **Yes**, with the Earthdata token |
+| **GRACE / GRACE-FO** | Basin water storage trend (about 300 km) | **Yes**, with the Earthdata token |
+| ECOSTRESS | Evapotranspiration at 70 m | Not connected |
 
 POWER is requested with `time-standard=UTC` explicitly (its default is local solar time),
 `-999` is treated as missing, and wind measured at 10 m is converted to 2 m for ET0. Roles,
@@ -313,6 +314,7 @@ Environment variables are documented in [`.env.example`](.env.example) (developm
 | `DATABASE_URL`, `REDIS_URL` | PostgreSQL and Redis |
 | `SECRET_KEY` | Signs access tokens; production refuses a short or placeholder value |
 | `POWER_BASE_URL` | NASA POWER endpoint |
+| `EARTHDATA_TOKEN` | NASA Earthdata user token (SMAP, GPM IMERG, GRACE); empty keeps them unconnected; it expires |
 | `GREEN_API_INSTANCE_ID`, `GREEN_API_TOKEN` | WhatsApp gateway; leave empty to keep sending off |
 | `SENSOR_INGEST_KEY` | Shared key a sensor node or the simulator sends in `X-Sensor-Key`; empty turns ingest off |
 
@@ -341,6 +343,7 @@ Interactive documentation is served at `/docs` by the backend. The main endpoint
 | `GET /api/v1/fields/{id}/water-vault?crop=&date=` | Usable water in mm with a range, the daily series and assumptions |
 | `POST /api/v1/sensors/{node_id}/readings`, `GET /api/v1/fields/{id}/sensors`, `PUT .../sensor-calibration` | Sensor ingest (device key), node status, gravimetric calibration |
 | `GET/POST /api/v1/users`, `PATCH .../fields/{id}/farmer`, `GET /api/v1/farmer/summary` | Cooperative panel (farmer accounts, field links) and the farmer view |
+| `GET /api/v1/fields/{id}/regional`, `POST .../regional/fetch` | SMAP, GPM IMERG and GRACE cross-checks |
 | `GET /api/v1/fields/{id}/field-memory`, `POST .../fetch`, `POST .../confirm` | MODIS NDVI history, its cropped or fallow call, and the confirmation |
 | `GET /api/v1/fields/{id}/rotation?rotation=` | Strategies A, B and C over the stored record (`rotation=history` uses the confirmed history) |
 | `POST /api/v1/fields/{id}/messages/generate` | Write WhatsApp drafts for a season |

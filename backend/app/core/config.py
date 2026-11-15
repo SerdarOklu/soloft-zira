@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     power_base_url: str = "https://power.larc.nasa.gov/api/temporal/daily/point"
     # The shared key a sensor node or the simulator sends in X-Sensor-Key. Empty turns ingest off.
     sensor_ingest_key: str = ""
+    # A NASA Earthdata user token (SMAP, GPM IMERG and GRACE are read with it). Empty keeps those
+    # sources unconnected.
+    earthdata_token: str = ""
     # Green API (WhatsApp gateway). Leave empty and approved messages wait instead of sending.
     green_api_url: str = "https://api.green-api.com"
     green_api_instance_id: str = ""

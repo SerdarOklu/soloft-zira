@@ -283,7 +283,7 @@
     "sourcesTitle": "Data sources",
     "jobsTitle": "Latest fetch jobs",
     "regionalNote": "Regional satellite and model data is never presented as a direct measurement of a single field.",
-    "notConnected": "Landsat 8/9, MODIS and SRTM (NASADEM) are read from NASA's public STAC catalogue and are connected. GPM IMERG rainfall already comes inside NASA POWER. SMAP, GRACE and ECOSTRESS need a NASA Earthdata login, which is not set up yet.",
+    "notConnected": "Landsat 8/9, MODIS and SRTM are read from the open STAC catalogue; SMAP, GPM IMERG and GRACE with the NASA Earthdata key. GPM rainfall also comes inside POWER. ECOSTRESS is not connected yet.",
     "jobsSummary": "{done} done · {failed} failed · {active} running",
     "jobsEmpty": "There are no fetch jobs yet.",
     "cached": "from the cache, no new rows",
@@ -305,7 +305,7 @@
       "power": "Daily climate inputs: precipitation, temperature, humidity, wind, radiation",
       "landsat8": "10-year vegetation pattern inside the field",
       "landsat9": "10-year vegetation pattern inside the field",
-      "gpm": "Precipitation series; cross-check for POWER precipitation",
+      "gpm": "Rainfall series; consistency check of the POWER rainfall",
       "smap": "Regional surface soil moisture",
       "modis": "Vegetation index (NDVI) time series for Field Memory; support for cloudy Landsat periods",
       "grace": "Basin-scale total water storage trend",
@@ -807,6 +807,47 @@
       "generic": "The action could not be done.",
       "running": "A read is already running.",
       "slow": "The job is still running; reload the page in a moment."
+    }
+  },
+  "regional": {
+    "title": "Regional checks (NASA Earthdata)",
+    "description": "SMAP, GPM IMERG and GRACE are regional satellite data: a check beside the model, not an input to it and not a measurement of the field.",
+    "fetch": "Fetch data (SMAP, GPM, GRACE)",
+    "refetch": "Fetch again",
+    "fetching": "Reading from the NASA archives, this can take a few minutes…",
+    "done": "Regional data received.",
+    "failed": "{source} could not be read",
+    "none": "There is no regional data for this field yet.",
+    "notConfigured": "This server has no NASA Earthdata key; these sources are not connected.",
+    "smap": {
+      "title": "SMAP: surface soil moisture",
+      "summary": "Over the last {days} days the morning mean is {am} and the evening mean {pm} m³/m³.",
+      "aria": "SMAP surface soil moisture",
+      "am": "Morning",
+      "pm": "Evening",
+      "limits": "The top 5 cm of a cell about 9 km wide. It is not shown as the moisture of the root zone or of one field; there is no value in the gaps between orbit swaths."
+    },
+    "gpm": {
+      "title": "GPM IMERG: rainfall cross-check",
+      "summary": "Over {days} days NASA POWER shows {power} mm of rain and IMERG {imerg} mm.",
+      "correlation": "Daily correlation r = {r}.",
+      "aria": "POWER and IMERG daily rainfall",
+      "power": "NASA POWER",
+      "imerg": "GPM IMERG",
+      "limits": "A cell about 10 km wide. POWER's rainfall already draws on IMERG, so this is a consistency check, not an independent measurement. For days after September 2025 IMERG's quick (Late) version is used."
+    },
+    "grace": {
+      "title": "GRACE: basin water storage",
+      "trend": "Total water storage changes by {value} cm a year between {from} and {to} (since 2003).",
+      "noTrend": "Not enough months for a trend.",
+      "latest": "The latest monthly anomaly is {value} cm.",
+      "limits": "The sum of all water over an area about 300 km wide (monthly, against the long-term mean). It is not the groundwater under a parcel; there is a gap of about a year between GRACE and GRACE-FO."
+    },
+    "errors": {
+      "generic": "The action could not be done.",
+      "earthdata_not_configured": "This server has no NASA Earthdata key.",
+      "fetch_already_running": "A read is already running.",
+      "slow": "The job is still running; reload the page in a few minutes."
     }
   }
 }

@@ -10,6 +10,7 @@ from app.api import (
     fields,
     messages,
     reference,
+    regional,
     rotation,
     sensors,
     terrain,
@@ -27,6 +28,7 @@ api_router.include_router(rotation.router)
 api_router.include_router(sensors.ingest_router)
 api_router.include_router(sensors.router)
 api_router.include_router(terrain.router)
+api_router.include_router(regional.router)
 api_router.include_router(users.router)
 api_router.include_router(messages.router)
 api_router.include_router(data_center.router)

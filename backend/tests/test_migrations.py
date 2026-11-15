@@ -10,7 +10,8 @@ from app.models import Base
 
 pytestmark = pytest.mark.db
 
-# The 16 tables of PDT section 9, plus message_drafts (phase 6) sensor_calibrations (phase 7) and regional_observations (phase 8).
+# The 16 tables of PDT section 9, plus message_drafts (phase 6), sensor_calibrations (phase 7)
+# and regional_observations (phase 8).
 EXPECTED_TABLES = {
     "message_drafts",
     "sensor_calibrations",

@@ -283,7 +283,7 @@
     "sourcesTitle": "Veri kaynakları",
     "jobsTitle": "Son veri çekme işleri",
     "regionalNote": "Bölgesel uydu ve model verileri, tek bir tarlanın doğrudan ölçümü olarak sunulmaz.",
-    "notConnected": "Landsat 8/9, MODIS ve SRTM (NASADEM), NASA'nın açık STAC kataloğundan okunur ve bağlıdır. GPM IMERG yağışı NASA POWER'ın içinde gelir. SMAP, GRACE ve ECOSTRESS için NASA Earthdata girişi gerekir; henüz kurulu değil.",
+    "notConnected": "Landsat 8/9, MODIS ve SRTM açık STAC kataloğundan; SMAP, GPM IMERG ve GRACE NASA Earthdata anahtarıyla okunur. GPM yağışı POWER'ın içinde de gelir. ECOSTRESS henüz bağlı değil.",
     "jobsSummary": "{done} tamamlandı · {failed} başarısız · {active} süren",
     "jobsEmpty": "Henüz veri çekme işi yok.",
     "cached": "önbellekten, yeni satır yok",
@@ -305,7 +305,7 @@
       "power": "Günlük iklim girdileri: yağış, sıcaklık, nem, rüzgâr, radyasyon",
       "landsat8": "Tarla içindeki 10 yıllık bitki örtüsü deseni",
       "landsat9": "Tarla içindeki 10 yıllık bitki örtüsü deseni",
-      "gpm": "Yağış serisi; POWER yağışı için çapraz kontrol",
+      "gpm": "Yağış serisi; POWER yağışı için tutarlılık kontrolü",
       "smap": "Bölgesel yüzey toprak nemi",
       "modis": "Bitki örtüsü (NDVI) zaman serisi: Tarla Hafızası; bulutlu Landsat dönemlerine destek",
       "grace": "Havza ölçeğinde toplam su depolama eğilimi",
@@ -807,6 +807,47 @@
       "generic": "İşlem yapılamadı.",
       "running": "Bir okuma zaten sürüyor.",
       "slow": "İş hâlâ sürüyor; biraz sonra sayfayı yenileyin."
+    }
+  },
+  "regional": {
+    "title": "Bölgesel kontroller (NASA Earthdata)",
+    "description": "SMAP, GPM IMERG ve GRACE bölgesel uydu verileridir: modelin yanında bir kontroldür, modelin girdisi değildir ve tarlanın kendi ölçümü değildir.",
+    "fetch": "Verileri çek (SMAP, GPM, GRACE)",
+    "refetch": "Yeniden çek",
+    "fetching": "NASA arşivlerinden okunuyor, birkaç dakika sürebilir…",
+    "done": "Bölgesel veriler alındı.",
+    "failed": "{source} okunamadı",
+    "none": "Bu tarla için henüz bölgesel veri yok.",
+    "notConfigured": "Sunucuda NASA Earthdata anahtarı tanımlı değil; bu kaynaklar bağlı değil.",
+    "smap": {
+      "title": "SMAP: yüzey toprak nemi",
+      "summary": "Son {days} günde sabah ortalaması {am}, akşam ortalaması {pm} m³/m³.",
+      "aria": "SMAP yüzey toprak nemi",
+      "am": "Sabah",
+      "pm": "Akşam",
+      "limits": "Üst 5 cm, yaklaşık 9 km'lik bir hücre. Kök bölgesinin ya da tek bir tarlanın nemi olarak sunulmaz; yörünge boşluklarında değer yoktur."
+    },
+    "gpm": {
+      "title": "GPM IMERG: yağış çapraz kontrolü",
+      "summary": "{days} günde NASA POWER {power} mm, IMERG {imerg} mm yağış gösteriyor.",
+      "correlation": "Günlük korelasyon r = {r}.",
+      "aria": "POWER ve IMERG günlük yağış",
+      "power": "NASA POWER",
+      "imerg": "GPM IMERG",
+      "limits": "Yaklaşık 10 km'lik hücre. POWER'ın yağışı zaten IMERG'den beslenir, bu yüzden bağımsız bir ölçüm değil, tutarlılık kontrolüdür. Eylül 2025 sonrası gün için IMERG'in hızlı (Late) sürümü kullanılır."
+    },
+    "grace": {
+      "title": "GRACE: havza su depolaması",
+      "trend": "Toplam su depolaması {from} – {to} arasında yılda {value} cm eğilimle değişiyor (2003'ten beri).",
+      "noTrend": "Eğilim için yeterli ay yok.",
+      "latest": "Son aylık sapma {value} cm.",
+      "limits": "Yaklaşık 300 km'lik bir alandaki tüm suyun toplamı (aylık, uzun vadeli ortalamaya göre sapma). Bir parselin altındaki yeraltı suyu değildir; GRACE ile GRACE-FO arasında yaklaşık bir yıllık boşluk vardır."
+    },
+    "errors": {
+      "generic": "İşlem yapılamadı.",
+      "earthdata_not_configured": "Sunucuda NASA Earthdata anahtarı tanımlı değil.",
+      "fetch_already_running": "Bir okuma zaten sürüyor.",
+      "slow": "İş hâlâ sürüyor; birkaç dakika sonra sayfayı yenileyin."
     }
   }
 }

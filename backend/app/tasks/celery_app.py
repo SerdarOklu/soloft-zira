@@ -16,6 +16,7 @@ celery_app = Celery(
         "app.tasks.modis",
         "app.tasks.landsat",
         "app.tasks.terrain",
+        "app.tasks.regional",
     ],
 )
 celery_app.conf.update(

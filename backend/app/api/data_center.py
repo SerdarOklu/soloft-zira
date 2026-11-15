@@ -9,6 +9,7 @@ from sqlalchemy import func, select
 
 from app.api.deps import SessionDep, require_roles
 from app.api.fields import job_out
+from app.core.config import get_settings
 from app.core.parameters import get_config
 from app.models import (
     DataFetchJob,
@@ -64,7 +65,10 @@ def sources(session: SessionDep, _user: Analyst) -> list[SourceOut]:
         row = rows.get(key)
         # POWER (daily API) and MODIS (STAC cloud GeoTIFFs) are connected; the Earth Engine
         # sources need an Earth Engine project that is not set up.
-        connected = source.access in CONNECTED_ACCESS
+        # An Earthdata source is connected only while the server holds the Earthdata token.
+        connected = source.access in CONNECTED_ACCESS or (
+            source.access == "earthdata" and bool(get_settings().earthdata_token)
+        )
         if not connected:
             state = "not_connected"
         else:

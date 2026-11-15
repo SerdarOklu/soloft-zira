@@ -23,6 +23,10 @@
   is filled from it; an elevation that POWER already gave is kept, so no stored result changes.
 - **Landsat 9** has scenes only from 2022; for earlier years it returns nothing, which is not an error.
 
+> **Update:** SMAP, GPM IMERG and GRACE were connected later the same day through a NASA
+> Earthdata token; see [0016](0016-earthdata-smap-gpm-grace.md). The table below is what was true
+> before it, and only ECOSTRESS is still out.
+
 ## What is still not connected
 
 | Source | State | Why |

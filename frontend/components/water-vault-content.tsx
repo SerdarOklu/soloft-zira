@@ -19,6 +19,7 @@ import { Droplets, Gauge, Layers, TriangleAlert } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 
 import { LineChart } from '@/components/line-chart';
+import { RegionalPanel, type Regional } from '@/components/regional-panel';
 import { SensorPanel } from '@/components/sensor-panel';
 import { WaterVaultForm } from '@/components/water-vault-form';
 import { ApiError, api } from '@/lib/api';
@@ -127,8 +128,9 @@ export async function WaterVaultContent({ params }: { params: WaterVaultParams }
 
   const number = (value: number | null, digits = 0) => formatNumber(value, locale, digits);
   const { decision, window: span } = vault;
-  const [sensorStatus, user] = await Promise.all([
+  const [sensorStatus, regional, user] = await Promise.all([
     api<SensorStatus>(`/fields/${encodeURIComponent(field.id)}/sensors`),
+    api<Regional>(`/fields/${encodeURIComponent(field.id)}/regional`),
     getSessionUser(),
   ]);
   const canCalibrate = user?.role === 'admin' || user?.role === 'agronomist';
@@ -332,6 +334,8 @@ export async function WaterVaultContent({ params }: { params: WaterVaultParams }
       )}
 
       <SensorPanel fieldId={field.id} status={sensorStatus} canCalibrate={canCalibrate} />
+
+      <RegionalPanel fieldId={field.id} regional={regional} canFetch={user !== null} />
 
       <p className="zira-statement">{t('app.supportStatement')}</p>
     </div>

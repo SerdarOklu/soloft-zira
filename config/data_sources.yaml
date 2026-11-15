@@ -35,23 +35,27 @@ sources:
     scale_warning: Same as Landsat 8. Launched in September 2021, so it adds scenes from 2022.
   gpm:
     name: GPM IMERG
-    role: Precipitation series; cross-check for POWER precipitation
-    access: earth_engine
-    collection_id: NASA/GPM_L3/IMERG_V07
-    resolution: 0.1 degree, about 10 km; half-hourly
-    priority: high
-    scale_warning: Fields in the same pixel are not separate rain observations.
-  smap:
-    name: SMAP
-    role: Recent regional surface soil moisture; check for model and sensor
-    access: earth_engine
-    collection_id: NASA/SMAP/SPL3SMP_E/006
-    collection_id_before_2023_12_04: NASA/SMAP/SPL3SMP_E/005
-    resolution: about 9 km
+    role: Rainfall estimate; regional cross-check of the POWER rainfall
+    # NASA GES DISC, read with an Earthdata token: the daily 0.1 degree product. The Final run
+    # (GPM_3IMERGDF) ends in September 2025; after that the Late run (GPM_3IMERGDL) is used.
+    access: earthdata
+    collection_id: GPM_3IMERGDF
+    resolution: 0.1 degree, about 10 km; daily
     priority: high
     scale_warning: >-
-      Not field scale and surface only. The mission began in 2015, so it cannot
-      cover 25 seasons.
+      Fields in the same pixel are not separate rain observations. It is a cross-check of the POWER
+      rainfall, never added to it.
+  smap:
+    name: SMAP
+    role: Regional surface soil moisture; a cross-check of the model
+    # NASA NSIDC, read with an Earthdata token: SPL3SMP_E, the enhanced 9 km daily product.
+    access: earthdata
+    collection_id: SPL3SMP_E
+    resolution: about 9 km; daily, morning and evening
+    priority: high
+    scale_warning: >-
+      Surface moisture of the top 5 cm on a 9 km cell. It is never shown as the moisture of the
+      root zone or of one field.
   modis:
     name: MODIS
     role: Vegetation index (NDVI) time series for Field Memory; support for cloudy Landsat periods
@@ -67,12 +71,14 @@ sources:
   grace:
     name: GRACE / GRACE-FO
     role: Basin-scale total water storage trend
-    access: earth_engine
-    collection_id: null   # to be selected
-    resolution: about 300 km, monthly
+    # NASA PO.DAAC, read with an Earthdata token: the JPL mascon solution, 0.5 degree grid.
+    access: earthdata
+    collection_id: TELLUS_GRAC-GRFO_MASCON_CRI_GRID_RL06.3_V4
+    resolution: about 300 km; monthly
     priority: medium
     scale_warning: >-
-      Total terrestrial water storage, not the parcel's groundwater or soil moisture.
+      Total water storage over a wide area, never the groundwater under a parcel. There is a gap of
+      about a year between GRACE and GRACE-FO.
   ecostress:
     name: ECOSTRESS
     role: Evapotranspiration support

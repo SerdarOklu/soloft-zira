@@ -172,7 +172,7 @@ class DataSource(BaseModel):
 
     name: str
     role: str
-    access: Literal["power_daily_api", "stac_cog", "earth_engine"]
+    access: Literal["power_daily_api", "stac_cog", "earthdata", "earth_engine"]
     collection_id: str | None = None
     collection_id_before_2023_12_04: str | None = None
     resolution: str
