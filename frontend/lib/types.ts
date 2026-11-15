@@ -259,3 +259,32 @@ export interface GatewayStatus {
   configured: boolean;
   provider: string;
 }
+
+export type CycleState = 'cropped' | 'fallow' | 'unknown';
+
+export interface FieldMemorySeason {
+  season: string;
+  harvest_year: number;
+  detected_state: CycleState;
+  peak_ndvi: number | null;
+  peak_date: string | null;
+  good_observations: number;
+  total_observations: number;
+  confidence: number | null;
+  confidence_level: 'high' | 'medium' | 'low' | null;
+  confirmed_state: CycleState | null;
+  confirmed_by: 'user' | 'agronomist' | null;
+  confirmed_at: string | null;
+}
+
+export interface FieldMemory {
+  field_id: string;
+  history_years: number;
+  threshold: number;
+  provisional: boolean;
+  coverage: { observations: number; good: number; first_date: string | null; last_date: string | null };
+  seasons: FieldMemorySeason[];
+  series: { date: string; ndvi: number | null; valid_pixels: number; flag: string | null }[];
+  latest_job: JobOut | null;
+  confirmed_count: number;
+}

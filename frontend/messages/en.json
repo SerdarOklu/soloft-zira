@@ -273,7 +273,7 @@
     "sourcesTitle": "Data sources",
     "jobsTitle": "Latest fetch jobs",
     "regionalNote": "Regional satellite and model data is never presented as a direct measurement of a single field.",
-    "notConnected": "The Earth Engine sources connect in phase 5.",
+    "notConnected": "MODIS is read from NASA's public STAC catalogue and is connected. Landsat, GPM, SMAP, GRACE and ECOSTRESS need an Earth Engine project, which is not set up yet.",
     "jobsSummary": "{done} done · {failed} failed · {active} running",
     "jobsEmpty": "There are no fetch jobs yet.",
     "cached": "from the cache, no new rows",
@@ -297,11 +297,12 @@
       "landsat9": "10-year vegetation pattern inside the field",
       "gpm": "Precipitation series; cross-check for POWER precipitation",
       "smap": "Regional surface soil moisture",
-      "modis": "Regional phenology; support for cloudy Landsat periods",
+      "modis": "Vegetation index (NDVI) time series for Field Memory; support for cloudy Landsat periods",
       "grace": "Basin-scale total water storage trend",
       "ecostress": "Evapotranspiration support",
       "srtm": "Elevation and slope"
-    }
+    },
+    "images": "{count} images"
   },
   "crops": {
     "winter_wheat": "Winter wheat",
@@ -416,7 +417,8 @@
       "presets": {
         "wheatFallow": "Wheat – fallow",
         "wheatEvery": "Wheat every year",
-        "wheatLentil": "Wheat – lentil"
+        "wheatLentil": "Wheat – lentil",
+        "history": "Confirmed history (Field Memory)"
       }
     },
     "noFieldsTitle": "No field to compare",
@@ -509,7 +511,8 @@
       "not_enough_history": "Not enough history for one full season.",
       "rotation_without_crop": "The rotation needs at least one crop.",
       "unknown_crop": "Unknown crop.",
-      "season_values_missing": "This crop has no season values yet."
+      "season_values_missing": "This crop has no season values yet.",
+      "history_not_confirmed": "Confirm at least two seasons in Field Memory first."
     }
   },
   "messages": {
@@ -579,5 +582,71 @@
       "season_values_missing": "This crop has no season values.",
       "gateway_not_configured": "WhatsApp is not connected."
     }
+  },
+  "fieldMemory": {
+    "form": {
+      "field": "Field"
+    },
+    "noFieldsTitle": "No field to read the history of",
+    "noFieldsDescription": "Field Memory reads a field's satellite images. Add a field first.",
+    "addField": "Add a field",
+    "fetch": "Fetch NDVI data",
+    "refetch": "Fetch again",
+    "fetching": "Fetching MODIS NDVI, this can take a few minutes…",
+    "fetchDone": "NDVI data received.",
+    "fetchFailed": "NDVI could not be fetched",
+    "errors": {
+      "generic": "The action could not be done.",
+      "slow": "The job is still running; reload the page in a few minutes.",
+      "fetch_already_running": "A fetch for this field is already running.",
+      "unknown_season": "Unknown season."
+    },
+    "none": "There is no NDVI data for this field yet. Fetch it.",
+    "source": "Source: NASA MODIS MOD13Q1 and MYD13Q1 version 061 (250 m, about every 8 days), from the public Microsoft Planetary Computer catalogue. The clear pixels inside the field boundary are used.",
+    "coverage": "{count} images, {good} clear · {from} – {to}",
+    "chart": {
+      "title": "NDVI time series",
+      "aria": "The field's NDVI over the last seasons",
+      "legend": "NDVI",
+      "thresholdLegend": "Cropped threshold ({value})"
+    },
+    "seasons": {
+      "title": "Seasons"
+    },
+    "columns": {
+      "season": "Season",
+      "detected": "From satellite",
+      "peak": "Peak NDVI",
+      "confidence": "Confidence",
+      "images": "Clear images",
+      "confirm": "Confirmed"
+    },
+    "states": {
+      "cropped": "Cropped",
+      "fallow": "Fallow",
+      "unknown": "Unknown"
+    },
+    "levels": {
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "confirmed": {
+      "summary": "{count} of {total} seasons confirmed",
+      "by": {
+        "user": "user",
+        "agronomist": "agronomist"
+      }
+    },
+    "confirm": "Confirm and save",
+    "saved": "History saved.",
+    "useAsA": "Use in the rotation comparison",
+    "provisional": {
+      "title": "The cropped threshold is provisional",
+      "body": "A field counts as cropped when its highest NDVI in a season reaches {value}. That is a starting value taken from the typical range of winter cereals at their peak against bare or weedy fallow; an agronomist must calibrate it with fields of known history."
+    },
+    "unknownWarning": "{count} seasons have too few clear images (cloud, snow or missing data) and were left \"unknown\". Confirm them by hand.",
+    "limits": "This method separates cropped from fallow; it does not know the crop species or winter from summer crops. A MODIS pixel is about 6 hectares, so small parcels give a mixed signal. Landsat (30 m) needs Earth Engine and is not connected.",
+    "needsLogin": "You need to be signed in to confirm."
   }
 }

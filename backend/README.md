@@ -42,7 +42,9 @@ Roles: `admin`, `agronomist`, `cooperative_user`. The command asks for the passw
 | `GET /api/v1/dashboard/summary` | Field and job counts, fields without data, map markers |
 | `GET /api/v1/reference/crops` | Crops of `config/crops.yaml` and whether their season can run yet |
 | `GET /api/v1/fields/{id}/water-vault?crop=...&date=...` | Usable water in the root zone on a day, in mm, with a low to high range, the daily series and what it rests on |
-| `GET /api/v1/fields/{id}/rotation?rotation=winter_wheat,fallow` | Strategies A, B and C over the stored record: sufficient seasons with a range, stress days, deficit, irrigation need, per-season results (provisional values, see decision 0012) |
+| `GET /api/v1/fields/{id}/field-memory` | MODIS NDVI series, the cropped or fallow call per season with confidence, and what a person confirmed |
+| `POST /api/v1/fields/{id}/field-memory/fetch`, `.../confirm` | Queue a MODIS NDVI fetch (202 with the job); confirm the history season by season |
+| `GET /api/v1/fields/{id}/rotation?rotation=winter_wheat,fallow` (or `history`) | Strategies A, B and C over the stored record: sufficient seasons with a range, stress days, deficit, irrigation need, per-season results (provisional values, see decision 0012) |
 | `POST /api/v1/fields/{id}/messages/generate` | Write WhatsApp drafts for the events of one season (admin, agronomist) |
 | `GET /api/v1/messages`, `GET /api/v1/messages/gateway` | The draft queue; whether the WhatsApp gateway is configured |
 | `PATCH /api/v1/messages/{id}`, `POST .../approve`, `.../reject`, `.../send` | Edit, approve (sends when configured), reject, retry (admin, agronomist) |

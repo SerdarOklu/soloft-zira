@@ -71,7 +71,7 @@ Zira has three modules, each depending on the one before it:
 
 | Module | Question it answers | Status |
 | --- | --- | --- |
-| **Field Memory** (Tarla Hafızası) | Was the field cropped or fallow in each of the last 10 years? | Planned (phase 5); needs Google Earth Engine access |
+| **Field Memory** (Tarla Hafızası) | Was the field cropped or fallow in each of the last 10 years? | Built on MODIS NDVI, with a provisional threshold; confirmed by a person |
 | **Water Vault** (Su Kasası) | How many millimetres of usable water does the root zone hold on a given day? | Built |
 | **Zira Card** (Zira Kartı) | For each rotation, in how many of 25 seasons was the water enough? | Built, with provisional crop values |
 
@@ -116,9 +116,9 @@ flowchart LR
 
 | Source | Role in Zira | Used today |
 | --- | --- | --- |
-| **NASA POWER** (daily) | Temperature, humidity, wind, solar radiation, pressure and precipitation for ET0 and the water balance | **Yes**: the only data source the current model runs on |
-| Landsat 8/9 | Field history: cropped or fallow (NDVI) | Planned (phase 5) |
-| MODIS | Vegetation time series | Planned (phase 5) |
+| **NASA POWER** (daily) | Temperature, humidity, wind, solar radiation, pressure and precipitation for ET0 and the water balance | **Yes**: the weather behind the water balance |
+| **MODIS** (MOD13Q1 and MYD13Q1 v061) | NDVI time series for Field Memory, read for the field polygon from the public Planetary Computer catalogue | **Yes** |
+| Landsat 8/9 | Field history at 30 m | Not connected: needs an Earth Engine project |
 | GPM IMERG | Precipitation cross-check | Planned |
 | SMAP | Regional surface soil moisture, a cross-check only | Planned |
 | GRACE / GRACE-FO | Basin water storage context | Planned |
@@ -199,7 +199,7 @@ Work proceeds in phases, each one branch and one pull request
 | 2. VPS deployment | Docker Compose, Nginx with HTTPS, memory limits, backups, runbook | Done, live |
 | 3. Fields, NASA POWER, Data Center | Polygons, 25-year fetch with cache, jobs, Data Center | Done, live |
 | 4. Water Vault | ET0, Kc, daily balance, uncertainty, screens | Done, live (decision-day water) |
-| 5. Field Memory | Landsat/MODIS NDVI, cropped or fallow history | **Not started** (needs Earth Engine) |
+| 5. Field Memory | MODIS NDVI, cropped or fallow history, confirmation | Done with a **provisional threshold**; Landsat not connected ([decision 0013](docs/decisions/0013-field-memory-from-modis.md)) |
 | 6. Rotation and Zira Card | Strategies A, B, C, six metrics, card, WhatsApp drafts | Done with **provisional crop values**, live |
 | 7. Sensors and cooperative | Sensor ingest, simulator, cooperative panel, farmer view | **Not started** |
 
@@ -259,7 +259,7 @@ Design choices worth knowing:
 | [`backend/`](backend/) | FastAPI application: `app/api` routers, `app/services/water` (FAO-56 engine, rotation), `app/services/messaging` (drafts, Green API), `app/models`, `migrations/`, `tests/` |
 | [`frontend/`](frontend/) | Next.js application: pages under `app/[locale]/(console)`, components, translations in `messages/` |
 | [`config/`](config/) | Parameters, crops, soils, climate profiles, data sources, provisional rotation values, message templates |
-| [`docs/`](docs/) | PDT, phase plan, decisions 0001–0012, runbook |
+| [`docs/`](docs/) | PDT, phase plan, decisions 0001–0013, runbook |
 | [`infra/`](infra/) | Development and production Compose files, Nginx, backup and deploy scripts |
 | [`simulator/`](simulator/) | Sensor simulator (phase 7) |
 | [`.github/workflows/`](.github/workflows/) | CI and image build |
@@ -337,7 +337,8 @@ Interactive documentation is served at `/docs` by the backend. The main endpoint
 | `GET /api/v1/fields/{id}/weather/summary` | Coverage, yearly totals, latest days, latest job |
 | `GET /api/v1/data-center/sources`, `/jobs` | What NASA data arrived and how (admin, agronomist) |
 | `GET /api/v1/fields/{id}/water-vault?crop=&date=` | Usable water in mm with a range, the daily series and assumptions |
-| `GET /api/v1/fields/{id}/rotation?rotation=` | Strategies A, B and C over the stored record |
+| `GET /api/v1/fields/{id}/field-memory`, `POST .../fetch`, `POST .../confirm` | MODIS NDVI history, its cropped or fallow call, and the confirmation |
+| `GET /api/v1/fields/{id}/rotation?rotation=` | Strategies A, B and C over the stored record (`rotation=history` uses the confirmed history) |
 | `POST /api/v1/fields/{id}/messages/generate` | Write WhatsApp drafts for a season |
 | `GET /api/v1/messages`, `PATCH`, `POST .../approve`, `.../reject`, `.../send` | The approval queue |
 | `GET /api/v1/reference/soils`, `/reference/crops` | Reference data from `config/` |
@@ -386,8 +387,12 @@ Read these before relying on any number:
   efficiency and the legume in strategy C (lentil) are FAO-56 Table 11 starting values in
   [`config/rotation_demo.yaml`](config/rotation_demo.yaml), not signed off by an agronomist, and
   likely off for Konya's colder climate. Cards and messages say so.
-- **Strategy A is typed in, not observed.** Field Memory (phase 5) is not built, so the current
-  rotation comes from the user, not from satellite history.
+- **Strategy A is chosen on screen or taken from the confirmed Field Memory history.** The satellite
+  history separates cropped from fallow only, not crop species, so a confirmed history is read as
+  the main winter crop.
+- **The cropped threshold (NDVI 0.40) is provisional** and must be calibrated with fields of known
+  history. MODIS pixels are about 6 ha, so small parcels give a mixed signal; Landsat (30 m) needs
+  Earth Engine and is not connected.
 - **24 seasons, not 25.** The 2001–2025 record holds 24 complete winter seasons.
 - **The weather is regional.** POWER is a gridded value, not a measurement on the field, and
   there is no sensor correction yet, so the uncertainty range is shown wide.
@@ -405,7 +410,7 @@ Read these before relying on any number:
 | --- | --- |
 | [`docs/PDT.md`](docs/PDT.md) | Scope, architecture, calculation specification, data model, API, tests |
 | [`docs/phases.md`](docs/phases.md) | Phases, approval criteria, differences from the PDT |
-| [`docs/decisions/`](docs/decisions/) | Twelve decisions, including those still open |
+| [`docs/decisions/`](docs/decisions/) | Thirteen decisions, including those still open |
 | [`docs/runbook.md`](docs/runbook.md) | Deploying and operating the VPS |
 | [`backend/README.md`](backend/README.md) | Backend commands, endpoints, layout |
 | [`frontend/README.md`](frontend/README.md) | Frontend commands and the design-system rules |

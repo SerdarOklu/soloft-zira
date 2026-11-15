@@ -71,7 +71,11 @@ export async function DataCenterContent() {
                     {source.connected ? formatDateTime(source.last_success_at, locale) : '—'}
                   </TableCell>
                   <TableCell numeric>
-                    {source.connected ? t('dataCenter.records', { count: source.observations }) : '—'}
+                    {source.connected
+                      ? t(source.access === 'power_daily_api' ? 'dataCenter.records' : 'dataCenter.images', {
+                          count: source.observations,
+                        })
+                      : '—'}
                   </TableCell>
                   <TableCell>
                     {source.connected

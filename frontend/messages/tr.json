@@ -273,7 +273,7 @@
     "sourcesTitle": "Veri kaynakları",
     "jobsTitle": "Son veri çekme işleri",
     "regionalNote": "Bölgesel uydu ve model verileri, tek bir tarlanın doğrudan ölçümü olarak sunulmaz.",
-    "notConnected": "Earth Engine kaynakları Faz 5'te bağlanacak.",
+    "notConnected": "MODIS, NASA'nın açık STAC kataloğundan okunur ve bağlıdır. Landsat, GPM, SMAP, GRACE ve ECOSTRESS için Earth Engine projesi gerekir; henüz kurulu değil.",
     "jobsSummary": "{done} tamamlandı · {failed} başarısız · {active} süren",
     "jobsEmpty": "Henüz veri çekme işi yok.",
     "cached": "önbellekten, yeni satır yok",
@@ -297,11 +297,12 @@
       "landsat9": "Tarla içindeki 10 yıllık bitki örtüsü deseni",
       "gpm": "Yağış serisi; POWER yağışı için çapraz kontrol",
       "smap": "Bölgesel yüzey toprak nemi",
-      "modis": "Bölgesel fenoloji; bulutlu Landsat dönemlerine destek",
+      "modis": "Bitki örtüsü (NDVI) zaman serisi: Tarla Hafızası; bulutlu Landsat dönemlerine destek",
       "grace": "Havza ölçeğinde toplam su depolama eğilimi",
       "ecostress": "Buharlaşma ve terleme desteği",
       "srtm": "Rakım ve eğim"
-    }
+    },
+    "images": "{count} görüntü"
   },
   "crops": {
     "winter_wheat": "Kışlık buğday",
@@ -416,7 +417,8 @@
       "presets": {
         "wheatFallow": "Buğday – nadas",
         "wheatEvery": "Her yıl buğday",
-        "wheatLentil": "Buğday – mercimek"
+        "wheatLentil": "Buğday – mercimek",
+        "history": "Doğrulanmış geçmiş (Tarla Hafızası)"
       }
     },
     "noFieldsTitle": "Karşılaştırılacak tarla yok",
@@ -509,7 +511,8 @@
       "not_enough_history": "Tam bir sezon için yeterli geçmiş veri yok.",
       "rotation_without_crop": "Rotasyonda en az bir ürün olmalı.",
       "unknown_crop": "Bilinmeyen ürün.",
-      "season_values_missing": "Bu ürün için sezon değerleri henüz yok."
+      "season_values_missing": "Bu ürün için sezon değerleri henüz yok.",
+      "history_not_confirmed": "Önce Tarla Hafızası'nda en az iki sezonu doğrulayın."
     }
   },
   "messages": {
@@ -579,5 +582,71 @@
       "season_values_missing": "Bu ürün için sezon değerleri yok.",
       "gateway_not_configured": "WhatsApp bağlantısı kurulu değil."
     }
+  },
+  "fieldMemory": {
+    "form": {
+      "field": "Tarla"
+    },
+    "noFieldsTitle": "Geçmişi çıkarılacak tarla yok",
+    "noFieldsDescription": "Tarla Hafızası bir tarlanın uydu görüntülerini okur. Önce bir tarla ekleyin.",
+    "addField": "Tarla ekle",
+    "fetch": "NDVI verisini çek",
+    "refetch": "Yeniden çek",
+    "fetching": "MODIS NDVI çekiliyor, birkaç dakika sürebilir…",
+    "fetchDone": "NDVI verisi alındı.",
+    "fetchFailed": "NDVI çekilemedi",
+    "errors": {
+      "generic": "İşlem yapılamadı.",
+      "slow": "İş hâlâ sürüyor; birkaç dakika sonra sayfayı yenileyin.",
+      "fetch_already_running": "Bu tarla için bir çekim zaten sürüyor.",
+      "unknown_season": "Bilinmeyen sezon."
+    },
+    "none": "Bu tarla için henüz NDVI verisi yok. Verileri çekin.",
+    "source": "Kaynak: NASA MODIS MOD13Q1 ve MYD13Q1 sürüm 061 (250 m, yaklaşık 8 günde bir), Microsoft Planetary Computer açık kataloğundan. Tarla sınırının içindeki temiz pikseller kullanılır.",
+    "coverage": "{count} görüntü, {good} tanesi temiz · {from} – {to}",
+    "chart": {
+      "title": "NDVI zaman serisi",
+      "aria": "Tarlanın son sezonlardaki NDVI değeri",
+      "legend": "NDVI",
+      "thresholdLegend": "Ekili eşiği ({value})"
+    },
+    "seasons": {
+      "title": "Sezonlar"
+    },
+    "columns": {
+      "season": "Sezon",
+      "detected": "Uydudan çıkarılan",
+      "peak": "En yüksek NDVI",
+      "confidence": "Güven",
+      "images": "Temiz görüntü",
+      "confirm": "Doğrulanan"
+    },
+    "states": {
+      "cropped": "Ekili",
+      "fallow": "Nadas",
+      "unknown": "Bilinmiyor"
+    },
+    "levels": {
+      "high": "Yüksek",
+      "medium": "Orta",
+      "low": "Düşük"
+    },
+    "confirmed": {
+      "summary": "{count} / {total} sezon doğrulandı",
+      "by": {
+        "user": "kullanıcı",
+        "agronomist": "ziraat mühendisi"
+      }
+    },
+    "confirm": "Doğrula ve kaydet",
+    "saved": "Geçmiş kaydedildi.",
+    "useAsA": "Rotasyon karşılaştırmasında kullan",
+    "provisional": {
+      "title": "Ekili eşiği geçici",
+      "body": "Bir sezonun en yüksek NDVI değeri {value} ve üzerindeyse tarla ekili sayılıyor. Bu değer, kışlık tahılın tepe noktası ile çıplak ya da otlu nadasın tipik aralığından alınmış bir başlangıçtır; ziraat mühendisinin bilinen tarlalarla kalibre etmesi gerekir."
+    },
+    "unknownWarning": "{count} sezonda yeterli temiz görüntü yok (bulut, kar ya da eksik veri); bu sezonlar \"bilinmiyor\" bırakıldı. Elle doğrulayın.",
+    "limits": "Bu yöntem ekili ile nadası ayırır; ürün türünü ve kışlık ile yazlık ayrımını bilmez. Bir MODIS pikseli yaklaşık 6 hektardır, küçük parsellerde sinyal karışır. Landsat (30 m) Earth Engine gerektirir ve bağlı değil.",
+    "needsLogin": "Doğrulama için giriş yapılmış olmalı."
   }
 }

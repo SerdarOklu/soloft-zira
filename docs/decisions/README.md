@@ -16,6 +16,7 @@ A decision marked **Open** is waiting for an answer and blocks the phase it name
 | [0009](0009-self-hosted-fonts.md) | Serve fonts from our own origin, not Google Fonts | Open (needs UDS access) |
 | [0010](0010-field-access-and-map.md) | Who sees which field; polygon, soil and map rules | Accepted |
 | [0011](0011-water-vault-version-1.md) | What the Water Vault does in phase 4, and what waits for an agronomist | Accepted (3 open points) |
+| [0013](0013-field-memory-from-modis.md) | Field Memory from MODIS NDVI instead of Earth Engine | Accepted (5 open points) |
 | [0012](0012-rotation-demo-and-whatsapp.md) | Rotation comparison with provisional values; WhatsApp drafts through Green API | Accepted (4 open points) |
 
 Decisions about the model itself (fallow handling, starting storage, strategy rules,
