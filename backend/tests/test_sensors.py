@@ -120,6 +120,13 @@ def test_ingest_needs_the_shared_key(pg_client: TestClient, field):
     assert ok.status_code == 200 and ok.json() == {"stored": 4, "calibrated": False}
 
 
+def test_a_wrong_key_is_refused_before_the_body_is_looked_at(pg_client: TestClient):
+    response = pg_client.post(
+        "/api/v1/sensors/NODE_001/readings", json={}, headers={"X-Sensor-Key": "wrong"}
+    )
+    assert response.status_code == 401
+
+
 def test_ingest_is_off_without_a_key_on_the_server(pg_client: TestClient, field):
     get_settings().sensor_ingest_key = ""
     response = post_readings(pg_client, field)

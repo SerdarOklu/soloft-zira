@@ -48,20 +48,27 @@ def _silence_h() -> float:
     return float(get_config().parameters.get("sensors", "sensor_silence_h"))
 
 
-@ingest_router.post("/{node_id}/readings", response_model=IngestOut)
-def ingest(
-    node_id: Annotated[str, Path(min_length=1, max_length=64)],
-    body: ReadingsIn,
-    session: SessionDep,
-    x_sensor_key: Annotated[str | None, Header()] = None,
-) -> IngestOut:
-    """A node (or the simulator) posts one reading per depth. The calling device proves itself
-    with the shared key in ``X-Sensor-Key``; with no key set on the server, ingest is off."""
+def require_sensor_key(x_sensor_key: Annotated[str | None, Header()] = None) -> None:
+    """The calling device proves itself with the shared key in ``X-Sensor-Key``; with no key set
+    on the server, ingest is off. Checked before the body, so a stranger learns nothing else."""
     expected = get_settings().sensor_ingest_key
     if not expected:
         raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, detail={"code": "ingest_disabled"})
     if x_sensor_key is None or not hmac.compare_digest(x_sensor_key, expected):
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, detail={"code": "bad_sensor_key"})
+
+
+@ingest_router.post(
+    "/{node_id}/readings",
+    response_model=IngestOut,
+    dependencies=[Depends(require_sensor_key)],
+)
+def ingest(
+    node_id: Annotated[str, Path(min_length=1, max_length=64)],
+    body: ReadingsIn,
+    session: SessionDep,
+) -> IngestOut:
+    """A node (or the simulator) posts one reading per depth."""
     if not NODE_ID.match(node_id):
         raise _refuse("invalid_node_id")
     if body.measured_at > datetime.now(UTC) + MAX_FUTURE:

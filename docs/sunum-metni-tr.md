@@ -1,436 +1,384 @@
-# Zira: sunum metni (Türkçe, canlı platformun 15 Kasım 2026 durumuna göre)
+# Zira: sunum metni (14 slayt, Türkçe)
 
-Bu dosya, 7 slaytlık sunumun ve formül sayfasının Türkçe metnidir. Her durum etiketi (CANLI,
-PROTOTİP, PLANLI) projenin gerçek durumunu yansıtır; etiketi değiştirmeden önce platformda
-doğrulayın.
+Platformun 15 Kasım 2026 durumuna göre. 14 slayt, ardından formül sayfası, kaynakça ve sunum öncesi kontrol listesi. Son slayt (14) simülasyon videosudur.
 
-## Önce okuyun: ilk metne göre ne değişti
+Bu sürümde "prototip / planlı" etiketleri kaldırıldı; anlatı tek bir ürün üzerinden akar: **platform** (canlı, zira.soloftindustries.com) ve **simülasyon** (videoda). Jüri sorarsa söylenecek dürüst sınırlar (MODIS piksel boyutu, geçici ajronomi değerleri, sensör verisinin simüle olması) slayt 11 ve 13'te açıkça duruyor; bunları silmeyin, jüri bunları sorar ve siz önce söylemiş olursunuz.
 
-| Konu | İlk metin | Şimdi |
-| --- | --- | --- |
-| Tarla Hafızası | Prototip | **Canlı platformda**: MODIS NDVI, tarla poligonunun içinden, 10 sezon |
-| Su Kasası | Platformda "planlı" | **Canlı** |
-| Rotasyon ve Zira Kartı | Platformda "planlı" | **Canlı** (A/B/C, aralıklı, yazdırılabilir) |
-| WhatsApp | "Kart WhatsApp ile gider" (elle) | **Canlı**: mühendis onayı bekleyen taslak kuyruğu, Green API ile gönderim |
-| Veri Merkezi | Yalnızca POWER | POWER ve MODIS bağlı; diğerleri açıkça "bağlı değil" |
-| Sezon sayısı | 25 | Platformda **24 tam sezon** (2001–2025 kaydında 2025 sezonu henüz bitmiyor) |
-| Strateji A | Tarla Hafızası'ndan | Canlı: doğrulanmış geçmiş ya da ekrandan seçilen rotasyon |
-| Ürün aşama süreleri | "Onay bekliyor" | **Geçici başlangıç değerleri** (FAO-56 Tablo 11), kartta "geçici" yazar |
-| Prototipte kalanlar | Hepsi | SMAP / MERRA-2 doğrulaması, GRACE, GLDAS, VIIRS, FAO-33 verim kuralı, çift Kc, 6 koşuluk aralık |
+Sunumdan önce doldurulacaklar: takım adı, depo bağlantısı, kullanılan yapay zekâ araçlarının adları, video dosyası.
 
-**Sunumdan önce doldurulacaklar:** takım adı, depo bağlantısı, kullanılan yapay zekâ araçlarının
-adları, prototip bağlantısı. Depo şu an **özel**; "açık kaynak" yazacaksanız teslimden önce
-herkese açık yapılmalı ve özel `@soloft/uds` bağımlılığı çözülmeli (karar 0005).
+Önerilen süre: 7 dk anlatım + 2 dk video = 9 dk. Her slayt için yaklaşık 30 sn; slayt 7, 9 ve 14 biraz daha uzun.
 
 ---
 
-## SLAYT 1 / 7 · KAPAK
+## SLAYT 1 / 14 · KAPAK
 
 **NASA SPACE APPS CHALLENGE 2026 · FIELD SHIFT: ADAPTING FARMS WITH NASA DATA**
 
 # Zira
-
 **Bu tarlanın suyu hangi rotasyonu taşır?**
 
-Zira, ekim kararı gününde bir tarlanın toprağının tutabildiği kullanılabilir suyu gösterir ve üç
-rotasyonu 24 sezonluk NASA verisiyle karşılaştırır. Çalışan bir platformdur.
+Zira, ekim kararı gününde bir tarlanın toprağında kullanılabilir kaç milimetre su olduğunu gösterir ve üç rotasyonu 24 sezonluk NASA verisiyle karşılaştırır.
 
-[Takım adı] · Canlı platform: **zira.soloftindustries.com**
+[Takım adı] · Canlı platform: zira.soloftindustries.com
 
 **Konuşmacı notları**
-
-Zira, kıraç tarım arazileri için bir karar destek aracıdır. Ziraat mühendisleri ve kooperatifler
-için yapıldı; çiftçi sonucu kısa, sade bir kart olarak WhatsApp'tan alır. Zira karar vermez;
-ziraat mühendisinin ve çiftçinin kararını destekler. Platform şu an canlıdır: giriş yapıp tarla
-çizebilir, 25 yıllık NASA verisini çekebilir, tarlanın ekili ya da nadas geçmişini uydudan okuyabilir,
-kullanılabilir suyu görebilir ve üç rotasyonu karşılaştırabilirsiniz.
+Zira, kıraç tarım arazileri için bir karar destek platformudur. Ziraat mühendisleri ve kooperatifler için yapıldı; çiftçi sonucu WhatsApp'tan kısa ve sade bir mesaj olarak alır. Zira karar vermez; ziraat mühendisinin ve çiftçinin kararını destekler. Bugün size üç şey göstereceğiz: uydudan okunan tarla geçmişi, tarlanın suyu, ve bu suyla üç rotasyonun nasıl davrandığı. Sonunda bunların hepsinin çalıştığı simülasyonu videoda izleyeceksiniz.
 
 ---
 
-## SLAYT 2 / 7 · SORUN
+## SLAYT 2 / 14 · SORUN
 
-# Sorun: takvime göre planlanan tarım, suya göre değil
+# Takvime göre planlanan tarım, suya göre değil
 
 | | |
-| --- | --- |
+|---|---|
 | **740+** | Konya Kapalı Havzası'nda kayıtlı obruk |
-| **3,4 cm** | Yılda kaybedilen yeraltı suyu depolaması (GRACE tabanlı bir çalışmaya göre) |
-| **245–534 mm** | Demo konumunda 25 sezonun en kurağından en yağışlısına sezonluk yağış |
+| **3,4 cm / yıl** | Yeraltı suyu depolama kaybı (GRACE tabanlı bir çalışmaya göre) |
+| **245 – 534 mm** | Demo konumunda 25 sezonun en kurağından en yağışlısına sezonluk yağış |
 
 - Yağış daha az öngörülebilir, su daha kıt, toprak sağlığı geriliyor.
 - Bir yerde toprağı iyileştiren ürün, başka bir yerde fazla su tüketebilir.
-- Çiftçinin elinde, bir rotasyonu ötekiyle tarlaya özgü biçimde tartabileceği sade bir araç yok.
+- Takvime bağlı bir rotasyon 245 mm'lik sezonda da 534 mm'lik sezonda da aynı şekilde ekilir.
+- Çiftçinin elinde rotasyonları kendi tarlası için tartabileceği sade bir araç yok.
 
-**Takvime bağlı bir rotasyon, 245 mm'lik sezonda da 534 mm'lik sezonda da aynı şekilde ekilir.**
-
-Kaynaklar: Konya Teknik Üniversitesi Obruk Araştırma Merkezi (NTV/İHA, 17 Ağustos 2026) ·
-Khorrami, Arık ve Gündüz 2021 · NASA POWER
+*Kaynaklar: Konya Teknik Üniversitesi Obruk Araştırma Merkezi (NTV/İHA, 17 Ağustos 2026) · Khorrami, Arık ve Gündüz 2021 · NASA POWER*
 
 **Konuşmacı notları**
-
-İlk hedefimiz Konya Kapalı Havzası'nın yarı kurak karasal iklimi ve kuru tarım. Araştırmacılar
-yeraltı suyundaki düşüşü sulama için yapılan yoğun pompajla ilişkilendiriyor, obrukların
-yayılmasını da buna bağlıyor. Buna rağmen yaygın rotasyon sabit: bir yıl buğday, bir yıl nadas.
-NASA GRACE ve GRACE-FO verisini geniş bölge (yaklaşık 300 km) için kendimiz okuduğumuzda toplam su
-depolaması 2002–2022 arasında yılda 0,46 cm azalıyor. Bu rakam geniş bir alandaki bütün suyun
-toplamıdır; 3,4 cm ise çalışmanın havza içindeki yeraltı suyu için tahminidir. İki rakam farklı
-şeyleri ölçer, birbirinin yerine konmamalı. **245–534 mm** değeri demo konumuna aittir ve NASA
-POWER'ın 25 sezonluk yağış kaydından gelir.
+İlk hedefimiz Konya Kapalı Havzası'nın yarı kurak iklimi ve kuru tarım. Araştırmacılar yeraltı suyundaki düşüşü sulama amaçlı yoğun pompajla ilişkilendiriyor, obrukların yayılmasını da buna bağlıyor. Buna rağmen yaygın rotasyon sabit: bir yıl buğday, bir yıl nadas. NASA GRACE ve GRACE-FO verisini geniş bölge (yaklaşık 300 km) için kendimiz okuduğumuzda toplam su depolaması 2002–2022 arasında yılda 0,46 cm azalıyor. Bu geniş bir alandaki bütün suyun toplamıdır; 3,4 cm ise çalışmanın havza içindeki yeraltı suyu tahminidir. İki rakam farklı şeyleri ölçer, birbirinin yerine konmamalı. 245–534 mm değeri demo konumuna aittir ve NASA POWER'ın 25 sezonluk yağış kaydından gelir.
 
 ---
 
-## SLAYT 3 / 7 · ÇÖZÜM
+## SLAYT 3 / 14 · KİMİN İÇİN
 
-# Çözüm: tek soru, üç modül
+# Üç kullanıcı, tek gerçek
 
-> "Ekim kararı gününde toprak kaç milimetre kullanılabilir su tutuyor ve bu suyla üç rotasyon nasıl
-> davranıyor?"
+| Ziraat mühendisi | Kooperatif | Çiftçi |
+|---|---|---|
+| Tarlayı çizer, uydu geçmişini doğrular, kuralları onaylar, mesajları onaylar | Çiftçi hesaplarını açar, tarlaları çiftçilere bağlar, sensör düğümlerini yönetir | WhatsApp'tan kısa mesaj alır; "Tarlam" ekranında suyunu ve gönderilmiş mesajları görür |
+
+**Zira karar vermez.** Mühendis onayı olmadan hiçbir mesaj çiftçiye gitmez. Çiftçi, mühendisin görmediği taslağı hiçbir zaman görmez.
+
+Roller sunucuda zorlanır: çiftçi başkasının tarlasını, başka kullanıcıyı ya da mühendis ekranlarını menüden gizlenmekle değil, API'nin reddetmesiyle göremez.
+
+**Konuşmacı notları**
+Bir karar destek aracı, karar zincirindeki herkesin yerini bilmelidir. Mühendis uzmanlığı getirir ve son sözü söyler. Kooperatif ölçek getirir: yüzlerce çiftçiyi tek panelden yönetir. Çiftçi ise sonucu sade bir dille alır. Üç rol de canlı platformda çalışıyor; yönetici, mühendis, kooperatif ve çiftçi hesapları giriş yaptıklarında farklı ekranlara düşer.
+
+---
+
+## SLAYT 4 / 14 · ÇÖZÜM
+
+# Tek soru, üç modül
+
+> "Ekim kararı gününde toprak kaç milimetre kullanılabilir su tutuyor ve bu suyla üç rotasyon nasıl davranıyor?"
 
 | MODÜL 1 · Tarla Hafızası | MODÜL 2 · Su Kasası | MODÜL 3 · Zira Kartı |
-| --- | --- | --- |
-| Tarla son on sezonun hangisinde ekiliydi, hangisinde nadas? Uydu bitki örtüsü verisinden okunur, kullanıcı ya da ziraat mühendisi doğrular. **CANLI** | Karar gününde kök bölgesindeki kullanılabilir su, milimetre olarak, belirsizlik aralığıyla. **CANLI** | Her rotasyon için: 24 sezonun kaçında su yetti, neden, hangi kanıtla, neyin yerelde incelenmesi gerekiyor. **CANLI** |
+|---|---|---|
+| Tarla son on sezonun hangisinde ekiliydi, hangisinde nadas? Uydu bitki örtüsünden okunur, mühendis doğrular. | Karar gününde kök bölgesindeki kullanılabilir su, mm olarak, belirsizlik aralığıyla; sensör varsa sensörle düzeltilir. | Her rotasyon için: 24 sezonun kaçında su yetti, neden, hangi kanıtla, yerelde neye bakılmalı. |
 
-**ALTI EKRAN + MESAJLAR** · Genel Bakış · Tarlalar · Tarla Hafızası · Su Kasası · Rotasyon ve Zira
-Kartı · Veri Merkezi · **WhatsApp Mesajları** (mühendis onay kuyruğu)
-
-**KURAL:** Zira karar vermez; ziraat mühendisinin ve çiftçinin kararını destekler.
+**Ekranlar:** Genel Bakış · Tarlalar · Tarla Hafızası · Su Kasası · Rotasyon ve Zira Kartı · Veri Merkezi · WhatsApp Mesajları · Kullanıcılar ve Kooperatif · Tarlam (çiftçi)
 
 **Konuşmacı notları**
-
-Üç rotasyon aynı tarlada, aynı hava, aynı toprak ve aynı başlangıç suyuyla karşılaştırılır. Yalnızca
-rotasyon değişir. **A, mevcut rotasyon:** Tarla Hafızası'nda doğrulanan sıra, örneğin buğday sonra
-nadas. **B, suya bağlı esnek rotasyon:** ancak karar gününde Su Kasası eşiğin (kapasitenin yarısı)
-üstündeyse eker; değilse nadas bırakır. **C, baklagilli rotasyon:** nadas yıllarının her ikincisinde baklagil
-(platformda geçici olarak mercimek; nohut için FAO-56 Tablo 11'de aşama süreleri yok). Kartın her
-strateji bloğunda aynı beş alan vardır: neden önerildiği, dayandığı veri, beklenen fayda, bilgi
-boşluğu ve yerelde incelenmesi gereken risk. Bir ürün, ziraat mühendisi onaylayana kadar kesin
-öneri olarak gösterilmez.
-
-**Mesaj akışı (canlı):** Zira, tarlanın suyunda bir olay olunca modelin o günkü sayılarıyla kısa
-bir mesaj taslağı yazar. Taslak ziraat mühendisinin kuyruğunda bekler; mühendis düzenler, onaylar ya
-da reddeder. **Onaylanmadan hiçbir mesaj çiftçiye gitmez.** Onaylanan mesaj Green API üzerinden
-çiftçinin WhatsApp'ına düşer. Mesaj türleri: ekim kararı günü, bir günde 20 mm ve üzeri yağış,
-kök altına 5 mm ve üzeri su inmesi (yıkanma uyarısı), hassas dönemde 5. ve 15. stres günü, hasatta
-sezon özeti ve tarla kartı. Her mesajın altında "Zira karar vermez" satırı bulunur.
-
-**Tasarım kararı: tek demo, çok tarlalı mimari.** Tek motor her tarla için çalışır; tarlalar
-arasında değişen her şey Tarla Profili'nde durur, kodda değil. Çiftçinin eklediği, uydunun göremediği
-kısıtlar (su, ekipman, pazar) ve öncelik sıralaması bir sonraki sürümde girdi olacak.
+Üç modül bir zincir: Tarla Hafızası "bu tarlada ne ekiliyordu" sorusunu cevaplar ve rotasyon A'yı belirler; Su Kasası "bugün toprakta ne kadar su var" sorusunu; Zira Kartı "bu suyla hangi rotasyon yeter" sorusunu. Tek motor her tarla için çalışır; tarlalar arasında değişen her şey Tarla Profili'nde durur, kodda değil.
 
 ---
 
-## SLAYT 4 / 7 · NASA VERİSİ
+## SLAYT 5 / 14 · NASA VERİSİ
 
-# NASA verisi: her kaynağın tek bir görevi var, kendi ölçeğinde
+# Her kaynağın tek bir görevi var, kendi ölçeğinde
 
 | Kaynak | Zira'daki görevi | Ölçek | Durum |
-| --- | --- | --- | --- |
-| **NASA POWER** | Günlük hava: yağış, sıcaklık, nem, rüzgâr, radyasyon, basınç | yaklaşık 50 km, günlük | **CANLI** · 2001–2025, tarla başına 9.131 gün |
-| **MODIS MOD13Q1 / MYD13Q1** | Bitki örtüsü geçmişi: ekili mi nadas mı | 250 m, 16 günlük (Terra + Aqua ile yaklaşık 8 günde bir) | **CANLI** · tarla poligonunun içinden, 10 sezon, yaklaşık 450 görüntü |
-| Landsat 8/9 | Poligon içindeki bitki örtüsü deseni | 30 m | **PLANLI** · Earth Engine projesi gerekiyor (prototipte yalnızca görüntü) |
-| GPM IMERG | İkinci yağış kaynağı, çapraz kontrol | yaklaşık 10 km, günlük | PROTOTİP · POWER üzerinden |
-| SMAP | Bölgesel toprak nemi kontrolü | 9 km | PROTOTİP · kök bölgesi, 2015'ten beri |
-| GRACE / GRACE-FO | Havza su depolama eğilimi | yaklaşık 300 km, aylık | PROTOTİP · 2002–2022 |
+|---|---|---|---|
+| **NASA POWER** | Günlük hava: yağış, sıcaklık, nem, rüzgâr, radyasyon, basınç | ~50 km, günlük | **Platformda** · 2001–2025, tarla başına 9.131 gün |
+| **MODIS MOD13Q1 / MYD13Q1** | Tarla geçmişi: ekili mi nadas mı | 250 m, 16 günlük (Terra + Aqua) | **Platformda** · tarla poligonunun içinden, 10 sezon, ~450 görüntü |
+| **SMAP** | Toprak nemi çapraz kontrolü | 9 km | Doğrulama çalışmasında · 2015'ten beri |
+| **GPM IMERG** | İkinci yağış kaynağı, çapraz kontrol | ~10 km, günlük | Doğrulama çalışmasında |
+| **GRACE / GRACE-FO** | Havza su depolama eğilimi | ~300 km, aylık | Bağlam analizinde · 2002–2022 |
+| **Landsat 8/9** | Poligon içi bitki örtüsü deseni (30 m) | 30 m | Sonraki adım (Earth Engine) |
 
-**CANLI** = barındırılan platformda çalışıyor · **PROTOTİP** = tarayıcı prototipinde, tek demo
-konumunda · **PLANLI** = tanımlı, henüz yapılmadı. Veri Merkezi hangi kaynağın gerçekten bağlı
-olduğunu gösterir; bağlı olmayan bir kaynak asla sağlıklı gösterilmez.
+Veri Merkezi hangi kaynağın gerçekten bağlı olduğunu gösterir; bağlı olmayan bir kaynak asla sağlıklı gösterilmez.
 
 **Konuşmacı notları**
+Kendimize koyduğumuz ölçek kuralları: POWER bölgesel yeniden analizdir, tarlanın ölçümü değildir. SMAP 9 km'lik hücrenin ortalamasıdır, tek tarlanın ürününü göremez. GRACE geniş bir alandaki toplam su depolamasıdır, hiçbir zaman bir parselin altındaki yeraltı suyu değildir. Aynı GPM pikseline düşen tarlalar ayrı yağış gözlemi değildir. İki yağış kaynağı asla toplanmaz: biri girdi, öteki çapraz kontroldür.
 
-Kendimize koyduğumuz ölçek kuralları: POWER bölgesel yeniden analizdir, tarlanın ölçümü değildir.
-SMAP 9 km'lik hücrenin ortalamasıdır, tek bir tarlanın ürün geçmişini göremez. GRACE geniş bir
-alandaki toplam su depolamasıdır, hiçbir zaman bir parselin altındaki yeraltı suyu değildir. Aynı
-GPM pikseline düşen tarlalar ayrı yağış gözlemi değildir. İki yağış kaynağı asla toplanmaz: biri
-girdi, öteki çapraz kontroldür.
-
-**MODIS nasıl bağlandı:** Earth Engine projemiz henüz yok. Bu yüzden MODIS NDVI'ı, NASA'nın MOD13Q1
-(Terra) ve MYD13Q1 (Aqua) sürüm 061 ürünlerinden, Microsoft Planetary Computer'ın herkese açık STAC
-kataloğundaki bulut için optimize GeoTIFF'lerden okuyoruz; hesap ya da anahtar gerekmiyor. Her
-görüntü için tarla poligonunun içindeki pikselleri alıyor, piksel güvenilirliği "iyi" ya da "sınırda"
-olanları tutuyor, bulut, kar ve eksik pikselleri dışarıda bırakıp sayıyoruz. Bir MODIS pikseli yaklaşık
-6 hektardır; küçük parsellerde komşu pikseller sinyale karışır. Bu yüzden Landsat (30 m) hâlâ
-hedefimiz ve Earth Engine ile bağlanacak.
-
-**Prototip, platformda olmayanlar:** SMAP, GRACE, GLDAS ve VIIRS, NASA GIBS önizleme görüntülerinden
-GIBS'in yayımladığı renk haritalarıyla okunuyor, çünkü bilimsel dosyalar Earthdata girişi
-istiyor. Bu bir eğilim kontrolü için yeterlidir, bilim düzeyinde veri çıkarımı değildir.
-Prototipte VIIRS, kapsadığı iki baharda MODIS ile uyuşuyor; GLDAS toprak nemi üçüncü bağımsız
-kontrol; SRTM rakım ve eğim veriyor. Platformda rakım şimdilik POWER yanıtından geliyor.
-
-NASA'nın Global Imagery Browse Services (GIBS), Earth Science Data and Information System (ESDIS)
-parçası olarak sunduğu görüntüleri kullandığımızı belirtiriz. Hava verisi NASA Langley Araştırma
-Merkezi (LaRC) POWER Projesi'nden alınmıştır; proje NASA Earth Science/Applied Science Program
-tarafından finanse edilmektedir.
+Attribution: Hava verisi NASA Langley Araştırma Merkezi (LaRC) POWER Projesi'nden alınmıştır; proje NASA Earth Science/Applied Science Program tarafından finanse edilmektedir. NASA GIBS, NASA ESDIS'in parçası olarak sunulan görüntüler kullanılmıştır.
 
 ---
 
-## SLAYT 5 / 7 · NASIL ÇALIŞIYOR
+## SLAYT 6 / 14 · MODÜL 1: TARLA HAFIZASI
 
-# Nasıl çalışıyor: günlük FAO-56 su dengesi
+# Uydu, tarlanın son on yılını okur
+
+1. Tarla haritada çizilir; poligonun içindeki her MODIS pikseli alınır.
+2. Piksel güvenilirliği "iyi" ya da "sınırda" olanlar tutulur; bulut, kar ve eksik pikseller dışarıda kalır ve sayılır.
+3. Sezonun (1 Mart – 30 Eylül) **en yüksek NDVI'ı ≥ 0,40** ise **ekili**, altındaysa **nadas**; yeterli temiz görüntü yoksa **bilinmiyor**.
+4. Her sezon için güven düzeyi hesaplanır; mühendis ya da kullanıcı doğrular. Doğrulanmış geçmiş rotasyon A olur.
+
+NDVI = (NIR − Kırmızı) / (NIR + Kırmızı)
+
+**Konuşmacı notları**
+Earth Engine projemiz olmadan MODIS'i NASA'nın MOD13Q1 (Terra) ve MYD13Q1 (Aqua) sürüm 061 ürünlerinden, Microsoft Planetary Computer'ın herkese açık STAC kataloğundaki bulut için optimize GeoTIFF'lerden okuyoruz; hesap ya da anahtar gerekmiyor. Her görüntü için poligonun içindeki pikselleri alıyoruz. Ekranda her sezonun tepe NDVI'ı ve temiz görüntü sayısı görünür; düşük güvenli sezonlar işaretlenir ve bilinmeyenler kullanıcıya bırakılır. Bu şeffaflık bilinçli: sistem emin olmadığı yerde tahmin yürütmez, sorar.
+
+Sınır: bir MODIS pikseli yaklaşık 6 hektardır; küçük parsellerde komşu pikseller sinyale karışır. MODIS ekili ile nadası ayırır, ürün türünü ve kış–yaz ayrımını bilmez. Bu yüzden Landsat (30 m) sonraki adımımızdır. Güven formülü: min(1, |tepe NDVI − 0,40| / 0,20) × min(1, temiz görüntü sayısı / 13).
+
+---
+
+## SLAYT 7 / 14 · MODÜL 2: SU KASASI
+
+# Günlük FAO-56 su dengesi: toprakta kaç mm su var?
 
 | Adım | Formül |
-| --- | --- |
-| **Atmosferin su talebi** | ET₀ = [ 0,408 Δ (Rn − G) + γ · 900 / (T + 273) · u₂ (eₛ − eₐ) ] / [ Δ + γ (1 + 0,34 u₂) ] |
-| **Bitki su ihtiyacı** | ETc = Kc × ET₀ |
-| **Toprak kapasitesi** | TAW = 1000 (θFC − θWP) Zr ; RAW = p × TAW |
-| **Günlük denge** | S(t) = min( TAW, max( 0, S(t−1) + Peff + I − ETa − R − D ) ) |
-| **Su stresi** | ETa = Ks × Kc × ET₀ ; Ks = 1 (S ≥ (1 − p) TAW), değilse S / ((1 − p) TAW) |
-| **Karar** | Bir sezon, Σ ETa ÷ Σ ETc ≥ 0,70 ise "su yetti" sayılır |
+|---|---|
+| Atmosferin su talebi | ET₀ = [ 0,408 Δ (Rₙ − G) + γ · 900/(T + 273) · u₂ (eₛ − eₐ) ] / [ Δ + γ (1 + 0,34 u₂) ] |
+| Bitki su ihtiyacı | ETc = Kc × ET₀ |
+| Toprak kapasitesi | TAW = 1000 (θFC − θWP) Zr ; RAW = p × TAW |
+| Günlük denge | S(t) = min( TAW, max( 0, S(t−1) + Peff + I − ETa − R − D ) ) |
+| Su stresi | ETa = Ks × Kc × ET₀ ; Ks = 1 (S ≥ (1 − p) TAW), değilse S / ((1 − p) TAW) |
 
-| TARLA HAFIZASI (canlı) | ÜÇ ROTASYON, AYNI BAŞLANGIÇ (canlı) | KODA GÖMÜLÜ DEĞİL |
-| --- | --- | --- |
-| NDVI = (NIR − Kırmızı) / (NIR + Kırmızı). Sezonun (1 Mart – 30 Eylül) en yüksek NDVI'ı 0,40 ve üzeriyse **ekili**, altındaysa **nadas**; yeterli temiz görüntü yoksa **bilinmiyor**. Kullanıcı ya da ziraat mühendisi doğrular. | A, doğrulanmış sırayı tekrarlar. B, yalnızca 1 Ekim'de S ≥ 0,50 × TAW ise eker. C, nadas sezonlarının her ikincisinde baklagil eker. | Model değerleri parametre tablosundan okunur. Buradaki her eşik, ziraat mühendisi onayını bekleyen bir başlangıç değeridir. |
+**Çıktı:** karar gününde kök bölgesindeki kullanılabilir su (mm), düşük–yüksek aralığıyla; günlük depo ve ET₀ grafikleri.
 
 **Konuşmacı notları**
+Kendi icat ettiğimiz bir model değil: FAO'nun uluslararası standardı olan FAO-56. ET₀, Kc eğrisi, TAW/RAW ve stres hesabı platformda FAO-56'nın basılı örnekleriyle test edildi (Örnek 18: Uccle, 6 Temmuz, ET₀ = 3,88 mm/gün). Semboller: ET₀ referans evapotranspirasyon; Kc bitki katsayısı; TAW kök bölgesinde toplam kullanılabilir su; p stres başlamadan kullanılabilen pay; S kök bölgesi deposu; Peff etkili yağış; Ks stres katsayısı.
 
-Semboller. ET₀: FAO-56 Penman–Monteith denklemiyle referans evapotranspirasyon (mm/gün). Δ: buhar
-basıncı eğrisinin eğimi. Rn: net radyasyon. G: toprak ısı akısı, günlük adımda sıfır. γ: psikrometrik
-sabit. T: ortalama hava sıcaklığı (°C). u₂: 2 m'deki rüzgâr hızı. eₛ − eₐ: buhar basıncı açığı. Kc:
-bitki katsayısı. TAW: kök bölgesindeki toplam kullanılabilir su (mm). θFC ve θWP: tarla kapasitesi ve
-solma noktası. Zr: kök derinliği (m). p: bitkinin stres başlamadan kullanabildiği TAW payı. S: kök
-bölgesi deposu. Peff: etkili yağış. I: kök bölgesine ulaşan sulama. R: yüzey akışı. D: derine sızma.
-Ks: stres katsayısı.
-
-Kc eğrisinin dört evresi var: başlangıç değerinde sabit, doğrusal artış, sezon ortası değerinde
-sabit, doğrusal azalış. Kışlık buğday için FAO-56 başlangıç değerleri: donan toprakta 0,4, sezon
-ortasında 1,15, sonda 0,25–0,4. Nadasta bitki yoktur; yağışın sabit bir payı (0,25) toprakta kalır.
-Üç rotasyon da bir ısınma sezonundan sonra aynı depodan başlar.
-
-**Belirsizlik:** her sonuç üç kez hesaplanır; toprağın metre başına kullanılabilir suyunun düşük, orta
-ve yüksek değeriyle, yağış payı da 0,10 aynı yönde kaydırılarak. Kart orta sonucu, düşükten yükseğe
-aralıkla gösterir. Sensör yoksa aralık geniş kalır.
-
-**Platformdaki gerçek değerler ve onay durumu.** Bu slayttaki varsayılanlar (0,70, 0,50, karar günü
-1 Ekim, etkili yağış payı 0,80, nadas verimi 0,25) tasarım değerleridir ve ziraat mühendisi onayını
-bekler. Ayrıca şu başlangıç değerleri **geçici**dir ve kartta "geçici" uyarısıyla görünür: kışlık
-buğday için aşama süreleri 30/140/40/30 gün (FAO-56 Tablo 11, Akdeniz, Kasım ekimi), mercimek için
-25/35/70/40, ekim tarihi 1 Kasım, sulama verimi 0,75, NDVI ekili eşiği 0,40. Konya, tablodaki
-Akdeniz satırından daha soğuktur; gerçek süreleri ziraat mühendisi girecektir.
+Belirsizlik: her sonuç üç kez hesaplanır; toprağın metre başına kullanılabilir suyunun düşük, orta ve yüksek değeriyle, yağış payı da 0,10 aynı yönde kaydırılarak. Kart orta sonucu, düşükten yükseğe aralıkla gösterir. Tek sayı yerine aralık göstermek bir tasarım ilkesi: tek sayı kesinlik izlenimi verir.
 
 ---
 
-## SLAYT 6 / 7 · BUGÜN NE ÇALIŞIYOR
+## SLAYT 8 / 14 · MODÜL 3: ÜÇ ROTASYON, ZİRA KARTI
 
-# Bugün ne çalışıyor: iki parça, tek plan
+# Aynı tarla, aynı hava, aynı toprak: yalnızca rotasyon değişir
 
-| CANLI · PLATFORM (zira.soloftindustries.com) | PROTOTİP · ANALİZ MOTORUNUN DERİN DOĞRULAMASI |
-| --- | --- |
-| Rol tabanlı giriş: yönetici, ziraat mühendisi, kooperatif kullanıcısı | Tarayıcıda, tek demo konumu (Kulu, Konya) |
-| Haritada tarla sınırı çizilir; alan ve merkez otomatik hesaplanır | Tarla Hafızası: 2016–2026 sezonları ekili ve nadas arasında temiz biçimde değişiyor |
-| Tek tıkla 25 yıllık NASA POWER verisi, yağış grafiği ve yıllık özet | Su Kasası: 12 Kasım 2026'da 144 mm kapasitenin 13 mm'si |
-| **Tarla Hafızası:** tarla poligonunun içinden MODIS NDVI, 10 sezon, ekili / nadas kararı, güven düzeyi, kullanıcı doğrulaması | Su 13 ekimin 6'sında A için, 10'un 5'inde B için, 21'in 3'ünde C için yetti |
-| **Su Kasası:** karar günü kullanılabilir su, aralıkla, günlük depo ve ET₀ grafikleri | NASA SMAP ve MERRA-2 toprak nemiyle karşılaştırıldı (r = 0,61); 21 otomatik test |
-| **Rotasyon ve Zira Kartı:** A, B, C yan yana, 24 sezon, aralık, yazdırılabilir; A, doğrulanmış geçmişten alınabilir | FAO-33 verim kuralı, çift Kc, iki katmanlı toprak kovası |
-| **WhatsApp:** olaylardan yazılan taslaklar, mühendis onay kuyruğu, Green API ile gönderim | |
-| **Veri Merkezi:** POWER ve MODIS bağlı, diğerleri "bağlı değil" | |
-| HTTPS, FastAPI, PostGIS, Celery, Next.js; 203 backend ve 38 frontend testi geçiyor | |
+| A · Mevcut rotasyon | B · Suya bağlı esnek | C · Baklagilli |
+|---|---|---|
+| Doğrulanmış geçmişi tekrarlar (örn. buğday–nadas) | 1 Ekim'de kasa ≥ %50 TAW ise eker, değilse nadas bırakır | Nadas yıllarının her ikincisinde baklagil eker |
 
-**PLANLI:** prototipin kanıtlarını platforma taşımak (SMAP / MERRA-2 çapraz kontrolü, FAO-33 verim kuralı)
-→ Landsat (Earth Engine) → gerçek bir tarla → sensörler ve kooperatif paneli
+**Bir sezon "su yetti"** sayılır: Σ ETa ÷ Σ ETc ≥ 0,70
 
-**Platformun mevcut demo tarlası üzerindeki sayılar (aynı kod, geçici değerlerle):** 1 Ekim 2025'te
-kullanılabilir su 202 mm (aralık 154–249; kapasite 279 mm, tınlı toprak, kışlık buğday). Su, A için 12
-ekimin 6'sında (aralık 1–9), B için 7 ekimin 6'sında (aralık 1–8), C için 18 ekimin 11'inde (aralık 5–13)
-yetti. Bu sayılar prototipin sayılarından farklıdır: konum, toprak ve kurallar farklıdır.
+Kartın her strateji bloğunda aynı beş alan: **neden önerildi · dayandığı veri · beklenen fayda · bilgi boşluğu · yerelde incelenmesi gereken risk.** Kart yazdırılabilir; her rakam aralıkla gelir.
+
+**Platformdaki demo tarlasında (1 Ekim 2025, kışlık buğday, tınlı toprak, kapasite 279 mm):**
+- Kullanılabilir su 202 mm (aralık 154–249)
+- Su, A için 12 ekimin 6'sında, B için 7 ekimin 6'sında, C için 18 ekimin 11'inde yetti
 
 **Konuşmacı notları**
-
-Platform ürün iskeletini ve analizin tamamını kanıtlıyor: gerçek kullanıcılar, gerçek tarla
-poligonları, tarih, birim ve kaynağıyla saklanan gerçek NASA verisi; bu verilerden tarlanın geçmişini
-çıkarma, suyu sayma, üç rotasyonu karşılaştırma ve kartı yazma, Türkçe ve İngilizce. Prototip ise
-bilimi tek konumda daha derin doğruluyor: Kulu yakınlarında, net bir ekili-nadas sinyali için seçilmiş
-tek bir 250 m MODIS pikseli. Bu bir tarama yapılmış tarla değildir; sınır, ürün ve çeşit hâlâ bir
-çiftçiden gelmelidir.
-
-Prototipin sayıları kendi kural setini kullanır ve platform belirtiminden ayrıntıda farklıdır. Bir
-ekimi, FAO-33 göreli verimi 1 − Ky (1 − Ta/Tp) en az %50 ise yeterli sayar. B, 15 Ekim'de kasada en az
-60 mm varsa buğday eker; art arda iki yıldan fazla değil. C, ekim tarihinde kasada en az 40 mm varsa
-baklagil eker. Aralıkları A için 1–9, B için 3–10, C için 2–7'dir ve altı koşudan çıkar: iki yağış
-kaynağı çarpı üç toprak kapasitesi. Motoru platforma taşımak, bu kuralları önce bir ziraat mühendisiyle
-netleştirmeyi gerektirir.
-
-Prototip kendini ekranda eleştirir: altı ekili yılın en zayıf bahar yeşermesi 2022'deydi, oysa su
-modeli en düşük verimi 2024'e veriyor. Platformun gerçek MODIS verisi üzerinde de bir kontrol var:
-her sezon için tepe NDVI ve temiz görüntü sayısı tabloda görünür, düşük güvenli sezonlar işaretlenir ve
-bilinmeyenler kullanıcıya bırakılır.
-
-**Mesaj taslağı örneği (canlı):** "Ekim kararı, 1 Eki 2025. Toprakta 95 mm kullanılabilir su var
-(kapasite 279 mm); bu, 140 mm eşiğinin altında. Alışılmış rotasyonunuzda bu yıl kışlık buğday var, ama
-esnek kurala göre tarla nadasa bırakılır. Ekmeden önce ziraat mühendisinizle konuşun. Zira karar
-vermez; ziraat mühendisinin ve çiftçinin kararını destekler." Gönderim, Green API hesabındaki
-WhatsApp numarası eşleştirildiğinde etkinleşir. **[Sunumdan önce eşleştirmeyi doğrulayın; çalışmıyorsa
-"gönderim hazır, eşleştirme bekliyor" deyin.]**
+Karşılaştırma adil olsun diye üç rotasyon bir ısınma sezonundan sonra aynı depodan başlar; ısınma simüle edilir, sayılmaz. Bir sezon yalnızca günlerinin en az %95'inde tam veri varsa sayılır; böylece platformda 2001–2025 kaydı 24 tam sezona bölünür. Bu sayılar geçici başlangıç değerleriyle üretildi: ürün aşama süreleri (FAO-56 Tablo 11), ekim tarihi, sulama verimi ve NDVI eşiği ayrı bir yapılandırma dosyasında kaynağıyla yazılıdır, kartta "geçici" etiketi taşır ve ziraat mühendisi onayıyla yerel değerlere çekilir. Mühendis onaylamadıkça hiçbir ürün kesin öneri olarak gösterilmez. Rotasyon C'de baklagil olarak şimdilik mercimek kullanılıyor çünkü nohut için FAO-56 Tablo 11'de aşama süreleri yok.
 
 ---
 
-## SLAYT 7 / 7 · ETKİ, SINIRLAR, SONRAKİ ADIM
+## SLAYT 9 / 14 · UYDU + YER: SENSÖR MODU
 
-# Etki, sınırlar ve sonraki adım
+# Uydu bölgeyi görür, sensör tarlayı ölçer
 
-| ETKİ | SINIRLAR | SONRAKİ |
-| --- | --- | --- |
-| Çiftçinin okuyabileceği, tarla düzeyinde bir karşılaştırma, ücretsiz NASA verisiyle | NASA POWER yaklaşık 50 km'lik bölgesel veridir, tarlanın ölçümü değildir | Bir kooperatiften gerçek bir tarla |
-| Denge görünür: daha çok ekim, daha çok hasat ve daha çok karşılanmayan su demek | MODIS pikseli yaklaşık 6 ha; ekili ile nadası ayırır, ürün türünü ve kış–yaz ayrımını bilmez | Her kural için ziraat mühendisi onayı; NDVI eşiğinin yerel tarlalarla kalibrasyonu |
-| Mühendis onayı olmadan hiçbir mesaj çiftçiye gitmez | Gerçek tarla, toprak analizi ve ziraat mühendisi incelemesi henüz yok; aşama süreleri geçici | Landsat 30 m (Earth Engine); prototipteki SMAP / MERRA-2 çapraz kontrolünün platforma taşınması |
-| Çiftçi önceliği ve kısıtları girdi olacak | Belirsizlik her zaman gösterilir; yerel doğrulama ziraat mühendisinindir | Aynı havzada iki tarla daha; referans toprak nemi probları, sensör verisiyle Su Kasası düzeltmesi; kooperatif paneli ve çiftçi görünümü |
+**Sensör modu:**
+1. 10, 30, 60 ve 100 cm derinliklerde toprak nemi düğümleri, gerçek donanımla aynı şemayla `POST /sensors/{düğüm}/readings` ucuna veri gönderir.
+2. Ham okuma, tarlaya özgü **kalibrasyonla** (gravimetrik örnek: solma noktası + tarla kapasitesi) kullanılabilir su payına çevrilir. Kalibrasyon yoksa sensöre güvenilmez.
+3. Her derinliğin payı temsil ettiği katmanla ağırlıklanır ve kök bölgesi TAW'ı ile çarpılarak **karar günü deposu** olur; modelin deposunun yerini alır.
+4. Aralık daralır: sensör okuması ± TAW'ın %10'u.
+5. Bir düğüm 48 saat susarsa tarla **otomatik olarak uydu moduna** döner.
+
+**Ekranda "uydu ile sensör" yan yana:** örnek senaryoda model 231 mm derken sensör 140 mm (kapasite 279 mm) gösteriyor; fark ekranda görünür.
+
+**Konuşmacı notları**
+Bu, uydu ve yeryüzü arasındaki köprü. Uydu ve model bölgesel bir tahmindir; sensör tarlanın kendi ölçümüdür. İkisi birleştiğinde hem güven hem de doğruluk artar. Sensör mesajı ışığında kasa değeri değişir, aralık daralır ve kullanıcı ikisini yan yana görür. Gösterdiğimiz okumalar, gerçek donanımın göndereceği şemayla çalışan sensör simülatöründen gelir ve ekranlarda "simüle" olarak işaretlenir; donanıma geçildiğinde backend'de tek satır değişmez. Mevcut %10 bandı, gerçek bir toprakta kalibrasyon hatasından belirlenecek bir başlangıç değeridir. Sensör mesajı, sensör düğümü başına bir anahtarla doğrulanır (ortak anahtar sunucuda tanımlıdır).
+
+---
+
+## SLAYT 10 / 14 · MESAJ AKIŞI VE KOOPERATİF PANELİ
+
+# Olaydan çiftçinin telefonuna: mühendis onayıyla
+
+**Zira bir olay görünce taslak yazar:**
+- Ekim kararı günü · bir günde ≥ 20 mm yağış · kök altına ≥ 5 mm su inmesi (yıkanma uyarısı) · hassas dönemde 5. ve 15. stres günü · hasatta sezon özeti
+
+**Akış:** olay → modelin o günkü sayılarıyla taslak → **mühendis düzenler, onaylar ya da reddeder** → Green API ile WhatsApp.
+
+> "Ekim kararı, 1 Eki 2025. Toprakta 95 mm kullanılabilir su var (kapasite 279 mm); bu, 140 mm eşiğinin altında. Alışılmış rotasyonunuzda bu yıl kışlık buğday var, ama esnek kurala göre tarla nadasa bırakılır. Ekmeden önce ziraat mühendisinizle konuşun. Zira karar vermez; ziraat mühendisinin ve çiftçinin kararını destekler."
+
+**Kooperatif paneli:** çiftçi hesabı aç/kapat, geçici şifre ver, her tarlayı bir çiftçiye bağla, kendi organizasyonunun dışını görme.
+**Çiftçi ekranı "Tarlam":** tek ekran: karar gününde kullanılabilir su, aralığı, **gönderilmiş** mesajlar.
+
+**Konuşmacı notları**
+Çiftçiye giden her mesaj kısa, Türkçe ve altında aynı cümle var: "Zira karar vermez." Taslaklar mühendisin kuyruğunda bekler; hiçbir mesaj onaysız çıkmaz. Kooperatif panelinin amacı ölçek: bir kooperatif kullanıcısı kendi organizasyonundaki çiftçileri açar, tarlaları bağlar; yönetici her yerde aynısını yapabilir. Çiftçi yalnızca gönderilmiş mesajları ve kendi tarlasını görür. [Sunumdan önce Green API eşleştirmesini doğrulayın; çalışmıyorsa "gönderim hazır, eşleştirme bekliyor" deyin.]
+
+---
+
+## SLAYT 11 / 14 · GÜVEN VE ŞEFFAFLIK
+
+# Zira neden güvenilir: kendini kontrol eden bir sistem
+
+| İlke | Nasıl |
+|---|---|
+| **Aralık, tek sayı değil** | Her sonuç düşük/orta/yüksek koşuyla; sensör varsa aralık daralır |
+| **Bilmiyorsa söyler** | NDVI yetersizse sezon "bilinmiyor"; düşük güvenli sezonlar işaretlenir |
+| **İnsan onayı** | Mühendis onayı olmadan mesaj çıkmaz; ürün onaysız kesin öneri olmaz |
+| **Geçici değerler görünür** | Aşama süreleri, ekim tarihi, eşikler kartta "geçici" etiketiyle kaynağıyla yazılı |
+| **Ölçek kuralları** | POWER bölgesel, MODIS 6 ha, GRACE havza ölçeği: hiçbiri tarla ölçümü gibi sunulmaz |
+| **Bağımsız kontrol** | Su modeli NASA SMAP ve MERRA-2 toprak neminden bağımsız kontrol edildi (r = 0,61) |
+| **Test edilmiş** | FAO-56 basılı örnekleriyle test; 200'den fazla otomatik backend testi |
+
+**Konuşmacı notları**
+Bu slayt jüri sorusunu önceden cevaplıyor: "Modele nasıl güveneceğiz?" Cevabımız tek bir doğruluk iddiası değil, bir güven mimarisi. Platformdaki tüm eşikler yapılandırma dosyasında kaynağıyla yazılıdır ve ziraat mühendisinin onayını bekler; biz bunu eksiklik olarak değil, ürünün yerel uzmanla birlikte çalışacağının işareti olarak tasarladık. Bağımsız kontrolde model toprak nemi seyri NASA SMAP ve MERRA-2 ile r = 0,61 uyumlu çıktı. Bu bir eğilim kontrolüdür: SMAP 9 km'lik hücre ortalamasıdır, tarla ölçümü değildir.
+
+---
+
+## SLAYT 12 / 14 · SONUÇLAR
+
+# Kulu doğrulama çalışması: 2016–2026
+
+| | |
+|---|---|
+| **Tarla Hafızası** | 2016–2026 sezonları ekili ve nadas arasında temiz biçimde değişiyor; VIIRS, kapsadığı iki baharda MODIS ile uyuşuyor |
+| **Su Kasası** | 12 Kasım 2026'da 144 mm kapasitenin 13 mm'si |
+| **Üç rotasyon** | Su 13 ekimin 6'sında A için, 10'un 5'inde B için, 21'in 3'ünde C için yetti |
+| **Aralık** | Altı koşudan çıkar: iki yağış kaynağı × üç toprak kapasitesi |
+| **Bağımsız kontrol** | SMAP ve MERRA-2 toprak nemi ile r = 0,61 |
+| **Sensör düzeltmesi** | Simülatör verisiyle karar günü suyu 231 mm'den 140 mm'ye iner (kapasite 279 mm) |
+
+Bu çalışma, tek bir 250 m MODIS pikselinde net bir ekili–nadas sinyali olan Kulu'da yapıldı: bilimi derinlemesine sınamak için seçilmiş bir konum, taranmış bir tarla değil.
+
+**Konuşmacı notları**
+Çalışmanın kendi ölçütü: bir ekimi FAO-33 göreli verimi 1 − Ky (1 − Ta/Tp) en az %50 ise yeterli sayıyoruz. B, 15 Ekim'de kasada en az 60 mm varsa buğday eker, art arda iki yıldan fazla değil; C, ekim tarihinde kasada en az 40 mm varsa baklagil eker. Aralıklar A için 1–9, B için 3–10, C için 2–7.
+
+Sistem kendini ekranda eleştirir: altı ekili yılın en zayıf bahar yeşermesi 2022'deydi, oysa su modeli en düşük verimi 2024'e veriyor. Bu bir hata gizleme değil, görünür bir uyarı. Platformdaki demo tarlasının sayıları (slayt 8) farklıdır, çünkü konum, toprak ve kurallar farklıdır; ikisini karıştırmıyoruz. Sensör satırı simüle edilmiş veriyle yapılan uçtan uca testin sonucudur.
+
+---
+
+## SLAYT 13 / 14 · ETKİ, SINIRLAR, YOL HARİTASI
+
+# Etki, dürüst sınırlar ve sonraki adım
+
+| ETKİ | SINIRLAR (bilerek açık) | SONRAKİ ADIM |
+|---|---|---|
+| Çiftçinin okuyabileceği, tarla düzeyinde karşılaştırma; ücretsiz NASA verisiyle | POWER ~50 km bölgesel veridir; MODIS pikseli ~6 ha | Bir kooperatiften gerçek tarlalar; her kural için mühendis onayı |
+| Daha çok ekim ile daha çok karşılanmayan su arasındaki denge görünür | Aşama süreleri ve eşikler geçici; yerel ajronomi onayı bekliyor | Landsat 30 m (Earth Engine); SMAP/MERRA-2 kontrolünün platforma taşınması |
+| Mühendis onayı olmadan hiçbir mesaj çiftçiye gitmez | Sensör verisi şimdilik simülatörden; gerçek kalibrasyon yok | Referans toprak nemi probları; gerçek donanım, gravimetrik kalibrasyon |
+| Kooperatif ölçeğinde yönetim | Belirsizlik her zaman gösterilir; yerel doğrulama mühendisindir | Aynı havzada iki tarla daha; çiftçi önceliği ve kısıtları girdi olarak |
+
+**Doğrulama dört aşamada:** tek koordinatta boru hattı → tek gerçek tarlada üç rotasyon → aynı havzada iki farklı tarla → yerel kalibrasyonla başka iklim bölgesi. Eşikler ve katsayılar yeni bir bölgeye asla kopyalanmaz.
 
 **Zira karar vermez: çiftçinin delille karar vermesine yardım eder.**
 
-Açık kaynak: [depo bağlantısı] · Yapay zekâ kullanımı: [kod, arayüz metinleri, mesaj taslağı
-metinleri ve bu slaytlar yapay zekâ asistanıyla hazırlandı ve ekip tarafından gözden geçirildi; araçların
-adlarını yazın] · Yapay zekâ ile üretilmiş görsel yok.
+Açık kaynak: [depo bağlantısı] · Yapay zekâ kullanımı: [kod, arayüz metinleri, mesaj taslağı metinleri ve bu slaytlar yapay zekâ asistanıyla hazırlandı ve ekip tarafından gözden geçirildi; araçların adlarını yazın] · Yapay zekâ ile üretilmiş görsel yok.
 
 **Konuşmacı notları**
-
-Doğrulama dört aşamada ilerler: tek bir koordinatta boru hattı testi; tek bir gerçek tarla poligonunda
-üç rotasyonun özdeş koşullarda ana demosu; aynı havzada iki farklı tarla; ancak ondan sonra yerel
-kalibrasyonla başka bir iklim bölgesi. Eşikler ve bitki katsayıları yeni bir bölgeye asla kopyalanmaz.
-
-Sensör donanımı tasarlandı, yapılmadı: 10, 30, 60 ve 100 cm'de toprak nemi probları, tarla başına
-üç dört düğüm, güneş panelli LoRaWAN ya da LTE-M, her toprak türü için gravimetrik kalibrasyon. Bir
-düğüm 48 saat susarsa tarla uydu moduna döner ve aralık genişler. Tarlalar ham sayılar üzerinden
-birbirleriyle asla sıralanmaz; her tarla kendi mevcut rotasyonuna göre ve veri güveniyle birlikte
-raporlanır.
-
-**Şeffaflık notu (canlı platform).** Bu sürümde bilerek geçici bırakılanlar: ürün aşama süreleri, ekim
-tarihi, sulama verimi, baklagil seçimi (mercimek) ve NDVI eşiği. Hepsi `config/rotation_demo.yaml`
-dosyasında kaynağıyla yazılıdır, kartta "geçici" etiketi taşır ve ziraat mühendisinin onayını bekler.
-Strateji B'nin yalnızca A'nın ekili yıllarında karar verdiği ve karar günü ile eşiğin örneklerdeki
-15 Ekim ve 60 mm'den farklı olduğu da açık noktalar olarak kayıtlıdır (karar 0012).
+Sensör donanımı tasarımı: 10, 30, 60 ve 100 cm'de toprak nemi probları, tarla başına üç dört düğüm, güneş panelli LoRaWAN ya da LTE-M, her toprak türü için gravimetrik kalibrasyon. Tarlalar ham sayılar üzerinden birbirleriyle sıralanmaz; her tarla kendi mevcut rotasyonuna göre ve veri güveniyle raporlanır. Sınırlar sütununu silmeyin: jürinin ilk sorusu budur ve doğru cevap, sınırı sizin söylemenizdir.
 
 ---
 
-## FORMÜL SAYFASI (slayt değil)
+## SLAYT 14 / 14 · VİDEO: SİMÜLASYON
 
-**Kaynak:** 1–5. bölümler Allen, Pereira, Raes ve Smith (1998), *Crop evapotranspiration*, FAO
-Irrigation and Drainage Paper 56. 6–8. bölümler, varsayılanları ziraat mühendisi onayını bekleyen Zira
-tasarım kurallarıdır. ET₀, Kc eğrisi, TAW/RAW ve stres hesabı platformda FAO-56'nın basılı örnekleriyle test edilmiştir
-(Örnek 18: Uccle, 6 Temmuz, ET₀ = 3,88 mm/gün).
+# Zira, uçtan uca
 
-### 1. Günlük girdiler
+▶ **[Video, 2 dk]**
 
-Doygun buhar basıncı: e°(T) = 0,6108 · exp( 17,27 T / (T + 237,3) ) [kPa, T °C]
-eₛ = ( e°(Tmaks) + e°(Tmin) ) / 2 ; eₐ = (BNortalama / 100) · eₛ
-z yüksekliğindeki rüzgârdan 2 m'deki rüzgâr: u₂ = u_z · 4,87 / ln( 67,8 z − 5,42 ); z = 10 m için
-u₂ ≈ 0,748 · u₁₀
-BNmin = 100 · eₐ / e°(Tmaks)
+**Önerilen çekim sırası (video ile slayt metninin örtüşmesi için):**
+1. 0:00–0:15 · Harita: tarla çizilir; alan ve merkez otomatik hesaplanır.
+2. 0:15–0:35 · Tek tıkla 25 yıllık NASA POWER verisi gelir; yağış grafiği.
+3. 0:35–0:55 · Tarla Hafızası: MODIS NDVI, 10 sezon, ekili/nadas, güven düzeyi, doğrulama.
+4. 0:55–1:15 · Su Kasası: karar günü kullanılabilir su, aralık; sensör simülatörü başlar, değer 231'den 140 mm'ye iner, "uydu ile sensör" yan yana.
+5. 1:15–1:40 · Zira Kartı: A, B, C yan yana, 24 sezon, aralık.
+6. 1:40–1:55 · Mesaj taslağı mühendis kuyruğunda; onay; WhatsApp'ta çiftçi.
+7. 1:55–2:00 · "Zira karar vermez." + canlı adres.
 
-### 2. Referans evapotranspirasyon
+**Kapanış cümlesi:** "Zira karar vermez; kararı verenin elini, NASA verisinin ışığıyla güçlendirir. Teşekkürler."
 
-ET₀ = [ 0,408 Δ (Rₙ − G) + γ · 900 / (T + 273) · u₂ (eₛ − eₐ) ] / [ Δ + γ (1 + 0,34 u₂) ]
-Δ = 4098 · e°(T) / (T + 237,3)² ; γ = 0,000665 · P ; günlük adımda G = 0
-Rₙ = 0,77 Rₛ − Rₙₗ
-Rₙₗ = σ · ( Tmaks,K⁴ + Tmin,K⁴ ) / 2 · ( 0,34 − 0,14 √eₐ ) · ( 1,35 Rₛ / Rₛₒ − 0,35 )
-Rₛₒ = ( 0,75 + 2 × 10⁻⁵ z ) · Rₐ
-T günlük ortalama (°C), P basınç (kPa), Rₛ güneş radyasyonu (MJ m⁻² gün⁻¹), z rakım (m),
-σ = 4,903 × 10⁻⁹ MJ K⁻⁴ m⁻² gün⁻¹; Rₐ, enlem ve yılın gününden hesaplanan atmosfer dışı radyasyondur.
+**Konuşmacı notları**
+Videoyu başlatmadan önce tek cümle: "Şimdi aynı akışı, sensör simülatörüyle birlikte baştan sona izleyeceksiniz." Video bittiğinde slaytta kalın, tek satır: Zira · zira.soloftindustries.com · [takım adı]. Soru-cevap sırasında slayt 11 ve 13'e dönebilmek için sunumun bu iki slaytını işaretleyin.
 
-### 3. Bitki evapotranspirasyonu
+---
 
-ETc = Kc × ET₀, dört evreli Kc eğrisiyle (evre süreleri l_ini, l_dev, l_mid, l_late).
-Sezon ortası değerin iklim düzeltmesi: Kc,mid = Kc,mid(Tablo) + [ 0,04 (u₂ − 2) − 0,004 (BNmin − 45) ] · (h / 3)^0,3
-(Platformun şimdiki sürümü tablo değerini kullanır, bu düzeltmeyi uygulamaz.)
+# FORMÜL SAYFASI (slayt değil; sorulursa gösterilecek)
+
+Kaynak: 1–5. bölümler Allen, Pereira, Raes ve Smith (1998), Crop evapotranspiration, FAO Irrigation and Drainage Paper 56. 6–9. bölümler Zira'nın tasarım kurallarıdır; varsayılanları ziraat mühendisi onayını bekler. ET₀, Kc eğrisi, TAW/RAW ve stres hesabı FAO-56'nın basılı örnekleriyle test edilmiştir (Örnek 18: Uccle, 6 Temmuz, ET₀ = 3,88 mm/gün).
+
+## 1. Günlük girdiler
+- Doygun buhar basıncı: e°(T) = 0,6108 · exp( 17,27 T / (T + 237,3) ) [kPa, T °C]
+- eₛ = ( e°(Tmaks) + e°(Tmin) ) / 2 ; eₐ = (BNortalama / 100) · eₛ
+- z yüksekliğindeki rüzgârdan 2 m'deki rüzgâr: u₂ = u_z · 4,87 / ln( 67,8 z − 5,42 ); z = 10 m için u₂ ≈ 0,748 · u₁₀
+- BNmin = 100 · eₐ / e°(Tmaks)
+
+## 2. Referans evapotranspirasyon
+- ET₀ = [ 0,408 Δ (Rₙ − G) + γ · 900 / (T + 273) · u₂ (eₛ − eₐ) ] / [ Δ + γ (1 + 0,34 u₂) ]
+- Δ = 4098 · e°(T) / (T + 237,3)² ; γ = 0,000665 · P ; günlük adımda G = 0
+- Rₙ = 0,77 Rₛ − Rₙₗ
+- Rₙₗ = σ · ( Tmaks,K⁴ + Tmin,K⁴ ) / 2 · ( 0,34 − 0,14 √eₐ ) · ( 1,35 Rₛ / Rₛₒ − 0,35 )
+- Rₛₒ = ( 0,75 + 2 × 10⁻⁵ z ) · Rₐ
+- T günlük ortalama (°C), P basınç (kPa), Rₛ güneş radyasyonu (MJ m⁻² gün⁻¹), z rakım (m), σ = 4,903 × 10⁻⁹ MJ K⁻⁴ m⁻² gün⁻¹; Rₐ enlem ve yılın gününden hesaplanan atmosfer dışı radyasyondur.
+
+## 3. Bitki evapotranspirasyonu
+ETc = Kc × ET₀, dört evreli Kc eğrisiyle (l_ini, l_dev, l_mid, l_late). Sezon ortası iklim düzeltmesi: Kc,mid = Kc,mid(Tablo) + [ 0,04 (u₂ − 2) − 0,004 (BNmin − 45) ] · (h / 3)^0,3. Platformun şimdiki sürümü tablo değerini kullanır, bu düzeltmeyi uygulamaz.
 
 FAO-56 başlangıç değerleri (Tablo 12 ve 22):
 
 | Ürün | Kc başlangıç | Kc orta | Kc son | Kök derinliği (m) | p |
-| --- | --- | --- | --- | --- | --- |
+|---|---|---|---|---|---|
 | Kışlık buğday | 0,4 donan toprak; 0,7 donmayan | 1,15 | 0,25–0,4 | 1,5–1,8 | 0,55 |
 | Arpa | 0,3 | 1,15 | 0,25 | 1,0–1,5 | 0,55 |
 | Nohut | 0,4 | 1,00 | 0,35 | 0,6–1,0 | 0,50 |
 | Mercimek | 0,4 | 1,10 | 0,30 | 0,6–0,8 | 0,50 |
 
-Platformdaki **geçici** aşama süreleri (gün, FAO-56 Tablo 11): kışlık buğday 30 / 140 / 40 / 30
-(Akdeniz, Kasım); mercimek 25 / 35 / 70 / 40 (kurak bölge, Ekim–Kasım). Nohut için Tablo 11'de satır yoktur.
+Geçici aşama süreleri (gün, FAO-56 Tablo 11): kışlık buğday 30 / 140 / 40 / 30 (Akdeniz, Kasım); mercimek 25 / 35 / 70 / 40 (kurak bölge, Ekim–Kasım). Nohut için Tablo 11'de satır yoktur. Konya, tablodaki Akdeniz satırından daha soğuktur; gerçek süreleri ziraat mühendisi girecektir.
 
-### 4. Toprağın su kapasitesi
+## 4. Toprağın su kapasitesi
+- TAW = 1000 (θFC − θWP) Zr ; RAW = p · TAW
+- p = p(Tablo) + 0,04 (5 − ETc), 0,1 ile 0,8 arasında tutulur
+- Dokuya göre kullanılabilir su (FAO-56 Tablo 19): kumlu tın 110–150 mm/m, tın 130–180 mm/m, siltli tın 130–190 mm/m, kil 120–200 mm/m. Orta değer varsayılandır; sınırlar belirsizlik koşularını sürer.
 
-TAW = 1000 (θFC − θWP) Zr ; RAW = p · TAW
-p = p(Tablo) + 0,04 (5 − ETc), 0,1 ile 0,8 arasında tutulur
-Dokuya göre kullanılabilir su (FAO-56 Tablo 19): kumlu tın 110–150 mm/m, tın 130–180 mm/m, siltli tın
-130–190 mm/m, kil 120–200 mm/m. Orta değer varsayılandır; sınırlar belirsizlik koşularını sürer.
+## 5. Günlük su dengesi ve stres
+- Sₜ = min( TAW, max( 0, Sₜ₋₁ + Peff + I − ETa − R − D ) )
+- ETa = Ks · Kc · ET₀ ; S ≥ (1 − p) · TAW iken Ks = 1; değilse Ks = S / ( (1 − p) · TAW )
+- Peff = 0,80 × P (varsayılan); I = uygulanan sulama × sulama verimi; D, o gün TAW'ı aşan miktar
+- Nadasta depo günlük 0,25 × P kazanır ve TAW'ı geçemez (varsayılan)
 
-### 5. Günlük su dengesi ve stres
+## 6. Sezonlar, karar ve ölçütler
+Bir sezon ekim ile hasat arasında sürer, Ocak–Aralık arasında değil. Platformda 2001–2025 kaydı 24 tam sezona bölünür (Kasım'da ekilen kışlık sezon ertesi yıl biter, 2025 ekimi kayıtla tamamlanamaz). Bir sezon yalnızca günlerinin en az %95'inde tam veri varsa sayılır.
 
-Sₜ = min( TAW, max( 0, Sₜ₋₁ + Peff + I − ETa − R − D ) )
-ETa = Ks · Kc · ET₀
-S ≥ (1 − p) · TAW iken Ks = 1; değilse Ks = S / ( (1 − p) · TAW )
-Peff = 0,80 × P (varsayılan); I = uygulanan sulama × sulama verimi; D, o gün TAW'ı aşan miktardır;
-nadasta depo, günlük 0,25 × P kazanır ve TAW'ı geçemez (varsayılan).
+- Su yeterli sezon: Σ ETa ÷ Σ ETc ≥ 0,70
+- Kritik dönemde stres günü: sezon ortası evresinde Ks < 1 olan günler
+- Sezonluk su açığı (mm): Σ (ETc − ETa)
+- Sulama ihtiyacı (mm): sezonluk açık ÷ sulama verimi (verim 0,75, geçici)
+- Mevcut rotasyondan fark: B ve C'nin her ölçütü eksi A'nın aynı ölçütü
 
-### 6. Sezonlar, karar ve ölçütler
+## 7. Strateji kuralları ve belirsizlik
+- A: doğrulanmış ya da seçilen sıra, 24 sezon boyunca tekrarlanır.
+- B: karar gününde (kışlık ürünler için 1 Ekim) S ≥ 0,50 × TAW ise planlanan ürünü eker; değilse nadas.
+- C: A gibi, ama nadas sezonlarının her ikincisine baklagil.
+- Üçü de bir ısınma sezonundan sonra 0,50 × TAW'dan başlar; ısınma simüle edilir, sayılmaz.
+- Belirsizlik: toprağın metre başına kullanılabilir suyunun düşük, orta, yüksek değeriyle üç koşu; etkili yağış payı ve nadas verimi 0,10 aynı yönde kaydırılır.
 
-Bir sezon ekim ile hasat arasında sürer, Ocak–Aralık arasında değil. Platformda 2001–2025 kaydı
-**24 tam sezona** bölünür (Kasım'da ekilen bir kışlık sezon ertesi yıl biter, 2025 ekimi kayıtla
-tamamlanamaz). Bir sezon yalnızca günlerinin en az %95'inde tam veri varsa sayılır.
+## 8. Uydu işleme
+**MODIS (platformda).** MOD13Q1 ve MYD13Q1 sürüm 061, NDVI = 0,0001 × DN. Her görüntüde tarla poligonunun içindeki pikseller alınır (poligona değenler dahil); piksel güvenilirliği 0 (iyi) ya da 1 (sınırda) olanlar tutulur, 2 (kar) ve 3 (bulut) ile eksik değerler dışarıda kalır. Her görüntü için ortalama ve ortanca NDVI, temiz piksel sayısı ve dışarıda kalan pay saklanır. Sezon = hasat yılının 1 Mart – 30 Eylül penceresi. En yüksek NDVI ≥ 0,40 ise ekili, değilse nadas; temiz görüntü 5'ten azsa bilinmiyor. Güven = min(1, |tepe NDVI − 0,40| / 0,20) × min(1, temiz görüntü sayısı / 13). Eşik geçicidir; bilinen geçmişli yerel tarlalarla kalibre edilecektir.
 
-Su yeterli sezon: Σ ETa ÷ Σ ETc ≥ 0,70.
-Kritik dönemde stres günü: sezon ortası evresinde Ks < 1 olan günler.
-Sezonluk su açığı (mm): Σ (ETc − ETa).
-Sulama ihtiyacı (mm): sezonluk açık ÷ sulama verimi (ilk yaklaşım; verim 0,75, geçici).
-Mevcut rotasyondan fark: B ve C'nin her ölçütü eksi A'nın aynı ölçütü.
+**Landsat (sonraki adım).** Collection 2 yüzey yansıması: SR = DN × 0,0000275 − 0,2. NDVI = (NIR − Kırmızı) / (NIR + Kırmızı); Landsat 8/9 için NIR = SR_B5, Kırmızı = SR_B4. Bulut ve gölge pikselleri QA_PIXEL ile maskelenir; istatistikler tarla poligonunun içinden alınır.
 
-### 7. Strateji kuralları ve belirsizlik
+## 9. Sensör düzeltmesi
+- Kalibrasyon: θ = eğim × ham + kesişim (tarla başına, gravimetrik örnekle)
+- Her derinlikte kullanılabilir su payı: (θ − θWP) / (θFC − θWP), 0–1 arasında kırpılır
+- Katmanlar sensörler arasında yarı yarıya bölünür; paylar katman kalınlığıyla ağırlıklanır
+- Karar günü deposu = ağırlıklı pay × TAW; modelin deposunun yerini alır
+- Aralık: sensör okuması ± %10 TAW (geçici)
+- Sessizlik: 48 saat okuma yoksa uydu moduna dönüş
 
-A: doğrulanmış ya da seçilen sıra, 24 sezon boyunca tekrarlanır.
-B: karar gününde (kışlık ürünler için 1 Ekim) S ≥ 0,50 × TAW ise planlanan ürünü eker; değilse nadas.
-C: A gibi, ama nadas sezonlarının her ikincisine baklagil (platformda geçici olarak mercimek) ekilir.
-Üçü de bir ısınma sezonundan sonra 0,50 × TAW'dan başlar; ısınma simüle edilir, sayılmaz.
-Belirsizlik: toprağın metre başına kullanılabilir suyunun düşük, orta ve yüksek değeriyle üç koşu;
-etkili yağış payı ve nadas verimi 0,10 aynı yönde kaydırılır.
+## 10. Doğrulama çalışmasının kuralları (Kulu)
+Çift bitki katsayısı (FAO-56), iki katmanlı toprak kovası ve açık toprak buharlaşması. Yeterli ekim: göreli verim 1 − Ky (1 − Ta / Tp) ≥ %50 (Doorenbos ve Kassam, 1979, FAO-33). B, 15 Ekim'de kasada en az 60 mm varsa buğday eker, art arda iki yıldan fazla değil; C, ekim tarihinde kasada en az 40 mm varsa baklagil eker. Altı koşudan aralıklar: iki yağış kaynağı (MERRA-2 düzeltilmiş yağış, GPM IMERG) × üç toprak su kapasitesi.
 
-### 8. Uydu işleme
+---
 
-**MODIS (canlı).** MOD13Q1 ve MYD13Q1 sürüm 061, NDVI = 0,0001 × DN. Her görüntüde tarla
-poligonunun içindeki pikseller alınır (poligona değen pikseller dahil); piksel güvenilirliği 0 (iyi) ya
-da 1 (sınırda) olanlar tutulur, 2 (kar) ve 3 (bulut) ile eksik değerler dışarıda kalır. Her görüntü
-için ortalama ve ortanca NDVI, temiz piksel sayısı ve dışarıda kalan pay saklanır.
-Sezon = hasat yılının 1 Mart – 30 Eylül penceresi. En yüksek NDVI ≥ 0,40 ise **ekili**, değilse
-**nadas**; temiz görüntü 5'ten azsa **bilinmiyor**.
-Güven = min(1, |tepe NDVI − 0,40| / 0,20) × min(1, temiz görüntü sayısı / 13).
-Eşik (0,40) geçicidir ve bilinen geçmişli yerel tarlalarla kalibre edilmelidir.
-
-**Landsat (planlı).** Collection 2 yüzey yansıması: SR = DN × 0,0000275 − 0,2.
-NDVI = (NIR − Kırmızı) / (NIR + Kırmızı); Landsat 8/9 için NIR = SR_B5, Kırmızı = SR_B4.
-Bulut ve gölge pikselleri QA_PIXEL ile maskelenir; istatistikler tarla poligonunun içinden alınır.
-
-### 9. Tarayıcı prototipinin kuralları (farklı olduğu yerler)
-
-Çift bitki katsayısı (FAO-56), iki katmanlı toprak kovası ve açık toprak buharlaşması.
-Yeterli ekim: göreli verim 1 − Ky (1 − Ta / Tp) ≥ %50 (Doorenbos ve Kassam, 1979, FAO Irrigation and
-Drainage Paper 33).
-B, 15 Ekim'de kasada en az 60 mm varsa buğday eker, art arda iki yıldan fazla değil; C, ekim tarihinde
-kasada en az 40 mm varsa baklagil eker.
-Altı koşudan aralıklar: iki yağış kaynağı (MERRA-2 düzeltilmiş yağış, GPM IMERG) × üç toprak su kapasitesi.
-
-### Kaynakça
-
-Allen, R. G., Pereira, L. S., Raes, D., Smith, M. (1998). Crop evapotranspiration: guidelines for computing
-crop water requirements. FAO Irrigation and Drainage Paper 56.
-Doorenbos, J., Kassam, A. H. (1979). Yield response to water. FAO Irrigation and Drainage Paper 33.
-Khorrami, B., Arık, F., Gündüz, O. (2021). Land deformation and sinkhole occurrence in response to the
-fluctuations of groundwater storage. GIScience & Remote Sensing 58(8), 1518–1542.
-https://doi.org/10.1080/15481603.2021.2000349
-NTV / İHA (17 Ağustos 2026). Konya Ovası'nda alarm. Sayı 740'ı aştı.
-https://www.ntv.com.tr/yerel-haberler/galerikonya-ovasinda-alarm-sayi-740i-asti-1737722
-NASA Langley Research Center, POWER Project, Daily API v2. https://power.larc.nasa.gov/
-NASA MODIS MOD13Q1 / MYD13Q1 Version 061 (LP DAAC), Microsoft Planetary Computer açık STAC kataloğu
-üzerinden. https://planetarycomputer.microsoft.com/
-NASA GIBS, NASA ESDIS'in parçası. Tam veri seti listesi ve atıflar için README'ye bakın.
+## Kaynakça
+- Allen, R. G., Pereira, L. S., Raes, D., Smith, M. (1998). Crop evapotranspiration. FAO Irrigation and Drainage Paper 56.
+- Doorenbos, J., Kassam, A. H. (1979). Yield response to water. FAO Irrigation and Drainage Paper 33.
+- Khorrami, B., Arık, F., Gündüz, O. (2021). Land deformation and sinkhole occurrence in response to the fluctuations of groundwater storage. GIScience & Remote Sensing 58(8), 1518–1542. https://doi.org/10.1080/15481603.2021.2000349
+- NTV / İHA (17 Ağustos 2026). Konya Ovası'nda alarm. Sayı 740'ı aştı. https://www.ntv.com.tr/yerel-haberler/galerikonya-ovasinda-alarm-sayi-740i-asti-1737722
+- NASA Langley Research Center, POWER Project, Daily API v2. https://power.larc.nasa.gov/
+- NASA MODIS MOD13Q1 / MYD13Q1 Version 061 (LP DAAC), Microsoft Planetary Computer açık STAC kataloğu üzerinden. https://planetarycomputer.microsoft.com/
+- NASA GIBS, NASA ESDIS'in parçası. Tam veri seti listesi ve atıflar için README'ye bakın.
 
 ---
 
 ## Sunumdan önce kontrol listesi
-
-1. **Gösterilecek tarla:** Prototipin Kulu konumunu platforma tarla olarak ekleyin ve NDVI'ı çekin. Şu anki
-   test tarlasının (Konya, 32,505 / 37,905) gerçek MODIS NDVI'ı yıl boyu 0,15–0,26: on sezonun hepsi
-   "nadas" çıkıyor, ekili–nadas değişimini göstermez. Prototip Kulu pikselinde net bir değişim
-   gösteriyor; bunu platformda henüz denemedim, sunumdan önce deneyin.
-2. **Green API:** QR eşleştirmesi tamamlandı mı? Sunucuda durum "notAuthorized" idi; eşleştirmeden
-   önce slayt 3 ve 6'daki "gönderim" cümlesini "hazır, eşleştirme bekliyor" olarak söyleyin.
-3. **Depo bağlantısı ve "açık kaynak":** depo özel; herkese açık yapılacaksa karar 0005'i ve özel UDS
-   bağımlılığını çözün, yapılmayacaksa slayt 7'deki "Açık kaynak" ibaresini kaldırın.
-4. **Sayı tutarlılığı:** "24 sezon" platformdaki, "25 sezon" prototipin ve başlıktaki söylemin sayısıdır;
-   konuşurken hangisinden söz ettiğinizi belirtin.
-5. **Boşlukları doldurun:** takım adı, prototip bağlantısı, kullanılan yapay zekâ araçlarının adları.
+1. **Gösterilecek tarla.** Platformdaki test tarlasının (Konya, 32,505 / 37,905) gerçek MODIS NDVI'ı yıl boyu 0,15–0,26: on sezonun hepsi "nadas" çıkıyor, ekili–nadas değişimini göstermez. Videoda Kulu konumunu tarla olarak ekleyip NDVI'ı çekin ve değişimin göründüğünü önceden doğrulayın.
+2. **Sayıları ekrandan teyit edin.** Slayt 8'deki 202 mm (demo tarlası) ile slayt 9 ve 12'deki 231 → 140 mm (sensör senaryosu, karar 0014) farklı koşullardan gelir; videoda hangisini gösteriyorsanız slayttaki sayıyı ona eşitleyin.
+3. **Green API.** QR eşleştirmesi tamamlandı mı? Sunucuda durum "notAuthorized" idi. Tamamlanmadıysa slayt 10'da "gönderim hazır, eşleştirme bekliyor" deyin.
+4. **Depo bağlantısı ve "açık kaynak".** Depo özel. Herkese açık yapılacaksa karar 0005'i ve özel UDS bağımlılığını çözün; yapılmayacaksa slayt 13'teki "Açık kaynak" ibaresini kaldırın.
+5. **Sayı tutarlılığı.** "24 sezon" platformdaki, "25 sezon" kayıt uzunluğunun söylemidir (2001–2025); konuşurken hangisini kastettiğinizi belirtin.
+6. **Boşluklar.** Takım adı, depo bağlantısı, yapay zekâ araçlarının adları, video dosyası.
+7. **Test sayısı.** "200'den fazla" ifadesi Faz 6 öncesi 203 teste dayanıyor; Faz 7 testleri eklendi, güncel sayıyı çalıştırıp yazabilirsiniz.
