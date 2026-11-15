@@ -1,0 +1,37 @@
+# PROVISIONAL values for the rotation comparison (phase 6). Not signed off by an agronomist.
+#
+# The agronomist has not yet set the crop stage lengths, sowing dates or the irrigation
+# efficiency (crops.yaml keeps stage_lengths_days unset on purpose, so the Water Vault season
+# stays off). Without them the rotation comparison cannot run, so for the Space Apps demo
+# this file carries starting values, each one traceable. Every result that uses them is
+# labelled "provisional" on screen and in the API. When the agronomist sets the real values,
+# set them in crops.yaml and parameters.yaml and delete the matching entry here.
+#
+# Stage lengths are FAO-56 Table 11 rows (ini, dev, mid, late in days):
+#   winter wheat, Mediterranean, November planting: 30, 140, 40, 30
+#   lentil, arid region, October/November planting: 25, 35, 70, 40
+# Chickpea has no row in Table 11, so strategy C uses lentil, the other legume in crops.yaml.
+# Konya is colder than the Mediterranean row; the real lengths are the agronomist's call.
+
+status: provisional_demo
+
+# Strategy C sows this legume in every n-th fallow season of the current rotation
+# (n is core.legume_every_n_fallow). core.legume_crop is chickpea, which has no stage lengths.
+strategy_c_legume: lentil
+
+# The PDT uses irrigation_efficiency (7.5, 7.7) but the parameter sheet does not list it.
+irrigation_efficiency:
+  value: 0.75
+  basis: team_assumption
+  note: Sprinkler-type efficiency, FAO order of magnitude. Needs the agronomist.
+
+crops:
+  winter_wheat:
+    sowing_date: "11-01"       # month-day; the season runs into the next year
+    stage_lengths_days: [30, 140, 40, 30]
+    kc_ini_variant: non_frozen_soil
+    source: FAO-56 Table 11, Mediterranean, November planting
+  lentil:
+    sowing_date: "11-01"
+    stage_lengths_days: [25, 35, 70, 40]
+    source: FAO-56 Table 11, arid region, October/November planting

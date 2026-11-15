@@ -180,12 +180,41 @@ class DataSource(BaseModel):
     scale_warning: str
 
 
+class DemoIrrigation(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    value: float = Field(gt=0, le=1)
+    basis: Basis
+    note: str | None = None
+
+
+class DemoCrop(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    sowing_date: str = Field(pattern=r"^\d{2}-\d{2}$")
+    stage_lengths_days: list[int] = Field(min_length=4, max_length=4)
+    kc_ini_variant: Literal["frozen_soil", "non_frozen_soil"] | None = None
+    source: str
+
+
+class RotationDemo(BaseModel):
+    """Provisional season values for the rotation comparison (config/rotation_demo.yaml)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    status: Literal["provisional_demo"]
+    strategy_c_legume: str
+    irrigation_efficiency: DemoIrrigation
+    crops: dict[str, DemoCrop]
+
+
 class Config(BaseModel):
     parameters: ParameterSet
     crops: dict[str, Crop]
     soils: dict[str, Soil]
     climate: ClimateProfiles
     data_sources: dict[str, DataSource]
+    rotation_demo: RotationDemo
 
     @model_validator(mode="after")
     def _cross_references(self) -> Config:
@@ -194,6 +223,12 @@ class Config(BaseModel):
             raise ValueError(f"core.legume_crop '{legume}' is not in crops.yaml")
         if not self.crops[legume].is_legume:
             raise ValueError(f"core.legume_crop '{legume}' is not marked as a legume")
+        demo_legume = self.rotation_demo.strategy_c_legume
+        if demo_legume not in self.crops or not self.crops[demo_legume].is_legume:
+            raise ValueError(f"rotation_demo.strategy_c_legume '{demo_legume}' is not a legume")
+        for key in self.rotation_demo.crops:
+            if key not in self.crops:
+                raise ValueError(f"rotation_demo crop '{key}' is not in crops.yaml")
         return self
 
 
@@ -209,6 +244,7 @@ def load_config(config_dir: Path) -> Config:
         soils=_read(config_dir / "soils.yaml")["soils"],
         climate=ClimateProfiles(**_read(config_dir / "climate_profiles.yaml")),
         data_sources=_read(config_dir / "data_sources.yaml")["sources"],
+        rotation_demo=RotationDemo(**_read(config_dir / "rotation_demo.yaml")),
     )
 
 
